@@ -1,0 +1,27 @@
+.chat-sidebar {
+	flex: 0.2;
+    display: flex;
+    flex-direction: column;
+	background-color: #4ECDC4;
+	text-align: center;
+	color: #fff;
+	padding: 20px 20px 60px; 
+	overflow-y: scroll;
+}
+
+
+.chat-sidebar h3 {
+	margin-bottom: 15px;
+}
+
+.chat-sidebar ul li {
+	padding: 10px 0;
+}
+
+.chat__username {
+	padding: 8px;
+	font-size: large;
+	font-weight: 500;
+	color: black;
+}
+
