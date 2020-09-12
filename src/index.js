@@ -1,12 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+//import {SignUp} from './SignUp'
 import './index.css';
 import App from './App';
+
+//imoprt my file
+import Checkout from './SignUp/Checkout'
 import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(
+  // call to my page
   <React.StrictMode>
-    <App />
+   <Checkout/>
   </React.StrictMode>,
   document.getElementById('root')
 );
