@@ -10,7 +10,7 @@ import CheckBoxIcon from '@material-ui/icons/CheckBox';
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
-export default function Hobbies() {
+export default function Courses() {
   return (
     <Autocomplete
       multiple
@@ -38,10 +38,10 @@ export default function Hobbies() {
       }
 const hobbies = [
   { title: '234106 אינפי 1 מ '},
-  { title: 'משחקי מחשב'},
-  { title: 'משחקי קופסא'},
-  { title: 'מוזיקה'},
-  { title: 'ספרים'},
-  { title: 'ספורט אקסטרים'},
-  { title: 'בדיחות'},
+  { title: 'אלגברה א 102252'},
+  { title: '234136 אינפי 2 מ'},
+  { title: 'מבוא למדעי המחשב 121312'},
+  { title: 'אלגורתמים 132432'},
+  { title: 'מערכות הפעלה 312321'},
+  { title: 'מבוא לבינה מלאכותית 999999'},
 ];

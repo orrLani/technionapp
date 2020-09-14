@@ -18,6 +18,8 @@ import Genus from './AutocompleteComponents/Genus'
 
 import MaritalStatus from './AutocompleteComponents/MaritalStatus'
 
+import Courses from './AutocompleteComponents/Courses'
+
 
 
 
@@ -51,7 +53,11 @@ export default function SecondForm() {
         <Grid item xs={12}>
             <Faculty/>
         </Grid>
+        <Grid item xs={12}>
+          <Courses/>
+        </Grid>
       </Grid>
+
     </React.Fragment>
   );
 }
