@@ -88,8 +88,8 @@ const useStyles = makeStyles((theme) => ({
 
 //the name of the steps of the loging up
 const first_step = 'שם משתמש וסיסמא'
-const second_step = 'טיפה קצת אליך'
-const last_step = 'וידוי פרטים'
+const second_step = 'קצת עליך'
+const last_step = 'וידוא פרטים'
 const steps = [first_step, second_step, last_step];
 
 //conect the index of steps with the page himself.
