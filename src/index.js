@@ -45,6 +45,7 @@ import rtl from "jss-rtl";
 //import Demo from "./demo";
 import Checkout from './SignUpPage/Checkout'
 import SignIn from './SignIn/Signin' 
+import Welcome from './Welcome/Welcome' 
 
 const jss = create({ plugins: [...jssPreset().plugins, rtl()] });
 const theme = createMuiTheme({
@@ -55,7 +56,7 @@ const theme = createMuiTheme({
 ReactDOM.render(
   <StylesProvider jss={jss}>
     <ThemeProvider theme={theme}>
-      <SignIn/>
+      <Welcome/>
     </ThemeProvider>
   </StylesProvider>,
   document.querySelector("#root")
