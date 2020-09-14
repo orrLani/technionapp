@@ -10,12 +10,28 @@ import StepLabel from '@material-ui/core/StepLabel';
 import Button from '@material-ui/core/Button';
 import Link from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
-import AddressForm from './AddressForm';
 import TextField from '@material-ui/core/TextField';
 import PaymentForm from './PaymentForm.js';
-import FirstForm from './FirstForm'
 import Review from './Review';
 
+//our nice pages 
+import FirstForm from './FirstForm'
+//import AddressForm from './AddressForm';
+import SecondForm from './SecondForm'
+
+
+import rtl from "jss-rtl"
+import {create} from "jss"
+import {
+  StylesProvider,
+  jssPreset,
+  ThemeProvider,
+  createMuiTheme
+} from "@material-ui/core/styles";
+//Configure jss
+const jss = create({ plugins: [...jssPreset().plugins, rtl()] });
+
+const rtlTheme = createMuiTheme({ direction: "rtl" });
 
 //create copy-right at the bottom of the page. - create copy-right , create link , create date
 function Copyright() {
@@ -82,7 +98,7 @@ function getStepContent(step) {
     case 0:
       return <FirstForm/>;
     case 1:
-      return <PaymentForm />;
+      return <SecondForm/>;
     case 2:
       return <Review />;
     default:
