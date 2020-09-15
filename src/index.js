@@ -45,7 +45,7 @@ import rtl from "jss-rtl";
 //import Demo from "./demo";
 import Checkout from './SignUpPage/Checkout'
 import SignIn from './SignIn/Signin' 
-import Welcome from './Welcome/Welcome' 
+import Welcome from './Welcome/Welcome.js' 
 
 const jss = create({ plugins: [...jssPreset().plugins, rtl()] });
 const theme = createMuiTheme({
