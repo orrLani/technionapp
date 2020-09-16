@@ -4,8 +4,9 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    background:gray;
+    background: url("blue-clouds-day-fluffy-53594.jpeg");
     overflow: hidden;
+    background-size: 100% 100%;
   }
   .card {
     display: grid;
@@ -26,7 +27,7 @@ body {
   }
   .card-image {
     grid-area: image;
-    background: url("img1.jpg");
+    background: url("studing_friends.png");
     border-top-left-radius: 15px;
     border-top-right-radius: 15px;
     background-size: cover;
@@ -104,7 +105,7 @@ body {
   }
   /*card3*/
   .card-image.card3 {
-    background: url("img3.jpg");
+    background: url("friends.png");
     background-size: cover;
   }
   .card-text.card3 .date {

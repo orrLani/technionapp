@@ -1,26 +1,38 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import "./App.css";
+//import Welcome from './Welcome/Welcome'
+import {BrowserRouter as Router, Switch, Route} from 'react-router-dom'
+import Signin from "./SignIn/Signin";
+//import {useStateValue} from "./StateProvider"
+//import UseWindowDimensions from "./UseWindowDimensions";
 
 function App() {
+  //const [{user},dispatch] = useStateValue();
+ // const { width } = UseWindowDimensions();
+  const uid =  localStorage.getItem('uid')!==undefined?localStorage.getItem('uid'):null;
+  //console.log(useStateValue);
+  //const {user,setUser} = useState(null);
+  //console.log(user)
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="app">
+   <div className="app__body">
+      <Signin />
+     </div>
     </div>
   );
 }
 
 export default App;
+// return (
+//   <div className="app">
+//   {
+//     !user && !uid?(
+//      <Signin/>
+//     ):(
+//       <div className="app__body">
+//      <Welcome />
+//     </div>
+//     )
+//   }
+//   </div>
+// );
