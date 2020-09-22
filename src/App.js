@@ -1,10 +1,11 @@
 import React from "react";
 import "./App.css";
-import Welcome from './Welcome/Welcome'
+//import Welcome from './Welcome/Welcome'
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom'
 import Signin from "./SignIn/Signin";
 import Signup from './SignUpPage/Checkout'
 import Chatpage from './chatpage/Chatpage'
+import Learn from './Learn.js'
 //import {useStateValue} from "./StateProvider"
 //import UseWindowDimensions from "./UseWindowDimensions";
 
@@ -21,7 +22,8 @@ function App() {
       {/* <Signin /> */}
       {/* <Signup /> */}
       {/* <Welcome /> */}
-      <Chatpage />
+      {/*<Signup />*/}
+      <Learn/>
      </div>
     </div>
   );

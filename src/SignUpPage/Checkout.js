@@ -111,7 +111,8 @@ export default function Checkout() {
   const classes = useStyles();
   const [activeStep, setActiveStep] = React.useState(0);
   //change activeStep to be activeStep+1
-  const handleNext = () => {
+  const handleNext = (e) => {
+    console.log(e.target.value)
     setActiveStep(activeStep + 1);
   };
   //change activeStep to be activeStep-1
@@ -120,81 +121,83 @@ export default function Checkout() {
   };
   //the page himself that return
   return (
-    <React.Fragment>
-      <CssBaseline />
-      <AppBar position="absolute" color="default" className={classes.appBar}>
-        <Toolbar>
-          <Typography variant="h6" color="inherit" noWrap>
-            Company name
-          </Typography>
-        </Toolbar>
-      </AppBar>
-      <main className={classes.layout}>
-        <Paper className={classes.paper}>
-          <Typography component="h1" variant="h4" align="center">
-            הרשמה לאתר
-          </Typography>
-          <Stepper activeStep={activeStep} dir="rtl" className={classes.stepper}>
-            {steps.map((label) => (
-              <Step key={label}>
-                <StepLabel>{label}</StepLabel>
-              </Step>
-            ))}
-          </Stepper>
-          <React.Fragment>
-            {activeStep === steps.length ? (
-              <React.Fragment>
-                <Typography variant="h5" dir="rtl" gutterBottom>
-                  תודה רבה על ההרשמה
+    <form>
+      <React.Fragment>
+        <CssBaseline />
+        <AppBar position="absolute" color="default" className={classes.appBar}>
+          <Toolbar>
+            <Typography variant="h6" color="inherit" noWrap>
+              Company name
+            </Typography>
+          </Toolbar>
+        </AppBar>
+        <main className={classes.layout}>
+          <Paper className={classes.paper}>
+            <Typography component="h1" variant="h4" align="center">
+              הרשמה לאתר
+            </Typography>
+            <Stepper activeStep={activeStep} dir="rtl" className={classes.stepper}>
+              {steps.map((label) => (
+                <Step key={label}>
+                  <StepLabel>{label}</StepLabel>
+                </Step>
+              ))}
+            </Stepper>
+            <React.Fragment>
+              {activeStep === steps.length ? (
+                <React.Fragment>
+                  <Typography variant="h5" dir="rtl" gutterBottom>
+                    תודה רבה על ההרשמה
+                  </Typography>
+                  <Typography variant="subtitle1" dir="rtl">
+                  נשלח אליך קוד סודי למייל הטכניוני- לטובת ההרשמה ,תמלא את הקוד הסודי בתיבה הריקה
+                  </Typography>
+                  <Typography variant="subtitle1" dir="rtl">
+                  <TextField dir="rtl"
+                    required
+                    id="secret_code"
+                      name="secret_code"
+                    label="הקוד הסודי בבקשה"
+                    fullWidth
+                    />
                 </Typography>
                 <Typography variant="subtitle1" dir="rtl">
-                נשלח אליך קוד סודי למייל הטכניוני- לטובת ההרשמה ,תמלא את הקוד הסודי בתיבה הריקה
-                </Typography>
-                <Typography variant="subtitle1" dir="rtl">
-                <TextField dir="rtl"
-                  required
-                   id="secret_code"
-                    name="secret_code"
-                  label="הקוד הסודי בבקשה"
-                  fullWidth
-                  />
-              </Typography>
-              <Typography variant="subtitle1" dir="rtl">
-              <Button
-                    variant="contained"
-                    color="primary"
-                    onClick='NONE'
-                    className={classes.button}
-                  >לחץ כאן לסיום
-                  </Button>
-              </Typography>
-              </React.Fragment>
-            ) : (
-              <React.Fragment>
-                {getStepContent(activeStep)}
-                <div className={classes.buttons}>
-                  {activeStep !== 0 && (
-                    <Button onClick={handleBack} className={classes.button}>
-                      הקודם
+                <Button
+                      variant="contained"
+                      color="primary"
+                      onClick='NONE'
+                      className={classes.button}
+                    >לחץ כאן לסיום
                     </Button>
-                  )}
-                  <Button
-                    dir ="rtl"
-                    variant="contained"
-                    color="primary"
-                    onClick={handleNext}
-                    className={classes.button}
-                  >
-                    
-                    {activeStep === steps.length - 1 ? 'הגשת הטופס' : 'הבא'}
-                  </Button>
-                </div>
-              </React.Fragment>
-            )}
-          </React.Fragment>
-        </Paper>
-        <Copyright />
-      </main>
-    </React.Fragment>
-  );
+                </Typography>
+                </React.Fragment>
+              ) : (
+                <React.Fragment>
+                  {getStepContent(activeStep)}
+                  <div className={classes.buttons}>
+                    {activeStep !== 0 && (
+                      <Button onClick={handleBack} className={classes.button}>
+                        הקודם
+                      </Button>
+                    )}
+                    <Button
+                      dir ="rtl"
+                      variant="contained"
+                      color="primary"
+                      onClick={handleNext}
+                      className={classes.button}
+                    >
+                      
+                      {activeStep === steps.length - 1 ? 'הגשת הטופס' : 'הבא'}
+                    </Button>
+                  </div>
+                </React.Fragment>
+              )}
+            </React.Fragment>
+          </Paper>
+          <Copyright />
+        </main>
+      </React.Fragment>
+      </form>
+    );
 }

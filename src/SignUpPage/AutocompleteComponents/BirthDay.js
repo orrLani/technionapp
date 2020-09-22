@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function BirthDay() {
+export default function BirthDay(props) {
   const classes = useStyles();
 
   return (
@@ -25,6 +25,7 @@ export default function BirthDay() {
         type="date"
         defaultValue="2017-05-24"
         className={classes.textField}
+        onChange = {(event)=> {props.setBirthday(event.target.value)}}
         InputLabelProps={{
           shrink: true,
         }}
