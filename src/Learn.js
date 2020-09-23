@@ -15,6 +15,57 @@ import {faculty_list} from './AutoCmpleteLists'
 import {course_list} from './AutoCmpleteLists'
 import {maritalstatus_list} from './AutoCmpleteLists'
 import {hobby_list} from './AutoCmpleteLists'
+
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+
+export default function FormDialog() {
+    const [open, setOpen] = React.useState(false);
+  
+    const handleClickOpen = () => {
+      setOpen(true);
+    };
+  
+    const handleClose = () => {
+      setOpen(false);
+    };
+  
+    return (
+      <div>
+        <Button variant="outlined" color="primary" onClick={handleClickOpen}>
+          Open form dialog
+        </Button>
+        <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+          <DialogTitle id="form-dialog-title">Subscribe</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              To subscribe to this website, please enter your email address here. We will send updates
+              occasionally.
+            </DialogContentText>
+            <TextField
+              autoFocus
+              margin="dense"
+              id="name"
+              label="Email Address"
+              type="email"
+              fullWidth
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose} color="primary">
+              Cancel
+            </Button>
+            <Button onClick={handleClose} color="primary">
+              Subscribe
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </div>
+    );
+  }
 function Learn() {
 
        // const list_gender = [
@@ -35,6 +86,16 @@ function Learn() {
         const [hobby, setHobby] = useState('')
 
         const handleClick = () =>{
+
+           if (text_password !== text_password_again)
+                alert("Passwords don't match")
+                return false
+
+            
+
+            
+            
+
            // console.log(text_user)
           //  console.log(text_password)
           //  console.log(text_password_again)
@@ -43,6 +104,8 @@ function Learn() {
            // console.log(gender)
            console.log(semester)
         }
+        
+
     return(
             <form>
                 <React.Fragment dir="rtl">
@@ -76,10 +139,13 @@ function Learn() {
                                 required
                                 type="password"
                                 id="password"
+                                label="Error"
                                 name="password"
                                 label="חזור על הסיסמא בבקשה "
                                 fullWidth
-                                onChange = {(event)=> {setPasswordAgain(event.target.value)}}
+                                onChange = {(event)=> {
+                                    setPasswordAgain(event.target.value)
+                                    }}
                             /> 
                         </Grid>
 
@@ -119,7 +185,7 @@ function Learn() {
 
                         <Grid item xs={12}>
                             <AutoCompleteField list={hobby_list} 
-                            label="תחביבים" setFunction={setHobby}  />
+                            label="תחביבים" setFunction={setHobby   }  />
                         </Grid>
                         
 
