@@ -1,6 +1,6 @@
 import React from "react";
 import "./App.css";
-import Welcome from './Welcome/Welcome'
+// import Welcome from './Welcome/Welcome'
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom'
 import Signin from "./SignIn/Signin";
 import Signup from './SignUpPage/Checkout'
@@ -19,9 +19,9 @@ function App() {
     <div className="app">
    <div className="app__body">
       {/* <Signin /> */}
-      {/* <Signup /> */}
+      <Signup />
       {/* <Welcome /> */}
-      <Chatpage />
+      {/* <Chatpage /> */}
      </div>
     </div>
   );
