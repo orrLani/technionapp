@@ -1,13 +1,19 @@
 import React from "react";
 import "./App.css";
-import Welcome from './Welcome/Welcome'
-import {BrowserRouter as Router, Switch, Route} from 'react-router-dom'
-import Signin from "./SignIn/Signin";
-import Signup from './SignUpPage/Checkout'
-import Chatpage from './chatpage/Chatpage'
+
+// import Welcome from './Welcome/Welcome'
+// import {BrowserRouter as Router, Switch, Route} from 'react-router-dom'
+// import Signin from "./SignIn/Signin";
+// import Signup from './SignUpPage/Checkout'
+// import Chatpage from './chatpage/Chatpage'
 import Learn from './Learn.js'
 //import {useStateValue} from "./StateProvider"
 //import UseWindowDimensions from "./UseWindowDimensions";
+
+import {AuthProvider} from './server/Auth'
+import PrivateRoute from "./PrivateRoute";
+import {BrowserRouter as Router, Route} from "react-router-dom"
+import { RouterOutlined } from "@material-ui/icons";
 
 function App() {
   //const [{user},dispatch] = useStateValue();
@@ -16,15 +22,24 @@ function App() {
   //console.log(useStateValue);
   //const {user,setUser} = useState(null);
   //console.log(user)
+  
   return (
+    <AuthProvider>
+      <Router>
     <div className="app">
    <div className="app__body">
       {/* <Signin /> */}
-      <Signup />
+      {/* <Signup /> */}
+      
+      <Route exact path="/" component={Learn} />
+      <Route exact path="/signup" component={Learn} />
       {/* <Welcome /> */}
-      <Chatpage />
+      {/* <Chatpage /> */}
+      
      </div>
     </div>
+      </Router>
+    </AuthProvider>
   );
 }
 

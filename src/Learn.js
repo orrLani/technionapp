@@ -1,4 +1,7 @@
-import React,{useState} from "react";
+import React,{useState, useCallback} from "react";
+import {withRouter} from "react-router"
+import firebase from './server/firebase'
+
 import TextField from '@material-ui/core/TextField';
 import Button  from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
@@ -22,7 +25,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
-export default function FormDialog() {
+function FormDialog() {
     const [open, setOpen] = React.useState(false);
   
     const handleClickOpen = () => {
@@ -66,14 +69,7 @@ export default function FormDialog() {
       </div>
     );
   }
-function Learn() {
-
-       // const list_gender = [
-       // { title:'זכר'},
-      ///  { title: 'נקבה'},
-      //  { title: 'אחר'}
-      //  ];
-
+const Learn = ({history}) => {
         const[text_user,setUserName] = useState('')
         const[text_password,setPassword] = useState('')
         const[text_password_again,setPasswordAgain]=useState('')
@@ -84,30 +80,30 @@ function Learn() {
         const [course, setCourses] = useState('') 
         const [maritalstatus,setMaritalStatus] = useState('')
         const [hobby, setHobby] = useState('')
-
-        const handleClick = () =>{
-
-           if (text_password !== text_password_again)
-                alert("Passwords don't match")
-                return false
-
-            
-
-            
-            
-
-           // console.log(text_user)
-          //  console.log(text_password)
-          //  console.log(text_password_again)
-           // console.log(text_password===text_password_again)
-           // console.log(birthday)
-           // console.log(gender)
+        const handleSignUp = useCallback(async event => {
+           //TODO - check passwords equal
+           console.log(event.text_user)
+           console.log(text_password)
            console.log(semester)
-        }
+           event.preventDefault();
+           try {
+             let email = text_user+"@campus.technion.ac.il"
+             console.log(text_user,email)
+             await firebase
+              .auth()
+              .createUserWithEmailAndPassword(text_user+"@campus.technion.ac.il",text_password);
+            history.push("/");
+           } catch(error) {
+             alert(error)
+           }
+        },[history]);
+        console.log("I'm in signup")
+
+          
         
 
     return(
-            <form>
+            <form onSubmit = {handleSignUp}>
                 <React.Fragment dir="rtl">
                     <Grid container spacing={3} dir="rtl">
                         <Grid item xs={12} sm={6} dir="rtl">
@@ -191,10 +187,10 @@ function Learn() {
 
                         <Grid item xs={12}> 
                             <Button
+                                type="submit"
                                 dir ="rtl"
                                 variant="contained"
                                 color="primary"
-                                onClick={handleClick} 
                             > לחץ להגשה
                             </Button>
                         </Grid>
