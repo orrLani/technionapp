@@ -1,4 +1,4 @@
-import React,{useState, useCallback} from "react";
+import React,{useState, useCallback, useEffect} from "react";
 import {withRouter} from "react-router"
 import firebase from './server/firebase'
 
@@ -80,15 +80,11 @@ const Learn = ({history}) => {
         const [course, setCourses] = useState('') 
         const [maritalstatus,setMaritalStatus] = useState('')
         const [hobby, setHobby] = useState('')
-        const handleSignUp = useCallback(async event => {
+        async function handleSignUp(event) {
            //TODO - check passwords equal
-           console.log(event.text_user)
-           console.log(text_password)
-           console.log(semester)
+           console.log(text_user)
            event.preventDefault();
            try {
-             let email = text_user+"@campus.technion.ac.il"
-             console.log(text_user,email)
              await firebase
               .auth()
               .createUserWithEmailAndPassword(text_user+"@campus.technion.ac.il",text_password);
@@ -96,7 +92,7 @@ const Learn = ({history}) => {
            } catch(error) {
              alert(error)
            }
-        },[history]);
+        }
         console.log("I'm in signup")
 
           
