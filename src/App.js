@@ -7,6 +7,7 @@ import "./App.css";
 // import Signup from './SignUpPage/Checkout'
 // import Chatpage from './chatpage/Chatpage'
 import Learn from './Learn.js'
+import PopUpVerify from './SignUpPage/PopUpVerify'
 //import {useStateValue} from "./StateProvider"
 //import UseWindowDimensions from "./UseWindowDimensions";
 
@@ -33,6 +34,7 @@ function App() {
       
       <Route exact path="/" component={Learn} />
       <Route exact path="/signup" component={Learn} />
+      <Route exact path="/popupverify" component={PopUpVerify} />
       {/* <Welcome /> */}
       {/* <Chatpage /> */}
       

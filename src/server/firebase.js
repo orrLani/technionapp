@@ -2,14 +2,14 @@ import * as firebase from "firebase/app";
 import "firebase/auth";
 
 const app = firebase.initializeApp({
-    apiKey: "AIzaSyDLq97JJZ-I8IfseGlgM7cPKiWXHuPbtTw",
-    authDomain: "course-chat-4b2ec.firebaseapp.com",
-    databaseURL: "https://course-chat-4b2ec.firebaseio.com",
-    projectId: "course-chat-4b2ec",
-    storageBucket: "course-chat-4b2ec.appspot.com",
-    messagingSenderId: "501765050631",
-    appId: "1:501765050631:web:32a1d0dd2a6453ec01b5a2",
-    measurementId: "G-VS1MVGY2SN"
+    apiKey: "AIzaSyBdxiO2unFysdLywxLOhWt2ZVpGQVkW5Os",
+    authDomain: "techchat-86696.firebaseapp.com",
+    databaseURL: "https://techchat-86696.firebaseio.com",
+    projectId: "techchat-86696",
+    storageBucket: "techchat-86696.appspot.com",
+    messagingSenderId: "517224744870",
+    appId: "1:517224744870:web:62ba3b2a81d352ef753167",
+    measurementId: "G-6W6E2HBSFJ"
 });
 
 export default app;
