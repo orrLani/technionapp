@@ -1,32 +1,32 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import Button  from '@material-ui/core/Button';
 
 
-// const useStyles = makeStyles((theme) => ({
-//   modal: {
-//     display: 'flex',
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//   },
-//   paper: {
-//     backgroundColor: theme.palette.background.paper,
-//     border: '2px solid #000',
-//     boxShadow: theme.shadows[5],
-//     padding: theme.spacing(2, 4, 3),
-//   },
-// }));
 
- export default function PopUpVerify() {
+const PopUpVerify = ({history}) => {
+async function handleClick(event) {
 
+  history.push("/signin");
+}
+
+  
   return (
     <div>
         
-          <div >
+          <div align="center" >
             <h2 >הפרטים הועברו בהצלחה</h2>
             <p >אנא היכנס אל התיבת מייל שלך לסיום ההרשמה</p>
+            
+            <Button type="submit" dir ="rtl" variant="contained" color="gray" onClick ={handleClick} >
+            
+               אישרתי
+               </Button>
+               
+             
           </div>
        
     </div>
   );
  }
 
+ export default  PopUpVerify;
