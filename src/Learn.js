@@ -78,9 +78,6 @@ const Learn = ({history}) => {
               
               await user.sendEmailVerification();
 
-              
-              
-
             history.push("/popupverify");
            } catch(error) {
              alert(error)
