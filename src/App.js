@@ -1,7 +1,7 @@
 import React from "react";
 import "./App.css";
 
-// import Welcome from './Welcome/Welcome'
+import Welcome from './Welcome/Welcome'
 // import {BrowserRouter as Router, Switch, Route} from 'react-router-dom'
 // import Signin from "./SignIn/Signin";
 // import Signup from './SignUpPage/Checkout'
@@ -15,6 +15,7 @@ import {AuthProvider} from './server/Auth'
 import PrivateRoute from "./PrivateRoute";
 import {BrowserRouter as Router, Route} from "react-router-dom"
 import { RouterOutlined } from "@material-ui/icons";
+import SignInSide from "./SignIn/Signin"
 
 function App() {
   //const [{user},dispatch] = useStateValue();
@@ -32,9 +33,11 @@ function App() {
       {/* <Signin /> */}
       {/* <Signup /> */}
       
-      <Route exact path="/" component={Learn} />
+      <Route exact path="/" component={SignInSide} />
       <Route exact path="/signup" component={Learn} />
       <Route exact path="/popupverify" component={PopUpVerify} />
+      <Route exact path="/signin" component ={SignInSide} />
+      <Route exact path="/welcome" component ={Welcome} />
       {/* <Welcome /> */}
       {/* <Chatpage /> */}
       

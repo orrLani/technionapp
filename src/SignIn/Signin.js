@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useState} from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -16,6 +16,11 @@ import Background0 from '../Images/0.jpg';
 import Background1 from '../Images/1.jpg';
 import Background2 from '../Images/2.jpg';
 import Background3 from '../Images/3.jpg';
+
+
+import firebase from '../server/firebase'
+import { SystemUpdate } from '@material-ui/icons';
+
 
 function Copyright() {
   return (
@@ -67,9 +72,61 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SignInSide() {
-  const classes = useStyles();
+const SignInSide=({history})=> {
 
+  const[email,setEmail] = useState('')
+  const[password,setPassword] = useState('')
+
+  const [modal, setModal] = useState(false);
+
+  const resetModal = () => {
+    setModal(false);
+    setEmail("");
+    setPassword("");
+  };
+
+  function handleSignIn(event){
+    console.log(email)
+    console.log(password)
+    event.preventDefault();
+
+  //   firebase.auth().signInWithEmailAndPassword(email,password).catch(function(error) {
+  //     console.log("noooooo")
+  //     return
+  // });
+  // history.push("/welcome");
+
+  // }
+  //firebase.auth().signInWithEmailAndPassword(email, password)
+    // *     .catch(function(error) {
+        // let x =0
+        // firebase.auth().signInWithEmailAndPassword(email,password).then((user) =>{}
+        // ).catch((error)=>{
+        //   x = 1 
+        //   console.log("not good")
+        //   firebase.auth().signOut()
+        //   history.push("/signin");          
+        // });
+        // if (x===0){
+        // console.log("good")
+        // history.push("/welcome");
+
+        // }
+  
+      
+
+      firebase.auth()
+      .signInWithEmailAndPassword(email, password)
+      .then(() => {
+       alert("Sign in successfully!")
+       history.push("/welcome")
+      })
+      .then(() => resetModal())
+      .catch(err => alert(err.message));
+
+  }
+
+  const classes = useStyles();
   return (
     <Grid container component="main" className={classes.root}>
       <CssBaseline />
@@ -82,7 +139,7 @@ export default function SignInSide() {
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
-          <form className={classes.form} noValidate>
+          <form className={classes.form} onSubmit = {handleSignIn} noValidate>
             <TextField
               variant="outlined"
               margin="normal"
@@ -92,6 +149,7 @@ export default function SignInSide() {
               label="Email Address"
               name="email"
               autoComplete="email"
+              onChange = {(event)=> {setEmail(event.target.value)}}
               autoFocus
             />
             <TextField
@@ -103,6 +161,7 @@ export default function SignInSide() {
               label="Password"
               type="password"
               id="password"
+              onChange = {(event)=> {setPassword(event.target.value)}}
               autoComplete="current-password"
             />
             <FormControlLabel
@@ -139,3 +198,4 @@ export default function SignInSide() {
     </Grid>
   );
 }
+export default SignInSide;
