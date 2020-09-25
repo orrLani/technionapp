@@ -1,7 +1,7 @@
 import React from "react";
 import "./App.css";
 
-//import Welcome from './Welcome/Welcome'
+import Welcome from './Welcome/Welcome'
 // import {BrowserRouter as Router, Switch, Route} from 'react-router-dom'
 // import Signin from "./SignIn/Signin";
 // import Signup from './SignUpPage/Checkout'
@@ -37,7 +37,7 @@ function App() {
       <Route exact path="/signup" component={Learn} />
       <Route exact path="/popupverify" component={PopUpVerify} />
       <Route exact path="/signin" component ={SignInSide} />
-      {/* <Route exact path="/welcome" component ={Welcome} /> */}
+      <Route exact path="/welcome" component ={Welcome} /> 
       {/* <Welcome /> */}
       {/* <Chatpage /> */}
       

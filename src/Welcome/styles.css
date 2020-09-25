@@ -1,4 +1,4 @@
-body {
+/* body {
     width: 100vw;
     height: 100vh;
     display: flex;
@@ -7,6 +7,19 @@ body {
     background: url("blue-clouds-day-fluffy-53594.jpeg");
     overflow: hidden;
     background-size: 100% 100%;
+  } */
+
+
+  .background_style {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: url("blue-clouds-day-fluffy-53594.jpeg");
+    overflow: hidden;
+    background-size: 100% 100%;
+
   }
   .card {
     display: grid;

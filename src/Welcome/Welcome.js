@@ -6,15 +6,17 @@ import CheckBoxHobbies from './CheckBoxHobbies'
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 
+
+
+{/* <html>
+<head>
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" type="text/css" href="styles.css" />
+</head>
+<body> */}
 function Welcome() {
     return (
-
-        <html>
-        <head>
-          <meta charset="UTF-8" />
-          <link rel="stylesheet" type="text/css" href="styles.css" />
-        </head>
-        <body>
+      <div className="background_style">
           <div className="card">
             <div className="card-image"></div>
             <div className="card-text">
@@ -44,9 +46,8 @@ function Welcome() {
               </Grid>
               </div>
               </div>
-        </body>
-      </html>
-      
+
+      </div>
     );
   }
 
