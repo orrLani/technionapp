@@ -22,50 +22,6 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
-// // function FormDialog() {
-// //     const [open, setOpen] = React.useState(false);
-  
-// //     const handleClickOpen = () => {
-// //       setOpen(true);
-// //     };
-  
-// //     const handleClose = () => {
-// //       setOpen(false);
-// //     };
-  
-//     return (
-//       <div>
-//         <Button variant="outlined" color="primary" onClick={handleClickOpen}>
-//           Open form dialog
-//         </Button>
-//         <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-//           <DialogTitle id="form-dialog-title">Subscribe</DialogTitle>
-//           <DialogContent>
-//             <DialogContentText>
-//               To subscribe to this website, please enter your email address here. We will send updates
-//               occasionally.
-//             </DialogContentText>
-//             <TextField
-//               autoFocus
-//               margin="dense"
-//               id="name"
-//               label="Email Address"
-//               type="email"
-//               fullWidth
-//             />
-//           </DialogContent>
-//           <DialogActions>
-//             <Button onClick={handleClose} color="primary">
-//               Cancel
-//             </Button>
-//             <Button onClick={handleClose} color="primary">
-//               Subscribe
-  //           </Button>
-  //         </DialogActions>
-  //       </Dialog>
-  //     </div>
-  //   );
-  // }
 const Learn = ({history}) => {
         const[text_user,setUserName] = useState('')
         const[text_password,setPassword] = useState('')
@@ -79,15 +35,51 @@ const Learn = ({history}) => {
         const [hobby, setHobby] = useState('')
 
         async function handleSignUp(event) {
-           //TODO - check passwords equal
+
+            if(text_password!=text_password_again){
+               alert('password are not equal');
+                return;
+                       }
+
            console.log(text_user)
            event.preventDefault();
+           
+           const db = firebase.firestore()
            try {
-             await firebase
-              .auth()
-              .createUserWithEmailAndPassword(text_user+"@campus.technion.ac.il",text_password);
-              const user = firebase.auth().currentUser;
+             await firebase.auth().createUserWithEmailAndPassword(text_user+"@campus.technion.ac.il",text_password) 
+             const user = firebase.auth().currentUser;
+             db.collection("users").doc(user.uid).set({
+                 text_user: text_user,
+                 birthday: birthday,
+                 gender: gender,
+                 semester: semester,
+                 faculty: faculty,
+                 course: course,
+                 maritalstatus : maritalstatus,
+                 hobby: hobby
+
+
+             }).then(function() {
+                console.log("Document successfully written!");
+            })
+            .catch(function(error) {
+                console.error("Error writing document: ", error);
+            });
+ 
+                 
+
+              
+
+              console.log(birthday)
+              console.log(user.get)
+
+              console.log(user.uid)
+              console.log(user.metadata)
+              
               await user.sendEmailVerification();
+
+              
+              
 
             history.push("/popupverify");
            } catch(error) {
