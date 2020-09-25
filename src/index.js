@@ -42,8 +42,11 @@ import { createMuiTheme } from "@material-ui/core/styles";
 import { StylesProvider, ThemeProvider, jssPreset } from "@material-ui/styles";
 import { create } from "jss";
 import rtl from "jss-rtl";
-
+//import * as firebase from 'firebase'
 import App from './App'
+
+
+
 
 
 const jss = create({ plugins: [...jssPreset().plugins, rtl()] });
@@ -54,6 +57,16 @@ const theme = createMuiTheme({
 
 ReactDOM.render(
   <StylesProvider jss={jss}>
+    <script src="https://www.gstatic.com/firebasejs/3.1.0/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.1.0/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.9.3/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/5.9.3/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/5.9.3/firebase-database.js"></script>
+<script src="/__/firebase/7.21.1/firebase-app.js"></script>
+<script src="/__/firebase/7.21.1/firebase-analytics.js"></script>
+<script src="/__/firebase/7.21.1/firebase-auth.js"></script>
+<script src="/__/firebase/7.21.1/firebase-firestore.js"></script>
+
     <ThemeProvider theme={theme}>
       <App/>
     </ThemeProvider>
