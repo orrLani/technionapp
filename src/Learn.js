@@ -80,17 +80,30 @@ const Learn = ({history}) => {
 
         async function handleSignUp(event) {
            //TODO - check passwords equal
+           if(text_password!=text_password_again){
+               alert('password are not equal');
+                return;
+                       }
+
            console.log(text_user)
            event.preventDefault();
            try {
-             await firebase
-              .auth()
-              .createUserWithEmailAndPassword(text_user+"@campus.technion.ac.il",text_password);
-              const user = firebase.auth().currentUser;
-              await user.sendEmailVerification();
 
-            history.push("/popupverify");
-           } catch(error) {
+            //  const userCredential =  
+            //    await firebase
+            //     .auth()
+            //    .createUserWithEmailAndPassword(text_user+"@campus.technion.ac.il",text_password);
+
+            //EmailVerification
+            //   const user = firebase.auth().currentUser;
+            //  await user.sendEmailVerification();
+            // inserting other user's information 
+            
+            
+
+               history.push("/popupverify");
+            
+        } catch(error) {
              alert(error)
            }
          
