@@ -19,7 +19,7 @@ function Chat() {
     const uid = firebase.auth().currentUser.uid
     
     const db = firebase.firestore()
-    console.log(Date.now().timestamp)
+    //console.log(Date.now().timestamp)
  
     // const [{user},dispatch] = useStateValue()
     // useEffect(() => {
@@ -74,7 +74,7 @@ function Chat() {
 
         <div className="chat">
 
-            <Header />
+          {/* <Header /> */}
           
         
             <div className="chat__body">

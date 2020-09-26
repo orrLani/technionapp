@@ -3,29 +3,21 @@ import React, {useState} from 'react';
 
 import Sidebar from './ChatComponents/Sidebar'
 import Chat from './Chat'
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-} from "react-router-dom";
+import Header from './ChatComponents/Header'
+
 // import Login from "./Login"
 // import { useStateValue } from './StateProvider';
-function Chatpage() {
+function Chatpage(props) {
+   console.log("chatpagggwww")
+    console.log(props.location.data)
     return (
+       <div>
+         <Header />
         <div className="chatpage__body">
-            <Router>
-            <Sidebar />
-          <Switch>
-
-            <Route path="/rooms/:roomId">
-              <Chat />              
-            </Route>
-            <Route path="/">
-            <Chat />
-            </Route>
-          </Switch>
-        </Router>
+           <Sidebar />
+           <Chat data ={props.location.data} />
         </div>
+      </div>
     )
 }
 

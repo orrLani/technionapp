@@ -1,5 +1,7 @@
 import React from "react";
 import "./Header.css";
+import Link from '@material-ui/core/Link';
+
 import {Avatar, IconButton} from "@material-ui/core"
 
 function header() {
@@ -9,9 +11,9 @@ function header() {
             <h2 className="course__number">104666</h2>
             <h2 clasName="room__name"> אינפי 1מ</h2>
             <IconButton>
-                <h3 href="index.html" 
+            <Link href="/welcome" variant="body2"
                 className="leave__room"
-                dir="rtl">עזוב את החדר :(</h3>
+                dir="rtl">עזוב את החדר :(</Link>
             </IconButton>
         </div>
 

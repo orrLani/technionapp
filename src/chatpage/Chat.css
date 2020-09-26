@@ -6,6 +6,10 @@
     /* flex-direction: column; */
     font-family: Heebo,sans-serif;
     overflow: auto;
+    align-items: center;
+    justify-content: space-between;
+
+
 }
 
 .chat__header {
