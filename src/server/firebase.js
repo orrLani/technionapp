@@ -2,7 +2,7 @@
 //import "firebase/auth";
 import firebase from 'firebase'
 
-const app = firebase.initializeApp({
+const firebaseApp = firebase.initializeApp({
     apiKey: "AIzaSyBdxiO2unFysdLywxLOhWt2ZVpGQVkW5Os",
     authDomain: "techchat-86696.firebaseapp.com",
     databaseURL: "https://techchat-86696.firebaseio.com",
@@ -13,4 +13,6 @@ const app = firebase.initializeApp({
     measurementId: "G-6W6E2HBSFJ"
 });
 
-export default app;
+const db = firebaseApp.firestore()
+export {db}
+export default firebaseApp;

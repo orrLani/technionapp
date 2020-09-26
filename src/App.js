@@ -16,6 +16,8 @@ import PrivateRoute from "./PrivateRoute";
 import {BrowserRouter as Router, Route} from "react-router-dom"
 import { RouterOutlined } from "@material-ui/icons";
 import SignInSide from "./SignIn/Signin"
+import { Prompt } from 'react-router'
+import Chatpage from "./chatpage/Chatpage"
 
 function App() {
   //const [{user},dispatch] = useStateValue();
@@ -24,6 +26,8 @@ function App() {
   //console.log(useStateValue);
   //const {user,setUser} = useState(null);
   //console.log(user)
+
+ 
   
   return (
     <AuthProvider>
@@ -36,8 +40,9 @@ function App() {
       <Route exact path="/" component={SignInSide} />
       <Route exact path="/signup" component={Learn} />
       <Route exact path="/popupverify" component={PopUpVerify} />
-      <Route exact path="/signin" component ={SignInSide} />
+      <Route path="/signin" component ={SignInSide}  />
       <Route exact path="/welcome" component ={Welcome} /> 
+      <Route exact path="/chatpage" component ={Chatpage} /> 
       {/* <Welcome /> */}
       {/* <Chatpage /> */}
       

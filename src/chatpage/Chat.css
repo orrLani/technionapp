@@ -1,10 +1,11 @@
 .chat {
-    flex:0.8;
+    flex : 1;
     /* width: 80%;
     float:right; */
-    display: flex;
-    flex-direction: column;
+    /* display: flex; */
+    /* flex-direction: column; */
     font-family: Heebo,sans-serif;
+    overflow: auto;
 }
 
 .chat__header {
@@ -74,12 +75,12 @@
     /* background-repeat: repeat; */
     background-color: whitesmoke;
     background-position: center;
-    padding: 30px;
+    /*padding: 30px;
     /* overflow: scroll; */
 }
 
 .chat__footer {
-    display: flex;
+    /* display: flex; */
     justify-content: space-between;
     align-items: center;
     height: 62px;
