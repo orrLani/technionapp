@@ -9,7 +9,16 @@
 	align-items: center;
 	justify-content: space-between;
 }
+.room_name{
+    align-self: center;
+	right: 50px;
+	position:fixed;
+	display: flex;
+	font-size: 25px;
+}
 .leave__room {
-	font-size: 20px;
-	columns: #1a535c;;
+	right: 55px;
+	position:fixed;
+	font-size: 50px;
+	
 }

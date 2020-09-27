@@ -5,4 +5,14 @@
     width: 90vw;
     box-shadow: -1px 4px 20px -6px rgba(0,0,0,0.75);
     font-family: Heebo,, sans-serif;
+    right: 40px;
+	 position:fixed;
   } 
+
+  .chatpage__header{
+  width: 90.3vw;
+  font-size: 20px;
+	right: 35px;
+	position:fixed;
+	columns: #1a535c;;
+  }

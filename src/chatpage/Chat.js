@@ -10,7 +10,7 @@ import "./Chat.css"
 // import { useStateValue } from './StateProvider';
 import Header from './ChatComponents/Header'
 import Sidebar from './ChatComponents/Sidebar'
-function Chat() {
+function Chat(props) {
     const [input, setInput] = useState("")
     const [roomName, setRoomName] = useState("")
     // const {roomId} = useParams()
@@ -19,6 +19,8 @@ function Chat() {
     const uid = firebase.auth().currentUser.uid
     
     const db = firebase.firestore()
+
+
     //console.log(Date.now().timestamp)
  
     // const [{user},dispatch] = useStateValue()
@@ -63,6 +65,7 @@ function Chat() {
         console.log('You typed >>> ', input)
         db.collection('rooms').doc("1")
         .collection('messages').add({
+            user_name: props.data,
             text: input,
             user_uid: uid,
             timestamp: Date.now(),
@@ -78,7 +81,7 @@ function Chat() {
           
         
             <div className="chat__body">
-                
+
             <p className="chat__message">
                         <span className="chat__name">אור</span>
                     <span className="chat__timestamp">
@@ -96,7 +99,7 @@ function Chat() {
                 {messages.map(message => (
                     //Left or right   //className={`chat__message ${message.name === user.displayName && "chat__reciever"}`}
                     <p className="chat__reciever">
-                        <span className="chat__name">{message.name}</span>
+                        <span className="chat__name">{message.user_name}</span>
                         {message.text}
                     <span className="chat__timestamp">
                     {/* {new Date(message.timestamp.toDate())} */}
@@ -120,10 +123,6 @@ function Chat() {
                         Send a message
                     </button>
 
-                    {/* <button onClick={() => {}}
-                    type="submit">
-                        Send a message
-                    </button> */}
                   </form>  
             </div>
         </div>

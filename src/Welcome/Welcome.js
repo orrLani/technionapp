@@ -7,8 +7,7 @@ import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import {course_list, hobby_list} from '../AutoCmpleteLists';
 import AutoCompleteField from '../SignUpPage/AutocompleteComponents/AutoCompleteField'
-
-
+import firebase from '../server/firebase'
 
 
 
@@ -19,29 +18,39 @@ import AutoCompleteField from '../SignUpPage/AutocompleteComponents/AutoComplete
 </head>
 <body> */}
 
+
 const Welcome = ({history}) =>  {
 
   const [course, setCourses] = useState('') 
   const [hobby, setHobby] = useState('')
-  function CoursesSubmit(event) {
 
-    console.log(course)
+
+  function CoursesSubmit(event) {
+    
+    var  email,user_name;
+    var user_email = firebase.auth().currentUser.email;
+    user_name = user_email.split('@')[0]
+    console.log(user_name)
 
     history.push({
       pathname: '/chatpage',
-      data: course // your data array of objects
+      data: [user_name,course] // your data array of objects
     })
 
     }
 
     function HobbySubmit(event){
 
-      console.log(hobby)
+    console.log(hobby)    
+    var  email,user_name;
+    var user_email = firebase.auth().currentUser.email;
+    user_name = user_email.split('@')[0]
+    console.log(user_name)
 
-      history.push({
-        pathname: '/chatpage',
-        data: hobby // your data array of objects
-      })
+    history.push({
+      pathname: '/chatpage',
+      data: [user_name,hobby] // your data array of objects
+    })
 
 
     }

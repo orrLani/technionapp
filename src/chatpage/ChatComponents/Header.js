@@ -3,14 +3,38 @@ import "./Header.css";
 import Link from '@material-ui/core/Link';
 
 import {Avatar, IconButton} from "@material-ui/core"
+import { NearMeOutlined } from "@material-ui/icons";
+import firebase from '../../server/firebase'
+
 
 function header(props) {
-    const x = [props.data]
-    console.log(x)
+    const db = firebase.firestore()
+
+function Remove_User(){
+    db.collection("rooms").doc("1").collection("users_on_page").doc(props.document_uid).delete();
+
+
+    // db
+    // .collection("rooms")
+    //  .doc('1')
+    //  .collection("users_on_page")
+    //  .add({
+    //   user_name: name
+    //   })
+
+}
+
+
+
+    const name = [props.data]
+    console.log(name)
     let value =null
-    if (x[0] !==undefined){
-         value = x.map((x) =>
-         <h2 className="room__name">{x.title}</h2>
+    if (name[0] !==undefined){
+         value =name.map((x) =>
+         <div className="room_name">
+         <h2 >{x.title}</h2>
+         console.log({x.title});
+         </div>
          )
     }
 
@@ -25,7 +49,7 @@ function header(props) {
             
             <IconButton>
             <Link href="/welcome" variant="body2"
-                className="leave__room"
+                className="leave__room" onClick= {Remove_User}
                 dir="rtl">עזוב את החדר :(</Link>
             </IconButton>
         </div>
