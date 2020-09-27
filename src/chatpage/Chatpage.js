@@ -12,7 +12,7 @@ function Chatpage(props) {
     console.log(props.location.data)
     return (
        <div>
-         <Header />
+         <Header data ={props.location.data} />
         <div className="chatpage__body">
            <Sidebar />
            <Chat data ={props.location.data} />
