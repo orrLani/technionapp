@@ -20,8 +20,10 @@ function Chatpage(props) {
       course = props.location.data[1]
     }
     console.log("bla1")
-    console.log(name)
+    console.log(props.location.data)
+    console.log("bla2")
 
+   
    db
   .collection("rooms")
    .doc('1')
@@ -30,21 +32,22 @@ function Chatpage(props) {
     user_name: name
     })
 
-    const uid=
 
-    db
-  .collection("rooms")
-   .doc('1')
-   .collection("users_on_page")
-   .get()
 
-    console.log(uid)
+    // const uid=
 
-    console.log("bla2")
+  //   db
+  // .collection("rooms")
+  //  .doc('1')
+  //  .collection("users_on_page")
+  //  .get()
+
+    // console.log(uid)
+
     return (
       
        <div className="chatpage__header" >
-         <Header data ={course} document_uid ={uid}  />
+         <Header data ={props.location.data}    />
         <div className="chatpage__body">
            <Sidebar />
            <Chat data ={name} />
