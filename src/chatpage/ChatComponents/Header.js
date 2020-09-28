@@ -1,6 +1,7 @@
 import React from "react";
 import "./Header.css";
-import Link from '@material-ui/core/Link';
+//import Link from '@material-ui/core/Link';
+import { Link } from 'react-router-dom';
 
 import {Avatar, IconButton} from "@material-ui/core"
 import { NearMeOutlined } from "@material-ui/icons";
@@ -26,18 +27,28 @@ jobskill_query.get().then(function(querySnapshot) {
 
 
      const name = props.data
+
+     
   
-    return (
+    return ( 
         <div className="chat-header">
             <h2 className="course__number">{ name[1].title}</h2> 
             {/* <h2 clasName="room__name"> אינפי 1מ</h2> */}
            {/* {value} */}
             
-            <IconButton>
+            {/* <IconButton>
             <Link variant="body2"
-                className="leave__room" onClick= {Remove_User}
+                to= "/welcome"
+                className="leave__room"
                 dir="rtl">עזוב את החדר :(</Link>
-            </IconButton>
+            </IconButton> */}
+            <Link 
+                to= "/welcome"
+                onClick= {Remove_User}
+                replace 
+               >עזוב את jהחדר :(</Link>
+
+
         </div>
 
     );

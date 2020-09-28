@@ -1,5 +1,6 @@
 import './Chatpage.css'
 import React, {useState} from 'react';
+import { Link } from 'react-router-dom';
 
 import Sidebar from './ChatComponents/Sidebar'
 import Chat from './Chat'
@@ -18,7 +19,6 @@ function Chatpage(props) {
     if(props.location.data !==undefined){
       name = props.location.data[0]
       course = props.location.data[1]
-    }
     console.log("bla1")
     console.log(props.location.data)
     console.log("bla2")
@@ -31,6 +31,7 @@ function Chatpage(props) {
    .add({
     user_name: name
     })
+  }
 
 
 
@@ -44,16 +45,37 @@ function Chatpage(props) {
 
     // console.log(uid)
 
+    function ReturnValue(){
+      if(props.location.data !==undefined){
+        return(
+
+      <div className="chatpage__header" >
+            <Header data ={props.location.data}    />
+            <div className="chatpage__body">
+              <Sidebar />
+              <Chat data ={name} />
+            </div>
+          </div>
+        )
+
+      }
+
+      return(
+        <Link 
+                to= "/signin"
+                
+                replace 
+               >אתה לא מחובר ,תתחבר בבקשה</Link>
+      )
+
+    }
+
     return (
-      
-       <div className="chatpage__header" >
-         <Header data ={props.location.data}    />
-        <div className="chatpage__body">
-           <Sidebar />
-           <Chat data ={name} />
-        </div>
-      </div>
+          <div>
+            <ReturnValue/>
+          </div>
     )
+        
 }
 
 export default Chatpage
