@@ -2,23 +2,19 @@
 	background-color: #4ECDC4;
 	font-family: 'Heebo', sans-serif;
 	color: #F7FFF7;
-	border-top-left-radius: 5px;
-	border-top-right-radius: 5px;
-	padding: 15px;
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
+	padding: 25px;	
 }
-.room_name{
-    align-self: center;
+ .room_name{ 
+	text-align: center;
+    /* align-self: center;
 	right: 50px;
 	position:fixed;
 	display: flex;
-	font-size: 25px;
-}
-.leave__room {
-	right: 55px;
-	position:fixed;
-	font-size: 50px;
+	font-size: 25px; */
+} 
+ .leaving_room {
+
+	font-size: 18px;
+	float: right;
 	
-}
+}  

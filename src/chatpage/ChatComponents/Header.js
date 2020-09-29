@@ -31,8 +31,8 @@ jobskill_query.get().then(function(querySnapshot) {
      
   
     return ( 
-        <div className="chat-header">
-            <h2 className="course__number">{ name[1].title}</h2> 
+        <div className="chat-header" >
+            <h2 className="room_name">{ name[1].title}</h2> 
             {/* <h2 clasName="room__name"> אינפי 1מ</h2> */}
            {/* {value} */}
             
@@ -42,11 +42,11 @@ jobskill_query.get().then(function(querySnapshot) {
                 className="leave__room"
                 dir="rtl">עזוב את החדר :(</Link>
             </IconButton> */}
-            <Link 
+            <Link className="leaving_room"
                 to= "/welcome"
                 onClick= {Remove_User}
                 replace 
-               >עזוב את jהחדר :(</Link>
+               >עזוב את החדר :(</Link>
 
 
         </div>
