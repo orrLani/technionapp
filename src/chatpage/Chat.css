@@ -1,11 +1,11 @@
 .chat {
-    flex : 1;
+    flex : 1.2;
     /* width: 80%;
     float:right; */
     /* display: flex; */
     /* flex-direction: column; */
     font-family: Heebo,sans-serif;
-    overflow: auto;
+    overflow: scroll;
     align-items: center;
     justify-content: space-between;
 
@@ -74,11 +74,14 @@
 }
 
 .chat__body {
-    flex: 1;
+   
     /* background-image: url("https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png"); */
     /* background-repeat: repeat; */
     background-color: whitesmoke;
     background-position: center;
+    margin-top:25px;
+    margin-bottom: 550px; 
+  
     /*padding: 30px;
     /* overflow: scroll; */
 }
@@ -89,6 +92,7 @@
     align-items: center;
     height: 62px;
     border-top: 1px solid lightgray;
+   
 }
 
 .chat__footer > form {

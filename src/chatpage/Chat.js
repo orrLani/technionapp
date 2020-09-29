@@ -82,13 +82,7 @@ function Chat(props) {
         
             <div className="chat__body">
 
-            <p className="chat__message">
-                        <span className="chat__name">אור</span>
-                    <span className="chat__timestamp">
-                       18:37
-                    </span>
-                        איפה איתי
-                    </p>
+        
                     <p className="chat__reciever">
                         <span className="chat__name">איתי</span>
                         מי אתה
@@ -119,9 +113,7 @@ function Chat(props) {
                     type="text"
                     dir="rtl"
                     />
-                    <button  type="submit">
-                        Send a message
-                    </button>
+                   
 
                   </form>  
             </div>
