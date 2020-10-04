@@ -1,18 +1,31 @@
+.chatpage {
+  display: grid;
+  background-color: #dadbd3;
+  place-items: center;
+  height: 100vh;
+}
 .chatpage__body {
     display: flex;
     background-color: #ededed;
     height: 90vh;
     width: 90vw;
     box-shadow: -1px 4px 20px -6px rgba(0,0,0,0.75);
-    font-family: Heebo,, sans-serif;
-    right: 40px;
-	 position:fixed;
+    font-family: Heebo, sans-serif;
+    /* right: 40px;
+	 position:fixed; */
   } 
+.chatpage__body__right {
+  display: flex;
+  flex-direction: column;
+  flex:0.8;
+}
 
-  .chatpage__header{
+
+  /* 4-10-20 try to fix chat */
+  /* .chatpage__header{
   width: 90.3vw;
   font-size: 20px;
 	right: 35px;
 	position:fixed;
 	columns: #1a535c;;
-  }
+  } */

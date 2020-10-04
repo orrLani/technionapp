@@ -1,16 +1,28 @@
-.chat-header {
+.chat__header {
 	background-color: #4ECDC4;
 	font-family: 'Heebo', sans-serif;
 	color: #F7FFF7;
-	padding: 25px;	
-}
- .room_name{ 
-	text-align: center;
-    /* align-self: center;
-	right: 50px;
-	position:fixed;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+	padding: 15px;
 	display: flex;
-	font-size: 25px; */
+	align-items: center;
+	justify-content: space-between;
+	border-bottom: 1px solid lightgray;
+}
+.chat__headerInfo {
+    flex: 1;
+    padding-left: 20px;
+    font-family: Heebo,sans-serif;
+}
+
+.chat__headerInfo > h3 {
+    margin-bottom: 3px;
+    font-weight: 500;
+}
+
+.chat__headerInfo > p {
+    color: gray;
 } 
  .leaving_room {
 

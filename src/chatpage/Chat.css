@@ -1,18 +1,17 @@
-.chat {
-    flex : 1.2;
+ .chat {
+    /* flex : 0.8; */
     /* width: 80%;
     float:right; */
-    /* display: flex; */
-    /* flex-direction: column; */
-    font-family: Heebo,sans-serif;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    /* font-family: Heebo,sans-serif;
     overflow: scroll;
     align-items: center;
-    justify-content: space-between;
+    justify-content: space-between; */ 
+} 
 
-
-}
-
-.chat__header {
+/* .chat__header {
     padding: 20px;
     display: flex;
     align-items: center;
@@ -32,7 +31,7 @@
 
 .chat__headerInfo > p {
     color: gray;
-}
+} */
 
 .chat__message {
     position: relative;
@@ -67,27 +66,27 @@
     font-size: small;
 }
 
-.chat__headerRight {
+/* .chat__headerRight {
     display: flex;
     justify-content: space-between;
     min-width: 100px;
-}
+} */
 
 .chat__body {
-   
+   flex: 1;
     /* background-image: url("https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png"); */
     /* background-repeat: repeat; */
     background-color: whitesmoke;
     background-position: center;
-    margin-top:25px;
-    margin-bottom: 550px; 
+    /* margin-top:25px;
+    margin-bottom: 550px;  */
   
-    /*padding: 30px;
-    /* overflow: scroll; */
+    padding: 30px;
+    overflow-y: scroll;
 }
 
 .chat__footer {
-    /* display: flex; */
+    display: flex;
     justify-content: space-between;
     align-items: center;
     height: 62px;

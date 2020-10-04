@@ -29,10 +29,6 @@ console.log("hii1")
           <h3 dir="rtl"> משתמשים:</h3>
 
 
-          <div className="chat__username">גל</div>
-          <div className="chat__username">אוריאן</div>
-          <div className="chat__username">אור</div>
-          <div className="chat__username">איתי</div>
 
           {users.map(user => (
                     //Left or right   //className={`chat__message ${message.name === user.displayName && "chat__reciever"}`}

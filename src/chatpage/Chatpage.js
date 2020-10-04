@@ -12,25 +12,25 @@ import firebase from '../server/firebase'
 function Chatpage(props) {
   const db = firebase.firestore()
 
-   console.log("chatpagggwww")
-    console.log(props.location.data)
-    let name =0
-    let course= 0
-    if(props.location.data !==undefined){
-      name = props.location.data[0]
-      course = props.location.data[1]
+  console.log("chatpagggwww")
+  console.log(props.location.data)
+  let name = 0
+  let course = 0
+  if (props.location.data !== undefined) {
+    name = props.location.data[0]
+    course = props.location.data[1]
     console.log("bla1")
     console.log(props.location.data)
     console.log("bla2")
 
-   
-   db
-  .collection("rooms")
-   .doc('1')
-   .collection("users_on_page")
-   .add({
-    user_name: name
-    })
+
+    db
+      .collection("rooms")
+      .doc('1')
+      .collection("users_on_page")
+      .add({
+        user_name: name
+      })
   }
 
 
@@ -47,16 +47,18 @@ function Chatpage(props) {
 
     function ReturnValue(){
       if(props.location.data !==undefined){
-        return(
+      return (
 
-      <div className="chatpage__header" >
-            <Header data ={props.location.data}    />
+        <div className="chatpage">
             <div className="chatpage__body">
               <Sidebar />
-              <Chat data ={name} />
+              <div className="chatpage__body__right">
+                <Header data={props.location.data} />
+                <Chat data={name} />
+              </div>
             </div>
-          </div>
-        )
+        </div>
+      )
 
       }
 

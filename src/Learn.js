@@ -23,9 +23,9 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
 const Learn = ({history}) => {
-        const[text_user,setUserName] = useState('')
-        const[text_password,setPassword] = useState('')
-        const[text_password_again,setPasswordAgain]=useState('')
+        const[text_user, setUserName] = useState('')
+        const[text_password, setPassword] = useState('')
+        const[text_password_again, setPasswordAgain]=useState('')
         const [birthday, setBirthday] = useState('')
         const [gender, setGender ] = useState('')
         const [semester, setSemester ] = useState('')
@@ -33,7 +33,6 @@ const Learn = ({history}) => {
         const [course, setCourses] = useState('') 
         const [maritalstatus,setMaritalStatus] = useState('')
         const [hobby, setHobby] = useState('')
-
         async function handleSignUp(event) {
 
             if(text_password!=text_password_again){
@@ -158,7 +157,8 @@ const Learn = ({history}) => {
 
                         <Grid item xs={12}>
                             <AutoCompleteField list={course_list} 
-                            label="קורסים" setFunction={setCourses}  />
+                            label="קורסים" setFunction={setCourses}
+                            is_multiple = {true}  />
                         </Grid>
 
                         <Grid item xs={12}>
@@ -168,7 +168,8 @@ const Learn = ({history}) => {
 
                         <Grid item xs={12}>
                             <AutoCompleteField list={hobby_list} 
-                            label="תחביבים" setFunction={setHobby   }  />
+                            label="תחביבים" setFunction={setHobby   }  
+                            is_multiple ={true}/>
                         </Grid>
                         
 

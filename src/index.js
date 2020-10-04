@@ -55,21 +55,28 @@ const theme = createMuiTheme({
 });
 
 
-ReactDOM.render(
-  <StylesProvider jss={jss}>
-    <script src="https://www.gstatic.com/firebasejs/3.1.0/firebase.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/3.1.0/firebase-database.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/5.9.3/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/5.9.3/firebase-auth.js"></script>
-<script src="https://www.gstatic.com/firebasejs/5.9.3/firebase-database.js"></script>
-<script src="/__/firebase/7.21.1/firebase-app.js"></script>
-<script src="/__/firebase/7.21.1/firebase-analytics.js"></script>
-<script src="/__/firebase/7.21.1/firebase-auth.js"></script>
-<script src="/__/firebase/7.21.1/firebase-firestore.js"></script>
+// ReactDOM.render(
+//   <StylesProvider jss={jss}>
+//     <script src="https://www.gstatic.com/firebasejs/3.1.0/firebase.js"></script>
+//     <script src="https://www.gstatic.com/firebasejs/3.1.0/firebase-database.js"></script>
+//     <script src="https://www.gstatic.com/firebasejs/5.9.3/firebase-app.js"></script>
+// <script src="https://www.gstatic.com/firebasejs/5.9.3/firebase-auth.js"></script>
+// <script src="https://www.gstatic.com/firebasejs/5.9.3/firebase-database.js"></script>
+// <script src="/__/firebase/7.21.1/firebase-app.js"></script>
+// <script src="/__/firebase/7.21.1/firebase-analytics.js"></script>
+// <script src="/__/firebase/7.21.1/firebase-auth.js"></script>
+// <script src="/__/firebase/7.21.1/firebase-firestore.js"></script>
 
-    <ThemeProvider theme={theme}>
-      <App/>
-    </ThemeProvider>
-  </StylesProvider>,
-  document.querySelector("#root")
-);
+//     <ThemeProvider theme={theme}>
+//       <App/>
+//     </ThemeProvider>
+//   </StylesProvider>,
+//   document.querySelector("#root")
+// );
+
+ReactDOM.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>,
+  document.getElementById('root')
+)

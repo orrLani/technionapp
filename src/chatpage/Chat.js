@@ -74,22 +74,14 @@ function Chat(props) {
     }
     //firebase.firestore.FieldValue.serverTimestamp()
     return (
-
         <div className="chat">
+        {/* <Header /> */}
 
-          {/* <Header /> */}
           
         
             <div className="chat__body">
 
         
-                    <p className="chat__reciever">
-                        <span className="chat__name">איתי</span>
-                        מי אתה
-                    <span className="chat__timestamp">
-                       
-                    </span>
-                    </p>
                 {messages.map(message => (
                     //Left or right   //className={`chat__message ${message.name === user.displayName && "chat__reciever"}`}
                     <p className="chat__reciever">
