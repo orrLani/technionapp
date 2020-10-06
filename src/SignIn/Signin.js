@@ -21,7 +21,9 @@ import Background3 from '../Images/3.jpg';
 import firebase from '../server/firebase'
 import { SystemUpdate } from '@material-ui/icons';
 
-
+// handle userState
+import UserState, { UserProvider } from '../StateProvider'
+import {useContext} from 'react'
 
 
 
@@ -79,6 +81,7 @@ const SignInSide=({history})=> {
 
   const[email,setEmail] = useState('')
   const[password,setPassword] = useState('')
+  
 
   const [modal, setModal] = useState(false);
 
@@ -117,7 +120,7 @@ const SignInSide=({history})=> {
         // }
   
       
-
+      
       firebase.auth()
       .signInWithEmailAndPassword(email, password)
       .then(() => {

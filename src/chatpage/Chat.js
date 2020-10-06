@@ -41,7 +41,7 @@ function Chat(props) {
     // },[roomId])
 
     
-
+    /* collect room messages */
     useEffect(() => {
         db
             .collection("rooms")
@@ -57,7 +57,8 @@ function Chat(props) {
         )
             
 
-      
+    /* fired when user press enter to send a message
+        adds the message to the database */
     const sendMessage = (e) => {
         console.log(db.collection('rooms').doc("1")
         .collection('messages'))
@@ -75,7 +76,6 @@ function Chat(props) {
     //firebase.firestore.FieldValue.serverTimestamp()
     return (
         <div className="chat">
-        {/* <Header /> */}
 
           
         

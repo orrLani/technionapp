@@ -1,48 +1,53 @@
-import React,{useState,useEffect} from "react";
+import React,{useState,useEffect,useContext} from "react";
 import "./Sidebar.css";
 import firebase from "../../server/firebase"
+import {db} from "../../server/firebase" 
+
+/* handle ContextAPI */
+import {ChatContext} from '../../server/ChatProvider'
+
+/* 
+  LEFT side:
+  ----------------------
+  |users:|             |
+  |  **  |             |
+  |  **  |             |
+  |  **  |             |
+  ----------------------
+
+  fetches the users in the current chat and display them in the sidebar.
+
+*/
 function Sidebar() {
   const [users,setUsers] = useState([])
-  const db = firebase.firestore()
+  const [chat,setChat] = useContext(ChatContext)
 
-
-
+  /* fired when user connects to the chat for the first time.
+    added the user to the userslist in the sidebar */
   useEffect(() => {
-    db
+    if (chat) {
+      db
         .collection("rooms")
-         .doc('1')
-         .collection("users_on_page")
-            .onSnapshot(snapshot => (
-                 setUsers(snapshot.docs.map(doc => doc.data()))
-            ))
-        },
-        []
-        
-    )
+        .doc(chat.ID)
+        .collection("users_on_page")
+        .onSnapshot(snapshot => (
+          setUsers(snapshot.docs.map(doc => doc.data()))
+        ))
+    }
+  }, [chat]  )
 
-console.log("hii1")
-console.log(users)
-console.log("hii1")
-    return (
-      
-        <div className="chat-sidebar">
-          <h3 dir="rtl"> משתמשים:</h3>
+  return (
 
+    <div className="chat-sidebar">
+      <h3 dir="rtl"> משתמשים:</h3>
+        {users.map(user => (
+          <div className="chat__username">{user.user_name}</div>
+        ))
+        }
 
-
-          {users.map(user => (
-                    //Left or right   //className={`chat__message ${message.name === user.displayName && "chat__reciever"}`}
-                    
-                    <div className="chat__username">{user.user_name}</div>
-                                         ))
-                }
-
-          
-          <ul id="users"></ul>
-        </div>
-        
-      
-    );
+      <ul id="users"></ul>
+    </div>
+  );
 }
 
 export default Sidebar;

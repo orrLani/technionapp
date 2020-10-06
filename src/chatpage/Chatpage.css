@@ -1,6 +1,6 @@
 .chatpage {
   display: grid;
-  background-color: #dadbd3;
+  /* background-color: #dadbd3; */
   place-items: center;
   height: 100vh;
 }

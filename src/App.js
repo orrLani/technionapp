@@ -11,11 +11,15 @@ import SignInSide from "./SignIn/Signin"
 import { Prompt } from 'react-router'
 import Chatpage from "./chatpage/Chatpage"
 
+import {ChatProvider} from './server/ChatProvider'
+
+
 function App() {
 
   const uid =  localStorage.getItem('uid')!==undefined?localStorage.getItem('uid'):null;
  
   return (
+    <ChatProvider>
     <AuthProvider>
       <Router>
     <div className="app">
@@ -34,6 +38,7 @@ function App() {
     </div>
       </Router>
     </AuthProvider>
+    </ChatProvider>
   );
 }
 

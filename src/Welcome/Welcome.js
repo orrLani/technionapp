@@ -7,16 +7,23 @@ import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import {course_list, hobby_list} from '../AutoCmpleteLists';
 import AutoCompleteField from '../SignUpPage/AutocompleteComponents/AutoCompleteField'
+
+/* database and authentication */
 import firebase from '../server/firebase'
+import {AuthContext} from '../server/Auth'
+import {useContext} from 'react'
 
+/* makes Modal of chatpage */
+import Modal from '@material-ui/core/Modal';
+import Chatpage from '../chatpage/Chatpage'
+import Fade from '@material-ui/core/Fade';
+import Backdrop from '@material-ui/core/Backdrop';
 
+/* joins chat */
+import {getChatIDForUser} from '../server/ChatsManager'
 
-{/* <html>
-<head>
-  <meta charset="UTF-8" />
-  <link rel="stylesheet" type="text/css" href="styles.css" />
-</head>
-<body> */}
+/* chat ContextAPI */
+import {ChatContext} from '../server/ChatProvider'
 
 
 const Welcome = ({history}) =>  {
@@ -24,33 +31,52 @@ const Welcome = ({history}) =>  {
   const [course, setCourses] = useState('') 
   const [hobby, setHobby] = useState('')
 
+  /*Contexts API */
+  const user = useContext(AuthContext)
+  const [chat,setChat] = useContext(ChatContext)
+
+  const [chatIsOpen, setChatIsOpen] = useState(false);
 
   function CoursesSubmit(event) {
-    
-    var  email,user_name;
-    var user_email = firebase.auth().currentUser.email;
-    user_name = user_email.split('@')[0]
+
+    // var email, user_name;
+    // var user_email = firebase.auth().currentUser.email;
+    let user_name = user.currentUser.email.split('@')[0]
     console.log(user_name)
-
-    history.push({
-      pathname: '/chatpage',
-      data: [user_name,course] // your data array of objects
-    })
-
-    }
+    
+    // history.push({
+    //   pathname: '/chatpage',
+    //   data: [user_name, course] // your data array of objects
+    // })
+    
+  }
+  function handleCloseChat() {
+    setChatIsOpen(false)
+  }
 
     function HobbySubmit(event){
 
-    console.log(hobby)    
-    var  email,user_name;
-    var user_email = firebase.auth().currentUser.email;
-    user_name = user_email.split('@')[0]
+    // console.log(hobby)    
+    // var  email,user_name;
+    // var user_email = firebase.auth().currentUser.email;
+    // user_name = user_email.split('@')[0]
+    // console.log(user_name)
+    let user_name = user.currentUser.email.split('@')[0]
     console.log(user_name)
-
-    history.push({
-      pathname: '/chatpage',
-      data: [user_name,hobby] // your data array of objects
+    
+    // history.push({
+    //   pathname: '/chatpage',
+    //   data: [user_name,hobby] // your data array of objects
+    // })
+    getChatIDForUser({
+      userName: user.currentUser.email.split('@')[0]
     })
+    .then((chatID) => {
+      setChat({
+        ID: chatID
+      })
+     } )
+    setChatIsOpen(true)
 
 
     }
@@ -98,6 +124,20 @@ const Welcome = ({history}) =>  {
               </Grid>
               </div>
               </div>
+        <Modal
+          aria-labelledby="transition-modal-title"
+          aria-describedby="transition-modal-description"
+          open={chatIsOpen}
+          onClose={handleCloseChat}
+          closeAfterTransition
+          BackdropComponent={Backdrop}
+          BackdropProps={{
+            timeout: 500,
+          }}>
+            <Fade in={chatIsOpen}>
+          <Chatpage ChatIsOpenFunction= {setChatIsOpen} />
+          </Fade>
+        </Modal>
 
       </div>
     );
