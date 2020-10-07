@@ -23,7 +23,7 @@ function Header(props) {
     var jobskill_query = db.collection("rooms")
     .doc(chat.ID)
     .collection("users_on_page")
-    .where('user_name', '==', userName);
+    .where('user_id', '==', user.currentUser.uid);
     jobskill_query.get().then(function (querySnapshot) {
       querySnapshot.forEach(function (doc) {
         doc.ref.delete();

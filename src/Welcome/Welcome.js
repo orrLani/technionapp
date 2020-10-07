@@ -44,10 +44,6 @@ const Welcome = ({history}) =>  {
     let user_name = user.currentUser.email.split('@')[0]
     console.log(user_name)
     
-    // history.push({
-    //   pathname: '/chatpage',
-    //   data: [user_name, course] // your data array of objects
-    // })
     
   }
   function handleCloseChat() {
@@ -56,22 +52,15 @@ const Welcome = ({history}) =>  {
 
     function HobbySubmit(event){
 
-    // console.log(hobby)    
-    // var  email,user_name;
-    // var user_email = firebase.auth().currentUser.email;
-    // user_name = user_email.split('@')[0]
-    // console.log(user_name)
     let user_name = user.currentUser.email.split('@')[0]
     console.log(user_name)
     
-    // history.push({
-    //   pathname: '/chatpage',
-    //   data: [user_name,hobby] // your data array of objects
-    // })
     getChatIDForUser({
-      userName: user.currentUser.email.split('@')[0]
+      userName: user.currentUser.email.split('@')[0],
+      userID: user.currentUser.uid
     })
     .then((chatID) => {
+
       setChat({
         ID: chatID
       })
