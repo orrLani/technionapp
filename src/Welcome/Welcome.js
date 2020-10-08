@@ -9,7 +9,7 @@ import {course_list, hobby_list} from '../AutoCmpleteLists';
 import AutoCompleteField from '../SignUpPage/AutocompleteComponents/AutoCompleteField'
 
 /* database and authentication */
-import firebase from '../server/firebase'
+import firebase, { db } from '../server/firebase'
 import {AuthContext} from '../server/Auth'
 import {useContext} from 'react'
 
@@ -69,9 +69,19 @@ const Welcome = ({history}) =>  {
 
 
     }
+    // [Testing start]
 
+    function test() {
+      db.collection('rooms').onSnapshot(snap => {
+        alert(snap.docs.length)
+    })
+      // const say = firebase.functions().httpsCallable('getAmountOfRooms')
+      // say({user_uid: user.currentUser.uid}).then(result => {
+      //   alert(result.data)
+      // })
+    }
 
-
+    // [Testing End]
     return (
       <div className="background_style">
 
@@ -105,7 +115,7 @@ const Welcome = ({history}) =>  {
                    </Grid>
               <Grid item xs={12}>
                 <Button variant="contained" color="primary" 
-                  onClick = {HobbySubmit}
+                  onClick = {HobbySubmit} /*change here */
                 > 
                  לחץ כאן 
                 </Button>

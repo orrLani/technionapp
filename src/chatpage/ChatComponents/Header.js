@@ -17,19 +17,13 @@ import {ChatContext} from '../../server/ChatProvider'
 function Header(props) {
   const [chat,setChat] = useContext(ChatContext)
   const user = useContext(AuthContext)
-  function Remove_User() {
+  function ExitChat() {
     props.ChatIsOpenFunction(false)
-    let userName = user.currentUser.email.split('@')[0]
-    var jobskill_query = db.collection("rooms")
-    .doc(chat.ID)
-    .collection("users_on_page")
-    .where('user_id', '==', user.currentUser.uid);
-    jobskill_query.get().then(function (querySnapshot) {
-      querySnapshot.forEach(function (doc) {
-        doc.ref.delete();
-      });
-    });
-
+    const deleteFromChat = firebase.functions().httpsCallable('RemoveUserFromChat')
+    deleteFromChat({user_uid: user.currentUser.uid,chat_id: chat.ID})
+    .catch(() =>{
+      alert('error occured')
+    })
   }
 
 
@@ -43,7 +37,7 @@ function Header(props) {
       <IconButton>
         <Link variant="body2"
           to="/welcome"
-          onClick={Remove_User}
+          onClick={ExitChat}
           className="leave__room"
           dir="rtl">עזוב את החדר</Link>
       </IconButton>

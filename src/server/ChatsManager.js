@@ -11,7 +11,7 @@ export async function getChatIDForUser({userName, userID}) {
   const chatID = await createNewChat()
   db.collection("rooms").doc(chatID).collection("users_on_page").add({
     user_name: userName,
-    user_id: userID
+    user_uid: userID
   })
   return chatID
     /*
