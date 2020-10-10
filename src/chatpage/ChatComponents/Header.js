@@ -19,9 +19,9 @@ function Header(props) {
   const user = useContext(AuthContext)
   function ExitChat() {
     props.ChatIsOpenFunction(false)
-    const deleteFromChat = firebase.functions().httpsCallable('RemoveUserFromChat')
+    const deleteFromChat = firebase.functions().httpsCallable('removeUserFromChat')
     deleteFromChat({user_uid: user.currentUser.uid,chat_id: chat.ID})
-    .catch(() =>{
+    .catch(() => {
       alert('error occured')
     })
   }

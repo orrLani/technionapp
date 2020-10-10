@@ -51,35 +51,85 @@ const Welcome = ({history}) =>  {
   }
 
     function HobbySubmit(event){
-
-    let user_name = user.currentUser.email.split('@')[0]
-    console.log(user_name)
-    
-    getChatIDForUser({
-      userName: user.currentUser.email.split('@')[0],
-      userID: user.currentUser.uid
-    })
-    .then((chatID) => {
-
-      setChat({
-        ID: chatID
+      if (chat) {
+        const deleteFromChat = firebase.functions().httpsCallable('removeUserFromChat')
+        deleteFromChat({ user_uid: user.currentUser.uid, chat_id: chat.ID })
+          .catch(() => {
+            alert('error occured')
+          })
+      }
+      const addUserToChat = firebase.functions().httpsCallable('addUserToChat')
+      addUserToChat({
+        user_uid: user.currentUser.uid,
+        user_name: user.currentUser.email.split('@')[0],
+      }).then(chatRef => {
+        console.log(chatRef)
+        console.log(chatRef.data.chat_id)
+        setChat({
+          ID: chatRef.data.chat_id
+        })
       })
-     } )
+      .catch(error =>{
+        console.log(error)
+      })
+
     setChatIsOpen(true)
 
 
     }
     // [Testing start]
-
-    function test() {
-      db.collection('rooms').onSnapshot(snap => {
-        alert(snap.docs.length)
+  function test_add_chat() {
+    const addUserToChat = firebase.functions().httpsCallable('addUserToChat')
+    addUserToChat({
+      user_uid: user.currentUser.uid,
+      user_name: user.currentUser.email.split('@')[0],
+    }).then(chat => {
+      console.log(chat)
     })
+    .catch(error =>{
+      console.log(error)
+    })
+  }
+    function test() {
+      db.collection('rooms')
+      .where('users_count','==',1)
+      .get().then(snapshot => {
+        //return room with 1 user, or undefined if not exist
+       return snapshot.docs[0]
+      })
+      .then(room => {
+        if(room) {
+          room.ref.collection('users_on_page')
+          .add({
+            user_name: user.currentUser.email.split('@')[0],
+            user_uid: user.currentUser.uid
+          })
+          room.ref.set({
+            users_count: 2
+          })
+        }
+        else {
+          db.collection('rooms').add({})
+          .then(room => {
+            console.log(room.id)
+            room.collection('users_on_page').add({
+              user_name: user.currentUser.email.split('@')[0],
+              user_uid: user.currentUser.uid
+
+            })
+            room.set({
+              users_count: 1
+            })
+
+          })
+        }
+      })
+    }
       // const say = firebase.functions().httpsCallable('getAmountOfRooms')
       // say({user_uid: user.currentUser.uid}).then(result => {
       //   alert(result.data)
       // })
-    }
+    //}
 
     // [Testing End]
     return (
