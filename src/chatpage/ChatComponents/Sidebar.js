@@ -25,10 +25,11 @@ function Sidebar() {
   /* fired when user connects to the chat for the first time.
     added the user to the userslist in the sidebar */
   useEffect(() => {
-    if (chat) {
+    console.log(chat)
+    if (chat&&chat.id) {
       db
         .collection("rooms")
-        .doc(chat.ID)
+        .doc(chat.id)
         .collection("users_on_page")
         .onSnapshot(snapshot => (
           setUsers(snapshot.docs.map(doc => doc.data()))
@@ -41,7 +42,7 @@ function Sidebar() {
     <div className="chat-sidebar">
       <h3 dir="rtl"> משתמשים:</h3>
         {users.map(user => (
-          <div className="chat__username">{user.user_name}</div>
+          <div key={user.user_uid} className="chat__username">{user.user_name}</div>
         ))
         }
 

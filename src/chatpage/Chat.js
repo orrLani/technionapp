@@ -50,10 +50,10 @@ function Chat(props) {
 
     /* collect room messages */
     useEffect(() => {
-        if (chat) {
+        if (chat && chat.id) {
             db
                 .collection("rooms")
-                .doc(chat.ID)
+                .doc(chat.id)
                 .collection("messages")
                 .orderBy('timestamp', 'asc')
                 .onSnapshot(snapshot => (
@@ -61,18 +61,16 @@ function Chat(props) {
                 ))
         }
     },
-        []
+        [chat]
     )
 
 
     /* fired when user press enter to send a message
         adds the message to the database */
     const sendMessage = (e) => {
-        console.log(db.collection('rooms').doc(chat.ID)
-            .collection('messages'))
         e.preventDefault()
         console.log('You typed >>> ', input)
-        db.collection('rooms').doc(chat.ID)
+        db.collection('rooms').doc(chat.id)
             .collection('messages').add({
                 user_name: user.currentUser.email.split('@')[0],
                 text: input,

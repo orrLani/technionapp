@@ -24,32 +24,44 @@ admin.initializeApp()
      deletes the chat if no other users
      data = {user_uid,chat_id} */
 exports.removeUserFromChat = functions.https.onCall((data,context) => {
-    /* delete the user with the user_uid from chat with chat_id*/
+    functions.logger.log("user_uid:",data.user_uid)
+    functions.logger.log("chat_id:",data.chat_id)
     return admin.firestore()
     .collection('rooms')
     .doc(data.chat_id)
     .collection("users_on_page")
     .where('user_uid', '==', data.user_uid)
     .get().then((querySnapshot) => {
-      querySnapshot.forEach(doc => {
-        doc.ref.delete()
-      })
-      return ''
+        /* deletes every user with same uid in the chat (need to be only 1) */
+        querySnapshot.forEach(doc => {
+            doc.ref.delete()
+        })
+        return ``
     })
       /* after delete, check if chat is empty and deletes if it does */
       .then(() => {
-        admin.firestore()
-          .collection('rooms')
-          .doc(data.chat_id)
-          .collection("users_on_page")
-          .onSnapshot(snap => {
-            if (snap.doc === undefined || snap.doc.length === 0 ) { //if chat has no users
-                admin.firestore().collection('rooms').doc(data.chat_id).delete()
-            }
-            // TODO reduce room.count_users by 1
+
+        //returs chat reference
+        return admin.firestore().collection('rooms').doc(data.chat_id).get()
+      })
+      .then(chatRef => {
+        // returns users_count
+        return chatRef.data().users_count
+      })
+      .then(users_count => {
+        // if user was the last on the chat, delete the chat.
+        if(users_count === 1) {
+          return admin.firestore().collection('rooms').doc(data.chat_id).delete()
+        }
+        // else, decrement users count
+        else{
+          const decrement = admin.firestore.FieldValue.increment(-1);
+          return admin.firestore().collection('rooms').doc(data.chat_id).update({
+              users_count: decrement
           })
-          return ''
-      }).catch(error => {
+        }
+      })
+      .catch(error => {
           throw error
       })
 })
@@ -64,40 +76,32 @@ exports.addUserToChat = functions.https.onCall((data,context) => {
      return snapshot.docs[0]
     })
     .then(room => {
-      if(room) {
-        room.ref.collection('users_on_page')
+        // if not room found, create one
+        if(room === undefined){
+            return admin.firestore().collection('rooms').add({})
+        }
+        else {
+            return room.ref
+        }
+    })
+    .then(roomRef => {
+        roomRef.collection('users_on_page')
         .add({
-          user_name: data.user_name,
-          user_uid: data.user_uid
-        })
-        room.ref.set({
-          users_count: 2
-        })
-        return {
-            chat_id: room.id,
-        }   
-      }
-      else {
-        return admin.firestore().collection('rooms').add({})
-        .then(new_room => {
-             assert(new_room)
-          new_room.collection('users_on_page').add({
             user_name: data.user_name,
             user_uid: data.user_uid
-          })
-          new_room.set({
-            users_count: 1
-          })
-          return {
-            chat_id: new_room.id,
-          }
-        }).catch(error => {
-            throw error
         })
-      }
-    }).catch(error  => {
+        return roomRef
+    }).then(roomRef => {
+        //add 1 to users_count
+        const increment = admin.firestore.FieldValue.increment(1)
+        roomRef.update({
+            users_count: increment
+        })
+        return {
+            chat_id: roomRef.id,
+        }
+    })
+    .catch(error => {
         throw error
     })
 })
-
-

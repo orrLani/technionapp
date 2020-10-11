@@ -16,11 +16,30 @@ import {AuthContext} from '../server/Auth'
 /* imports functions that manage chats */
 import {joinChat} from '../server/ChatsManager'
 
+
 function Chatpage({ChatIsOpenFunction}) {
   const [chat,setChat]  = useContext(ChatContext)
 
   const [loading, setLoading] = useState(false)
-  const user = useContext(AuthContext)
+  const auth = useContext(AuthContext)
+  useEffect(() => {
+    // setChat({
+    //   ...chat,
+    //   is_loading: true
+    // })
+    window.addEventListener('beforeunload', (event) => {
+      console.log("user_uid", auth.currentUser.uid)
+      console.log("chat_id", chat.id)
+      // Cancel the event as stated by the standard.
+      event.preventDefault();
+      // Remove user from chat
+      const deleteFromChat = firebase.functions().httpsCallable('removeUserFromChat')
+      deleteFromChat({
+        user_uid: auth.currentUser.uid,
+        chat_id: chat.id
+      })
+    });
+  },[])
 
   // useEffect(() => {
   //   /* applied when function loads */
@@ -40,19 +59,19 @@ function Chatpage({ChatIsOpenFunction}) {
     
   // }, [])
   function ReturnValue() {
-    if(loading){
+    if(chat.is_loading){
       return(
         <h2> Loading...</h2>
       )
     }
-    if(user){
+    if(auth){
       return(
         <div className="chatpage">
             <div className="chatpage__body">
               <Sidebar />
               <div className="chatpage__body__right">
-                <Header ChatIsOpenFunction = {ChatIsOpenFunction}/>
-                <Chat ID={1} />
+                <Header/>
+                <Chat/>
               </div>
             </div>
         </div>

@@ -32,16 +32,18 @@ const Welcome = ({history}) =>  {
   const [hobby, setHobby] = useState('')
 
   /*Contexts API */
-  const user = useContext(AuthContext)
+  const auth = useContext(AuthContext)
   const [chat,setChat] = useContext(ChatContext)
 
+  // chat loads
+  const [chatLoading, setChatLoading] = useState(false)
   const [chatIsOpen, setChatIsOpen] = useState(false);
 
   function CoursesSubmit(event) {
 
     // var email, user_name;
     // var user_email = firebase.auth().currentUser.email;
-    let user_name = user.currentUser.email.split('@')[0]
+    let user_name = auth.currentUser.email.split('@')[0]
     console.log(user_name)
     
     
@@ -51,22 +53,20 @@ const Welcome = ({history}) =>  {
   }
 
     function HobbySubmit(event){
-      if (chat) {
-        const deleteFromChat = firebase.functions().httpsCallable('removeUserFromChat')
-        deleteFromChat({ user_uid: user.currentUser.uid, chat_id: chat.ID })
-          .catch(() => {
-            alert('error occured')
-          })
-      }
+      setChat({
+        ...chat,
+        isLoading: true
+      })
       const addUserToChat = firebase.functions().httpsCallable('addUserToChat')
       addUserToChat({
-        user_uid: user.currentUser.uid,
-        user_name: user.currentUser.email.split('@')[0],
+        user_uid: auth.currentUser.uid,
+        user_name: auth.currentUser.email.split('@')[0],
       }).then(chatRef => {
         console.log(chatRef)
         console.log(chatRef.data.chat_id)
         setChat({
-          ID: chatRef.data.chat_id
+          id: chatRef.data.chat_id,
+          isLoading: false
         })
       })
       .catch(error =>{
@@ -75,14 +75,13 @@ const Welcome = ({history}) =>  {
 
     setChatIsOpen(true)
 
-
     }
     // [Testing start]
   function test_add_chat() {
     const addUserToChat = firebase.functions().httpsCallable('addUserToChat')
     addUserToChat({
-      user_uid: user.currentUser.uid,
-      user_name: user.currentUser.email.split('@')[0],
+      user_uid: auth.currentUser.uid,
+      user_name: auth.currentUser.email.split('@')[0],
     }).then(chat => {
       console.log(chat)
     })
@@ -101,8 +100,8 @@ const Welcome = ({history}) =>  {
         if(room) {
           room.ref.collection('users_on_page')
           .add({
-            user_name: user.currentUser.email.split('@')[0],
-            user_uid: user.currentUser.uid
+            user_name: auth.currentUser.email.split('@')[0],
+            user_uid: auth.currentUser.uid
           })
           room.ref.set({
             users_count: 2
@@ -113,8 +112,8 @@ const Welcome = ({history}) =>  {
           .then(room => {
             console.log(room.id)
             room.collection('users_on_page').add({
-              user_name: user.currentUser.email.split('@')[0],
-              user_uid: user.currentUser.uid
+              user_name: auth.currentUser.email.split('@')[0],
+              user_uid: auth.currentUser.uid
 
             })
             room.set({
@@ -126,7 +125,7 @@ const Welcome = ({history}) =>  {
       })
     }
       // const say = firebase.functions().httpsCallable('getAmountOfRooms')
-      // say({user_uid: user.currentUser.uid}).then(result => {
+      // say({user_uid: auth.currentUser.uid}).then(result => {
       //   alert(result.data)
       // })
     //}
@@ -176,7 +175,7 @@ const Welcome = ({history}) =>  {
         <Modal
           aria-labelledby="transition-modal-title"
           aria-describedby="transition-modal-description"
-          open={chatIsOpen}
+          open={!chat.is_loading}
           onClose={handleCloseChat}
           closeAfterTransition
           BackdropComponent={Backdrop}
