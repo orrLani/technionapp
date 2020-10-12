@@ -50,6 +50,7 @@ function Chat(props) {
 
     /* collect room messages */
     useEffect(() => {
+        { chat.DEBUG && console.log("I'm Mounting Chat!")}
         if (chat && chat.id) {
             db
                 .collection("rooms")
@@ -57,9 +58,14 @@ function Chat(props) {
                 .collection("messages")
                 .orderBy('timestamp', 'asc')
                 .onSnapshot(snapshot => (
-                    setMessages(snapshot.docs.map(doc => doc.data()))
+                    // setMessages(snapshot.docs.map(doc => doc.data()))
+                    setMessages(snapshot.docs)
                 ))
         }
+        return(() => {
+            { chat.DEBUG && console.log("i'm unmounting the chat!")}
+            setMessages([])
+        })
     },
         [chat]
     )
@@ -90,9 +96,10 @@ function Chat(props) {
 
                 {messages.map(message => (
                     //Left or right   //className={`chat__message ${message.name === user.displayName && "chat__reciever"}`}
-                    <p className="chat__reciever">
-                        <span className="chat__name">{message.user_name}</span>
-                        {message.text}
+                    <p key={message.id} 
+                        className="chat__reciever">
+                        <span className="chat__name">{message.data().user_name}</span>
+                        {message.data().text}
                         <span className="chat__timestamp">
                             {/* {new Date(message.timestamp.toDate())} */}
                         </span>

@@ -1,5 +1,5 @@
 import './styles.css'
-import React,{useState} from 'react';
+import React,{useEffect, useState} from 'react';
 import Courses from '../SignUpPage/AutocompleteComponents/Courses'
 import CheckBoxCourses from './CheckBoxCourses'
 import CheckBoxHobbies from './CheckBoxHobbies'
@@ -25,6 +25,8 @@ import {getChatIDForUser} from '../server/ChatsManager'
 /* chat ContextAPI */
 import {ChatContext} from '../server/ChatProvider'
 
+/* Loading page */
+import Loading from '../Loading'
 
 const Welcome = ({history}) =>  {
 
@@ -35,102 +37,49 @@ const Welcome = ({history}) =>  {
   const auth = useContext(AuthContext)
   const [chat,setChat] = useContext(ChatContext)
 
-  // chat loads
-  const [chatLoading, setChatLoading] = useState(false)
-  const [chatIsOpen, setChatIsOpen] = useState(false);
 
   function CoursesSubmit(event) {
-
     // var email, user_name;
     // var user_email = firebase.auth().currentUser.email;
     let user_name = auth.currentUser.email.split('@')[0]
     console.log(user_name)
-    
-    
   }
   function handleCloseChat() {
-    setChatIsOpen(false)
+    // setChatIsOpen(false)
   }
 
     function HobbySubmit(event){
+      console.log("I've been clicked!")
       setChat({
         ...chat,
-        isLoading: true
+        is_open: true,
+        is_loading: true
       })
       const addUserToChat = firebase.functions().httpsCallable('addUserToChat')
       addUserToChat({
         user_uid: auth.currentUser.uid,
         user_name: auth.currentUser.email.split('@')[0],
       }).then(chatRef => {
-        console.log(chatRef)
-        console.log(chatRef.data.chat_id)
+        {chat.DEBUG && console.log(chatRef)}
+        {chat.DEBUG && console.log(chatRef.data.chat_id)}
         setChat({
+          ...chat,
+          is_open: true,
           id: chatRef.data.chat_id,
-          isLoading: false
+          is_loading: false
         })
       })
       .catch(error =>{
         console.log(error)
       })
 
-    setChatIsOpen(true)
-
     }
-    // [Testing start]
-  function test_add_chat() {
-    const addUserToChat = firebase.functions().httpsCallable('addUserToChat')
-    addUserToChat({
-      user_uid: auth.currentUser.uid,
-      user_name: auth.currentUser.email.split('@')[0],
-    }).then(chat => {
-      console.log(chat)
-    })
-    .catch(error =>{
-      console.log(error)
-    })
-  }
-    function test() {
-      db.collection('rooms')
-      .where('users_count','==',1)
-      .get().then(snapshot => {
-        //return room with 1 user, or undefined if not exist
-       return snapshot.docs[0]
-      })
-      .then(room => {
-        if(room) {
-          room.ref.collection('users_on_page')
-          .add({
-            user_name: auth.currentUser.email.split('@')[0],
-            user_uid: auth.currentUser.uid
-          })
-          room.ref.set({
-            users_count: 2
-          })
-        }
-        else {
-          db.collection('rooms').add({})
-          .then(room => {
-            console.log(room.id)
-            room.collection('users_on_page').add({
-              user_name: auth.currentUser.email.split('@')[0],
-              user_uid: auth.currentUser.uid
 
-            })
-            room.set({
-              users_count: 1
-            })
+    // for DEBUG
+    useEffect(() => {
+      {chat.DEBUG && console.log(chat)}
+    },[chat])
 
-          })
-        }
-      })
-    }
-      // const say = firebase.functions().httpsCallable('getAmountOfRooms')
-      // say({user_uid: auth.currentUser.uid}).then(result => {
-      //   alert(result.data)
-      // })
-    //}
-
-    // [Testing End]
     return (
       <div className="background_style">
 
@@ -175,15 +124,18 @@ const Welcome = ({history}) =>  {
         <Modal
           aria-labelledby="transition-modal-title"
           aria-describedby="transition-modal-description"
-          open={!chat.is_loading}
+          open={chat.is_open}
           onClose={handleCloseChat}
           closeAfterTransition
           BackdropComponent={Backdrop}
           BackdropProps={{
             timeout: 500,
           }}>
-            <Fade in={chatIsOpen}>
-          <Chatpage ChatIsOpenFunction= {setChatIsOpen} />
+            <Fade in={chat.is_open}>
+           {chat.is_loading 
+              ? <Loading />
+              : <Chatpage /> }
+           
           </Fade>
         </Modal>
 

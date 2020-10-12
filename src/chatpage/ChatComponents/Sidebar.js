@@ -26,6 +26,7 @@ function Sidebar() {
     added the user to the userslist in the sidebar */
   useEffect(() => {
     console.log(chat)
+    { chat.DEBUG && console.log("I'm Mounting Sidebar") }
     if (chat&&chat.id) {
       db
         .collection("rooms")
@@ -34,6 +35,9 @@ function Sidebar() {
         .onSnapshot(snapshot => (
           setUsers(snapshot.docs.map(doc => doc.data()))
         ))
+    }
+    return function unmount() {
+      { chat.DEBUG && console.log("i'm unmounting the sidebar!")}
     }
   }, [chat]  )
 

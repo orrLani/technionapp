@@ -1,4 +1,4 @@
-import React , {useContext} from "react";
+import React , {useContext,useEffect} from "react";
 import "./Header.css";
 //import Link from '@material-ui/core/Link';
 import { Link } from 'react-router-dom';
@@ -20,19 +20,36 @@ function Header(props) {
   const [chat,setChat] = useContext(ChatContext)
   const auth = useContext(AuthContext)
   function ExitChat() {
-    setChat({
-      ...chat,
-      is_loading: true
+    setChat(chat => {
+      return {
+        ...chat,
+        is_open: false,
+        is_loading: true
+      }
     })
     const deleteFromChat = firebase.functions().httpsCallable('removeUserFromChat')
     deleteFromChat({
       user_uid: auth.currentUser.uid,
       chat_id: chat.id
     })
+      .then(() => {
+        setChat(chat => {
+          return {
+            ...chat,
+            is_loading: false,
+          }
+        })
+      })
     .catch(error => {
       console.log(error)
     })
   }
+  useEffect(() => {
+    { chat.DEBUG && console.log("I'm Mounting Header!")}
+    return(() => {
+      { chat.DEBUG && console.log("i'm unmounting the header!")}
+    })
+  },[])
 
 //[TEST START]
   function test_remove_user() {
@@ -131,12 +148,12 @@ function Header(props) {
       <h2 className="room__name"> אינפי 1מ</h2>
       {/* {value} */}
 
-      <IconButton>
-        <Link variant="body2"
+      <IconButton onClick={ExitChat} >
+        {/* <Link variant="body2"
           to="/welcome"
-          onClick={ExitChat}
           className="leave__room"
-          dir="rtl">עזוב את החדר</Link>
+          dir="rtl">עזוב את החדר</Link> */}
+          עזוב את החדר
       </IconButton>
 
 

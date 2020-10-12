@@ -16,20 +16,22 @@ import {AuthContext} from '../server/Auth'
 /* imports functions that manage chats */
 import {joinChat} from '../server/ChatsManager'
 
+/* imports loading page */
+import Loading from '../Loading'
 
 function Chatpage({ChatIsOpenFunction}) {
   const [chat,setChat]  = useContext(ChatContext)
 
-  const [loading, setLoading] = useState(false)
   const auth = useContext(AuthContext)
+
   useEffect(() => {
-    // setChat({
-    //   ...chat,
-    //   is_loading: true
-    // })
+    { chat.DEBUG && console.log("i'm mounting the chatpage!")}
+    { chat.DEBUG && console.log(chat)}
+
+    // in case of exiting the browser (or f5) - deletes the user from chat
     window.addEventListener('beforeunload', (event) => {
-      console.log("user_uid", auth.currentUser.uid)
-      console.log("chat_id", chat.id)
+      { chat.DEBUG && console.log("user_uid", auth.currentUser.uid)}
+      { chat.DEBUG && console.log("chat_id", chat.id)}
       // Cancel the event as stated by the standard.
       event.preventDefault();
       // Remove user from chat
@@ -38,32 +40,13 @@ function Chatpage({ChatIsOpenFunction}) {
         user_uid: auth.currentUser.uid,
         chat_id: chat.id
       })
-    });
+    })
+    return(() => {
+      { chat.DEBUG && console.log("i'm unmounting the chat page!") }
+    }
+    )
   },[])
 
-  // useEffect(() => {
-  //   /* applied when function loads */
-  //   /* TODO - add func(userID) that gives the user the chat he was assigned */
-
-  //   /* sends userID to outer function in order to get the chat id */
-  //   /* updated the chat ID curresponds to chatContext */
-  //   const chatID = getChatIDForUser(
-  //     {userName: user.currentUser.email.split('@')[0]}
-  //   ).then((chatID) => {
-  //     setChat({
-  //       ID: chatID
-  //     })
-  //     console.log(chat.ID)
-  //     setLoading(false)
-  //   },[chat])
-    
-  // }, [])
-  function ReturnValue() {
-    if(chat.is_loading){
-      return(
-        <h2> Loading...</h2>
-      )
-    }
     if(auth){
       return(
         <div className="chatpage">
@@ -86,12 +69,6 @@ function Chatpage({ChatIsOpenFunction}) {
                >אתה לא מחובר ,תתחבר בבקשה</Link>
       )
     }
-  }
-  return(
-    <div>
-    <ReturnValue/>
-  </div>
-  ) 
 }
 /*
 function Chatpage(props) {

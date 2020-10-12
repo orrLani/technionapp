@@ -5,7 +5,9 @@ export const ChatContext = createContext();
 export const ChatProvider = ({children}) => {
     const [chat,setChat] = useState({
         id: null,
-        is_loading: true
+        is_loading: false,
+        is_open: false,
+        DEBUG: true
     })
     return (
         <ChatContext.Provider value={[chat,setChat]}>
