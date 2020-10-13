@@ -1,4 +1,6 @@
 import React,{useState} from 'react';
+import {AuthContext} from '../server/Auth'
+import {db} from '../server/firebase'
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -12,6 +14,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import CustomizedSnackbars from './message_alert'
 
 import firebase from '../server/firebase'
 
@@ -59,7 +62,7 @@ const SignUp = ({history})=> {
 
 
   //create const
-
+  
     const[text_user, setUserName] = useState('')
     const[text_password, setPassword] = useState('')
     const[text_password_again, setPasswordAgain]=useState('')
@@ -71,21 +74,41 @@ const SignUp = ({history})=> {
     const [maritalstatus,setMaritalStatus] = useState('')
     const [hobby, setHobby] = useState('')
 
+    const [alertState, setAlertState] = React.useState({
+      open: false
+    });
+
+    // Auth Context
+    const auth = React.useContext(AuthContext)
+
+    const handleClick = () => {
+      // setState({
+      //   open: true
+      // });
+    };
+
 
     async function handleSignUp(event) {
-          
+        
         if(text_password!==text_password_again){
-           alert('password are not equal');
-            return;
+          event.preventDefault();
+          setAlertState({
+            open: true,
+            message: " סיסמא לא תואמת ",
+            sevirity_level: "error"
+          })
+          
+
+          return;
                    }
 
        console.log(text_user)
        event.preventDefault();
        
-       const db = firebase.firestore()
+      
        try {
          await firebase.auth().createUserWithEmailAndPassword(text_user+"@campus.technion.ac.il",text_password) 
-         const user = firebase.auth().currentUser;
+         const user = auth.currentUser
          db.collection("users").doc(user.uid).set({
              text_user: text_user,
              birthday: birthday,
@@ -101,7 +124,7 @@ const SignUp = ({history})=> {
             console.log("Document successfully written!");
         })
         .catch(function(error) {
-            console.error("Error writing document: ", error);
+           console.error("Error writing document: ", error);
         });
 
              
@@ -118,7 +141,13 @@ const SignUp = ({history})=> {
 
         history.push("/popupverify");
        } catch(error) {
-         alert(error)
+
+        event.preventDefault();
+        setAlertState({
+          open: true,
+          message: " המשתמש כבר קיים במערכת ",
+          sevirity_level: "error"
+        })
        }
      
     }
@@ -218,6 +247,18 @@ const SignUp = ({history})=> {
                 label="תחביבים" setFunction={setHobby }  
                 is_multiple ={true}/>
             </Grid>
+
+            <CustomizedSnackbars alertState={alertState}
+             setAlertState={setAlertState}/>
+
+            {/* <Snackbar
+              open={state.open}
+             
+            >
+              <Alert severity="error">
+              password is not equal
+              </Alert>
+              </Snackbar> */}
 
             
             <Grid item xs={12}>
