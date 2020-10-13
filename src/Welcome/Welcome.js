@@ -28,6 +28,10 @@ import {ChatContext} from '../server/ChatProvider'
 /* Loading page */
 import Loading from '../Loading'
 
+/* EmailConfirmation*/
+
+import EmailConfirmation from './EmailConfirmation'
+
 const Welcome = ({history}) =>  {
 
   const [course, setCourses] = useState('') 
@@ -36,6 +40,8 @@ const Welcome = ({history}) =>  {
   /*Contexts API */
   const auth = useContext(AuthContext)
   const [chat,setChat] = useContext(ChatContext)
+  console.log(auth)
+  
 
 
   function CoursesSubmit(event) {
@@ -82,7 +88,7 @@ const Welcome = ({history}) =>  {
 
     return (
       <div className="background_style">
-
+        <EmailConfirmation emailVerified={auth.currentUser.emailVerified}/>
           <div className="card">
             <div className="card-image"></div>
             <div className="card-text">
