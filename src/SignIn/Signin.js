@@ -16,6 +16,7 @@ import Background0 from '../Images/0.jpg';
 import Background1 from '../Images/1.jpg';
 import Background2 from '../Images/2.jpg';
 import Background3 from '../Images/3.jpg';
+import CustomizedSnackbars from '../SignUpPage/message_alert'
 
 
 import firebase from '../server/firebase'
@@ -85,6 +86,10 @@ const SignInSide=({history})=> {
 
   const [modal, setModal] = useState(false);
 
+  const [alertState, setAlertState] = React.useState({
+    open: false
+  });
+
   const resetModal = () => {
     setModal(false);
     setEmail("");
@@ -124,11 +129,22 @@ const SignInSide=({history})=> {
       firebase.auth()
       .signInWithEmailAndPassword(email, password)
       .then(() => {
-       alert("Sign in successfully!")
        history.push("/welcome")
       })
       .then(() => resetModal())
-      .catch(err => alert(err.message));
+      .catch(err =>
+      {
+        // event.preventDefault();
+        setAlertState({
+          open: true,
+          message : err.message,
+          sevirity_level: "error"
+        })
+        
+
+      }
+        
+      );
 
   }
 
@@ -194,6 +210,8 @@ const SignInSide=({history})=> {
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>
+              <CustomizedSnackbars alertState={alertState}
+             setAlertState={setAlertState}/>
             </Grid>
             <Box mt={5}>
               <Copyright />
