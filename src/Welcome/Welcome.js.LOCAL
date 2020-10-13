@@ -1,6 +1,6 @@
 import './styles.css'
 import React,{useEffect, useState} from 'react';
-//import Courses from '../SignUpPage/AutocompleteComponents/Courses'
+import Courses from '../SignUpPage/AutocompleteComponents/Courses'
 import CheckBoxCourses from './CheckBoxCourses'
 import CheckBoxHobbies from './CheckBoxHobbies'
 import Grid from '@material-ui/core/Grid';

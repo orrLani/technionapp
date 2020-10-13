@@ -1,6 +1,6 @@
 import './styles.css'
-import React,{useEffect, useState} from 'react';
-//import Courses from '../SignUpPage/AutocompleteComponents/Courses'
+import React,{useState} from 'react';
+import Courses from '../SignUpPage/AutocompleteComponents/Courses'
 import CheckBoxCourses from './CheckBoxCourses'
 import CheckBoxHobbies from './CheckBoxHobbies'
 import Grid from '@material-ui/core/Grid';
@@ -25,8 +25,6 @@ import {getChatIDForUser} from '../server/ChatsManager'
 /* chat ContextAPI */
 import {ChatContext} from '../server/ChatProvider'
 
-/* Loading page */
-import Loading from '../Loading'
 
 const Welcome = ({history}) =>  {
 
@@ -35,21 +33,47 @@ const Welcome = ({history}) =>  {
 
   /*Contexts API */
   const auth = useContext(AuthContext)
+<<<<<<< HEAD
+=======
+
+  auth.currentUser.sendEmailVerification();
+  console.log(auth.currentUser.emailVerified)
+  console.log(auth.currentUser.emailVerified)
+>>>>>>> parent of e9a2ce9... Merge remote-tracking branch 'origin/master' into master
   const [chat,setChat] = useContext(ChatContext)
 
+  const [chatIsOpen, setChatIsOpen] = useState(false);
 
   function CoursesSubmit(event) {
+
     // var email, user_name;
     // var user_email = firebase.auth().currentUser.email;
     let user_name = auth.currentUser.email.split('@')[0]
     console.log(user_name)
+<<<<<<< HEAD
+=======
+
+>>>>>>> parent of e9a2ce9... Merge remote-tracking branch 'origin/master' into master
   }
   function handleCloseChat() {
-    // setChatIsOpen(false)
+    setChatIsOpen(false)
   }
 
     function HobbySubmit(event){
+<<<<<<< HEAD
       console.log("I've been clicked!")
+=======
+
+    let user_name = auth.currentUser.email.split('@')[0]
+    console.log(user_name)
+    
+    getChatIDForUser({
+      userName: auth.currentUser.email.split('@')[0],
+      userID: auth.currentUser.uid
+    })
+    .then((chatID) => {
+
+>>>>>>> parent of e9a2ce9... Merge remote-tracking branch 'origin/master' into master
       setChat({
         ...chat,
         is_open: true,
@@ -74,12 +98,19 @@ const Welcome = ({history}) =>  {
       })
 
     }
+    // [Testing start]
 
-    // for DEBUG
-    useEffect(() => {
-      {chat.DEBUG && console.log(chat)}
-    },[chat])
+    function test() {
+      db.collection('rooms').onSnapshot(snap => {
+        alert(snap.docs.length)
+    })
+      // const say = firebase.functions().httpsCallable('getAmountOfRooms')
+      // say({user_uid: user.currentUser.uid}).then(result => {
+      //   alert(result.data)
+      // })
+    }
 
+    // [Testing End]
     return (
       <div className="background_style">
 
@@ -124,18 +155,15 @@ const Welcome = ({history}) =>  {
         <Modal
           aria-labelledby="transition-modal-title"
           aria-describedby="transition-modal-description"
-          open={chat.is_open}
+          open={chatIsOpen}
           onClose={handleCloseChat}
           closeAfterTransition
           BackdropComponent={Backdrop}
           BackdropProps={{
             timeout: 500,
           }}>
-            <Fade in={chat.is_open}>
-           {chat.is_loading 
-              ? <Loading />
-              : <Chatpage /> }
-           
+            <Fade in={chatIsOpen}>
+          <Chatpage ChatIsOpenFunction= {setChatIsOpen} />
           </Fade>
         </Modal>
 

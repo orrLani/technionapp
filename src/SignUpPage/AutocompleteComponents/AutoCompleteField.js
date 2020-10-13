@@ -10,7 +10,7 @@ export default function AutoCompleteField(props) {
       id="combo-box-demo"
       options={props.list}
       getOptionLabel={(option) => option.title}
-      style={{ width: 300 }}
+      style={{ width: 400 }}
       onChange = {(event,value)=> {
           props.setFunction(value)
             console.log("I have changed!")

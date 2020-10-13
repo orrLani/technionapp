@@ -1,6 +1,6 @@
 import './styles.css'
 import React,{useEffect, useState} from 'react';
-//import Courses from '../SignUpPage/AutocompleteComponents/Courses'
+import Courses from '../SignUpPage/AutocompleteComponents/Courses'
 import CheckBoxCourses from './CheckBoxCourses'
 import CheckBoxHobbies from './CheckBoxHobbies'
 import Grid from '@material-ui/core/Grid';
@@ -29,12 +29,11 @@ import {ChatContext} from '../server/ChatProvider'
 import Loading from '../Loading'
 
 const Welcome = ({history}) =>  {
-
   const [course, setCourses] = useState('') 
   const [hobby, setHobby] = useState('')
 
   /*Contexts API */
-  const auth = useContext(AuthContext)
+  const user = useContext(AuthContext)
   const [chat,setChat] = useContext(ChatContext)
 
 
@@ -43,35 +42,30 @@ const Welcome = ({history}) =>  {
     // var user_email = firebase.auth().currentUser.email;
     let user_name = auth.currentUser.email.split('@')[0]
     console.log(user_name)
+    
+    
   }
   function handleCloseChat() {
     // setChatIsOpen(false)
   }
 
     function HobbySubmit(event){
-      console.log("I've been clicked!")
+
+    let user_name = user.currentUser.email.split('@')[0]
+    console.log(user_name)
+    
+    getChatIDForUser({
+      userName: user.currentUser.email.split('@')[0],
+      userID: user.currentUser.uid
+    })
+    .then((chatID) => {
+
       setChat({
-        ...chat,
-        is_open: true,
-        is_loading: true
+        ID: chatID
       })
-      const addUserToChat = firebase.functions().httpsCallable('addUserToChat')
-      addUserToChat({
-        user_uid: auth.currentUser.uid,
-        user_name: auth.currentUser.email.split('@')[0],
-      }).then(chatRef => {
-        {chat.DEBUG && console.log(chatRef)}
-        {chat.DEBUG && console.log(chatRef.data.chat_id)}
-        setChat({
-          ...chat,
-          is_open: true,
-          id: chatRef.data.chat_id,
-          is_loading: false
-        })
-      })
-      .catch(error =>{
-        console.log(error)
-      })
+     } )
+    setChatIsOpen(true)
+
 
     }
 
