@@ -26,6 +26,7 @@ admin.initializeApp()
 exports.removeUserFromChat = functions.https.onCall((data,context) => {
     functions.logger.log(context.auth.uid)
     data.chat_id = undefined
+    let users_count = 0;
     return admin.firestore()
     .collection('users')
     //get chat that was written on user doc
@@ -66,12 +67,34 @@ exports.removeUserFromChat = functions.https.onCall((data,context) => {
       })
       .then(chatRef => {
         // returns users_count
-        return chatRef.data().users_count
+        users_count = chatRef.data().users_count
+        return '';
       })
-      .then(users_count => {
+      .then(() => {
         // if user was the last on the chat, delete the chat.
         if(users_count === 1) {
-          return admin.firestore().collection('rooms').doc(data.chat_id).delete()
+
+
+        //   admin.firestore().collection('rooms').doc(data.chat_id).collection('messsages').delete().
+        //   then(function() {
+        //                    functions.logger("Document successfully deleted!");
+        //                    return ``
+        //                   })
+        //   .catch(function(error) {
+        //          functions.logger("Error removing document: ", error);
+        //         });
+            
+        
+        
+        //   functions.logger("the param is" + parm);
+
+
+        //for val in list_vals: delete val 
+
+        functions.logger.log(admin.firestore().collection('rooms').doc(data.chat_id).collection('messages').listDocuments())
+                                                                                       
+         return admin.firestore().collection('rooms').doc(data.chat_id).delete();
+         //return admin.firestore().collection('rooms').doc(data.chat_id).delete();
         }
         // else, decrement users count
         else{
