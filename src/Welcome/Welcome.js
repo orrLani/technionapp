@@ -68,6 +68,7 @@ const Welcome = ({history}) =>  {
       }).then(chatRef => {
         {chat.DEBUG && console.log(chatRef)}
         {chat.DEBUG && console.log(chatRef.data.chat_id)}
+        
         setChat({
           ...chat,
           is_open: true,
@@ -82,9 +83,20 @@ const Welcome = ({history}) =>  {
     }
 
     // for DEBUG
+    let DEBUG = true
     useEffect(() => {
-      {chat.DEBUG && console.log(chat)}
-    },[chat])
+      {DEBUG && console.log("Welcome is mounting!")}
+      {DEBUG && console.log(chat)}
+      const deleteFromChat = firebase.functions().httpsCallable('removeUserFromChat')
+      deleteFromChat({})
+      .catch(error => {
+        console.log(error)
+      })
+      return function cleanup() {
+        {DEBUG && console.log("Welcome is unmounting!")}
+        {DEBUG && console.log(chat)}
+      }
+    },[])
 
     return (
       <div className="background_style">
@@ -119,7 +131,7 @@ const Welcome = ({history}) =>  {
                    </Grid>
               <Grid item xs={12}>
                 <Button variant="contained" color="primary" 
-                  onClick = {HobbySubmit} /*change here */
+                  onClick = {HobbySubmit} 
                 > 
                  לחץ כאן 
                 </Button>
@@ -128,8 +140,8 @@ const Welcome = ({history}) =>  {
               </div>
               </div>
         <Modal
-          aria-labelledby="transition-modal-title"
-          aria-describedby="transition-modal-description"
+          // aria-labelledby="transition-modal-title"
+          // aria-describedby="transition-modal-description"
           open={chat.is_open}
           onClose={handleCloseChat}
           closeAfterTransition

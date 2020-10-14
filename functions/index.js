@@ -22,16 +22,36 @@ admin.initializeApp()
 
   /* deletes user from chat,
      deletes the chat if no other users
-     data = {user_uid,chat_id} */
+     @param data = {chat_id} */
 exports.removeUserFromChat = functions.https.onCall((data,context) => {
-    functions.logger.log("user_uid:",data.user_uid)
-    functions.logger.log("chat_id:",data.chat_id)
+    functions.logger.log(context.auth.uid)
+    data.chat_id = undefined
     return admin.firestore()
-    .collection('rooms')
-    .doc(data.chat_id)
-    .collection("users_on_page")
-    .where('user_uid', '==', data.user_uid)
-    .get().then((querySnapshot) => {
+    .collection('users')
+    //get chat that was written on user doc
+    .doc(context.auth.uid)
+    .get()
+    .then(snap => {
+        return snap.data().chat_id
+    })
+    .then(chat_id => {
+        if (chat_id === undefined) {
+            throw new Error("User is not in chat!");
+        }
+        data.chat_id = chat_id
+        admin.firestore()
+        .collection('users')
+        .doc(context.auth.uid)
+        .update({
+            chat_id: admin.firestore.FieldValue.delete()
+        })
+        return admin.firestore().collection('rooms')
+        .doc(chat_id)
+        .collection("users_on_page")
+        .where('user_uid', '==', context.auth.uid)
+        .get()
+    })
+    .then((querySnapshot) => {
         /* deletes every user with same uid in the chat (need to be only 1) */
         querySnapshot.forEach(doc => {
             doc.ref.delete()
@@ -67,8 +87,9 @@ exports.removeUserFromChat = functions.https.onCall((data,context) => {
 })
 /* adds user to chat that has 1 user already,
     if no chat like this, creates new chat and adds the user.
-    @ param data = {user_uid, user_name} */
+    @ param data = {user_name} */
 exports.addUserToChat = functions.https.onCall((data,context) => {
+    functions.logger.log("I'm adding user to chat!")
     return admin.firestore().collection('rooms')
     .where('users_count','==',1)
     .get().then(snapshot => {
@@ -88,7 +109,11 @@ exports.addUserToChat = functions.https.onCall((data,context) => {
         roomRef.collection('users_on_page')
         .add({
             user_name: data.user_name,
-            user_uid: data.user_uid
+            user_uid: context.auth.uid
+        })
+        //add chat_id to user
+        admin.firestore().collection('users').doc(context.auth.uid).update({
+            chat_id: roomRef.id
         })
         return roomRef
     }).then(roomRef => {

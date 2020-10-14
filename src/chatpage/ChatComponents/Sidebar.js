@@ -25,7 +25,6 @@ function Sidebar() {
   /* fired when user connects to the chat for the first time.
     added the user to the userslist in the sidebar */
   useEffect(() => {
-    console.log(chat)
     { chat.DEBUG && console.log("I'm Mounting Sidebar") }
     if (chat&&chat.id) {
       db
