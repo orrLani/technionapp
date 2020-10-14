@@ -6,7 +6,7 @@ import Sidebar from './ChatComponents/Sidebar'
 import Chat from './Chat'
 import Header from './ChatComponents/Header'
 import firebase from '../server/firebase'
-import {db} from '../server/firebase'
+// import {db} from '../server/firebase'
 // import Login from "./Login"
 
 /* use contextAPI to know the chat */
@@ -30,15 +30,19 @@ function Chatpage({ChatIsOpenFunction}) {
 
     // in case of exiting the browser (or f5) - deletes the user from chat
     window.addEventListener('beforeunload', (event) => {
+      // alert("You are getting out of working chat!")
       { chat.DEBUG && console.log("user_uid", auth.currentUser.uid)}
       { chat.DEBUG && console.log("chat_id", chat.id)}
+
       // Cancel the event as stated by the standard.
       event.preventDefault();
       // Remove user from chat
+      
       const deleteFromChat = firebase.functions().httpsCallable('removeUserFromChat')
       deleteFromChat({
-        user_uid: auth.currentUser.uid,
         chat_id: chat.id
+      }).then(() => {
+        console.log("I've deleted!")
       })
     })
     return(() => {
@@ -47,7 +51,7 @@ function Chatpage({ChatIsOpenFunction}) {
     )
   },[])
 
-    if(auth){
+    if(auth&&chat.is_open){
       return(
         <div className="chatpage">
             <div className="chatpage__body">

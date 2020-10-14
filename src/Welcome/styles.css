@@ -16,9 +16,12 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: url("blue-clouds-day-fluffy-53594.jpeg");
+    background: url("blue-clouds-day-fluffy-53594.jpeg") no-repeat 0 0 fixed;
     overflow: hidden;
     background-size: 100% 100%;
+    margin-top: -8px;
+    margin-left: -3px;
+    position: fixed;
 
   }
   .card {
