@@ -26,18 +26,26 @@ function Sidebar() {
     added the user to the userslist in the sidebar */
   useEffect(() => {
     { chat.DEBUG && console.log("I'm Mounting Sidebar") }
-    if (chat&&chat.id) {
+    /*due to error message : "Can't perform a React state update on an unmounted component"
+      added the current variable and used it in function setUsers */
+    let isMounted = true
+
+    if (chat&&chat.is_open) {
       db
         .collection("rooms")
         .doc(chat.id)
         .collection("users_on_page")
-        .onSnapshot(snapshot => (
-          setUsers(snapshot.docs.map(doc => doc.data()))
-        ))
+        .onSnapshot(snapshot => {
+          if(isMounted){
+            setUsers(snapshot.docs.map(doc => doc.data()))
+          }
+        })
     }
-    return function unmount() {
+    return(() => {
       { chat.DEBUG && console.log("i'm unmounting the sidebar!")}
-    }
+      isMounted = false
+      setUsers([])
+    })
   }, [chat]  )
 
   return (

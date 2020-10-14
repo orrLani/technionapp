@@ -77,24 +77,28 @@ const Welcome = ({history}) =>  {
         })
       })
       .catch(error =>{
-        console.log(error)
+        alert("Error occured, please try again")
+        setChat({
+          ...chat,
+          is_open: false,
+          is_loading: false,
+          id: undefined
+        })
       })
 
     }
 
-    // for DEBUG
-    let DEBUG = true
     useEffect(() => {
-      {DEBUG && console.log("Welcome is mounting!")}
-      {DEBUG && console.log(chat)}
+      {chat.DEBUG && console.log("Welcome is mounting!")}
+      {chat.DEBUG && console.log(chat)}
       const deleteFromChat = firebase.functions().httpsCallable('removeUserFromChat')
       deleteFromChat({})
       .catch(error => {
         console.log(error)
       })
       return function cleanup() {
-        {DEBUG && console.log("Welcome is unmounting!")}
-        {DEBUG && console.log(chat)}
+        {chat.DEBUG && console.log("Welcome is unmounting!")}
+        {chat.DEBUG && console.log(chat)}
       }
     },[])
 
