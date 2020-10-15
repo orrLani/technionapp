@@ -46,11 +46,13 @@ function Header(props) {
   },[])
 
   //[Test start]
-  function test_remove_user() {
+  function test_delete_messages() {
     console.log("tesing")
-    db.collection('users').doc(auth.currentUser.uid)
-    .onSnapshot(docs => {
-      console.log(docs.data().chat_id)
+    db.collection('rooms').doc(chat.id)
+    .collection('messages').get().then(messages => {
+      messages.forEach(message => {
+        message.ref.delete()
+      })
     })
   }
   //[Test end]

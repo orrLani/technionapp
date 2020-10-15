@@ -7,6 +7,7 @@ import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import {course_list, hobby_list} from '../AutoCmpleteLists';
 import AutoCompleteField from '../SignUpPage/AutocompleteComponents/AutoCompleteField'
+import NicknameField from './NicknameField'
 
 /* database and authentication */
 import firebase, { db } from '../server/firebase'
@@ -28,6 +29,8 @@ import {ChatContext} from '../server/ChatProvider'
 /* Loading page */
 import Loading from '../Loading'
 
+
+
 /* EmailConfirmation*/
 
 import EmailConfirmation from './EmailConfirmation'
@@ -40,9 +43,7 @@ const Welcome = ({history}) =>  {
   /*Contexts API */
   const auth = useContext(AuthContext)
   const [chat,setChat] = useContext(ChatContext)
-  console.log(auth)
   
-
 
   function CoursesSubmit(event) {
     // var email, user_name;
@@ -61,10 +62,23 @@ const Welcome = ({history}) =>  {
         is_open: true,
         is_loading: true
       })
+      // in case that user added new nickname, update in database
+      console.log(auth)
+      if (auth.nickNameHasChanged) {
+        const setUserNickName = firebase.functions().httpsCallable('setUserNickName')
+        setUserNickName({
+          nickname: auth.currentUserNickName
+        })
+        .then(() => {
+          auth.setNickNameHasChanged(false)
+        })
+        .catch(error => {
+          console.log(error)
+        })
+      }
       const addUserToChat = firebase.functions().httpsCallable('addUserToChat')
       addUserToChat({
-        user_uid: auth.currentUser.uid,
-        user_name: auth.currentUser.email.split('@')[0],
+        user_nickname: auth.currentUserNickName
       }).then(chatRef => {
         {chat.DEBUG && console.log(chatRef)}
         {chat.DEBUG && console.log(chatRef.data.chat_id)}
@@ -104,7 +118,7 @@ const Welcome = ({history}) =>  {
 
     return (
       <div className="background_style">
-        <EmailConfirmation emailVerified={auth.currentUser.emailVerified}/>
+        {/* <EmailConfirmation emailVerified={auth.currentUser.emailVerified}/> */}
           <div className="card">
             <div className="card-image"></div>
             <div className="card-text">
@@ -115,6 +129,7 @@ const Welcome = ({history}) =>  {
                             label="קורסים" setFunction={setCourses}  />
                    
                 </Grid>
+                
               <Grid item xs={12}>
                 <Button variant="contained" color="primary" onClick={CoursesSubmit} > 
                  לחץ כאן 
@@ -128,11 +143,13 @@ const Welcome = ({history}) =>  {
               <div className="card-image card3"></div>
               <div className="card-text card3">
                 <h2>צ'אט חברתי </h2>
-                <Grid container justify="center" spacing={6} >
+                <Grid container justify="center" spacing={6}  dir="rtl">
                 <Grid item xs={12} container justify="center">
                 <AutoCompleteField list={hobby_list} 
                             label="תחביבים" setFunction={setHobby} />
                    </Grid>
+                            <NicknameField />
+                   
               <Grid item xs={12}>
                 <Button variant="contained" color="primary" 
                   onClick = {HobbySubmit} 

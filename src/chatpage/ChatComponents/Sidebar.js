@@ -53,7 +53,7 @@ function Sidebar() {
     <div className="chat-sidebar">
       <h3 dir="rtl"> משתמשים:</h3>
         {users.map(user => (
-          <div key={user.user_uid} className="chat__username">{user.user_name}</div>
+          <div key={user.user_uid} className="chat__username">{user.nickname}</div>
         ))
         }
 

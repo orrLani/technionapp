@@ -26,7 +26,7 @@ admin.initializeApp()
 exports.removeUserFromChat = functions.https.onCall((data,context) => {
     functions.logger.log(context.auth.uid)
     data.chat_id = undefined
-    let users_count = 0;
+    // let users_count = 0;
     return admin.firestore()
     .collection('users')
     //get chat that was written on user doc
@@ -66,51 +66,50 @@ exports.removeUserFromChat = functions.https.onCall((data,context) => {
         return admin.firestore().collection('rooms').doc(data.chat_id).get()
       })
       .then(chatRef => {
-        // returns users_count
-        users_count = chatRef.data().users_count
-        return '';
+        return chatRef.data().users_count
+        // users_count = chatRef.data().users_count
+        // return '';
       })
-      .then(() => {
+      .then(users_count => {
         // if user was the last on the chat, delete the chat.
         if(users_count === 1) {
+            //delete chat doc
+            admin.firestore().collection("rooms").doc(data.chat_id).delete()
 
-
-        //   admin.firestore().collection('rooms').doc(data.chat_id).collection('messsages').delete().
-        //   then(function() {
-        //                    functions.logger("Document successfully deleted!");
-        //                    return ``
-        //                   })
-        //   .catch(function(error) {
-        //          functions.logger("Error removing document: ", error);
-        //         });
-            
-        
-        
-        //   functions.logger("the param is" + parm);
-
-
-        //for val in list_vals: delete val 
-
-        functions.logger.log(admin.firestore().collection('rooms').doc(data.chat_id).collection('messages').listDocuments())
-                                                                                       
-         return admin.firestore().collection('rooms').doc(data.chat_id).delete();
-         //return admin.firestore().collection('rooms').doc(data.chat_id).delete();
+            //return messages to be deleted
+            return admin.firestore().
+            collection('rooms')
+            .doc(data.chat_id)
+            .collection('messages').get()
         }
         // else, decrement users count
         else{
-          const decrement = admin.firestore.FieldValue.increment(-1);
-          return admin.firestore().collection('rooms').doc(data.chat_id).update({
+            const decrement = admin.firestore.FieldValue.increment(-1);
+            admin.firestore().collection('rooms').doc(data.chat_id).update({
               users_count: decrement
           })
         }
+        return undefined
+      })
+      // in case of deleting the chat, needs to delete the messages collection aswell
+      .then(messages_to_delete => {
+            if(messages_to_delete === undefined) {
+                return ``
+            }
+            messages_to_delete.forEach(message => {
+                message.ref.delete()
+            })
+            return ``
       })
       .catch(error => {
           throw error
       })
 })
+
+
 /* adds user to chat that has 1 user already,
     if no chat like this, creates new chat and adds the user.
-    @ param data = {user_name} */
+    @ param data = {user_nickname} */
 exports.addUserToChat = functions.https.onCall((data,context) => {
     functions.logger.log("I'm adding user to chat!")
     return admin.firestore().collection('rooms')
@@ -131,7 +130,8 @@ exports.addUserToChat = functions.https.onCall((data,context) => {
     .then(roomRef => {
         roomRef.collection('users_on_page')
         .add({
-            user_name: data.user_name,
+            nickname: data.user_nickname,
+            user_name: context.auth.token.email.split('@')[0],
             user_uid: context.auth.uid
         })
         //add chat_id to user
@@ -148,6 +148,22 @@ exports.addUserToChat = functions.https.onCall((data,context) => {
         return {
             chat_id: roomRef.id,
         }
+    })
+    .catch(error => {
+        throw error
+    })
+})
+
+/* changes user nick name in users/user.id/nickname
+    @param data = {nickname}
+ */
+
+exports.setUserNickName = functions.https.onCall((data,context) => {
+    return admin.firestore()
+    .collection('users')
+    .doc(context.auth.uid)
+    .update({
+        nickname: data.nickname
     })
     .catch(error => {
         throw error

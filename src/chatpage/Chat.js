@@ -7,6 +7,7 @@ import { useParams } from "react-router-dom"
 /* database */
 import firebase from "../server/firebase"
 import { db } from '../server/firebase'
+import fb from 'firebase'
 
 /* context API */
 import { AuthContext } from '../server/Auth'
@@ -22,7 +23,7 @@ function Chat(props) {
     const [roomName, setRoomName] = useState("")
     const [messages, setMessages] = useState([])
 
-    const user = useContext(AuthContext)
+    const auth = useContext(AuthContext)
     const [chat, setChat] = useContext(ChatContext)
 
 
@@ -78,10 +79,11 @@ function Chat(props) {
         console.log('You typed >>> ', input)
         db.collection('rooms').doc(chat.id)
             .collection('messages').add({
-                user_name: user.currentUser.email.split('@')[0],
+                user_name: auth.currentUser.email.split('@')[0],
+                nickname: auth.currentUserNickName,
                 text: input,
-                user_uid: user.currentUser.uid,
-                timestamp: Date.now(),
+                user_uid: auth.currentUser.uid,
+                timestamp: fb.firestore.FieldValue.serverTimestamp(),
             })
         setInput("")
     }
@@ -97,11 +99,13 @@ function Chat(props) {
                 {messages.map(message => (
                     //Left or right   //className={`chat__message ${message.name === user.displayName && "chat__reciever"}`}
                     <p key={message.id} 
-                        className="chat__reciever">
-                        <span className="chat__name">{message.data().user_name}</span>
+                        className={`chat__message ${message.data().user_uid === auth.currentUser.uid && "chat__reciever"}`} >
+                        <span className="chat__name">{message.data().nickname}</span>
                         {message.data().text}
                         <span className="chat__timestamp">
-                            {/* {new Date(message.timestamp.toDate())} */}
+                        {new Date(message.data().timestamp?.toDate()).getHours()} 
+                        :
+                            {new Date(message.data().timestamp?.toDate()).getMinutes()}
                         </span>
                     </p>
                     // {new Date(message.timestamp?.toDate()).toUTCString()}

@@ -2,6 +2,7 @@
 //import "firebase/auth";
 import firebase from 'firebase'
 
+
 const firebaseApp = firebase.initializeApp({
     apiKey: "AIzaSyBdxiO2unFysdLywxLOhWt2ZVpGQVkW5Os",
     authDomain: "techchat-86696.firebaseapp.com",
