@@ -56,6 +56,13 @@ const Welcome = ({history}) =>  {
   }
 
     function HobbySubmit(event){
+      const deleteFromChat = firebase.functions().httpsCallable('removeUserFromChat')
+      deleteFromChat({})
+      .catch(error => {
+        console.log(error)
+      })
+
+
       console.log("I've been clicked!")
       setChat({
         ...chat,
@@ -87,7 +94,9 @@ const Welcome = ({history}) =>  {
           ...chat,
           is_open: true,
           id: chatRef.data.chat_id,
-          is_loading: false
+          is_loading: false,
+          is_active: true
+          
         })
       })
       .catch(error =>{
@@ -105,11 +114,11 @@ const Welcome = ({history}) =>  {
     useEffect(() => {
       {chat.DEBUG && console.log("Welcome is mounting!")}
       {chat.DEBUG && console.log(chat)}
-      const deleteFromChat = firebase.functions().httpsCallable('removeUserFromChat')
-      deleteFromChat({})
-      .catch(error => {
-        console.log(error)
-      })
+      // const deleteFromChat = firebase.functions().httpsCallable('removeUserFromChat')
+      // deleteFromChat({})
+      // .catch(error => {
+      //   console.log(error)
+      // })
       return function cleanup() {
         {chat.DEBUG && console.log("Welcome is unmounting!")}
         {chat.DEBUG && console.log(chat)}

@@ -17,11 +17,13 @@ function Header(props) {
   const [chat,setChat] = useContext(ChatContext)
   const auth = useContext(AuthContext)
   function ExitChat() {
+    
     setChat(chat => {
       return {
         ...chat,
         is_open: false,
         is_loading: true
+
       }
     })
     const deleteFromChat = firebase.functions().httpsCallable('removeUserFromChat')
@@ -31,6 +33,7 @@ function Header(props) {
           return {
             ...chat,
             is_loading: false,
+            
           }
         })
       })

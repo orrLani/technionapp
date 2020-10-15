@@ -17,6 +17,8 @@ import { ChatContext } from '../server/ChatProvider'
 import GridList from '@material-ui/core/GridList';
 import "./Chat.css"
 
+import usePrevious from './../utils/usePrevious'
+
 
 function Chat(props) {
     const [input, setInput] = useState("")
@@ -25,8 +27,13 @@ function Chat(props) {
 
     const auth = useContext(AuthContext)
     const [chat, setChat] = useContext(ChatContext)
+    const [users,setUsers] = useState([])
+    const prevUsers = usePrevious(users)
 
-
+    // const val =chat.is_not_active;
+    // if(val){
+    // chat.is_not_active = false;
+    // }
 
 
     //console.log(Date.now().timestamp)
@@ -52,7 +59,8 @@ function Chat(props) {
     /* collect room messages */
     useEffect(() => {
         { chat.DEBUG && console.log("I'm Mounting Chat!")}
-        if (chat && chat.id) {
+        { chat.DEBUG && console.log(chat)}
+        if (chat && chat.id &&chat.is_active) {
             db
                 .collection("rooms")
                 .doc(chat.id)
@@ -90,9 +98,6 @@ function Chat(props) {
     //firebase.firestore.FieldValue.serverTimestamp()
     return (
         <div className="chat">
-
-
-
             <div className="chat__body">
 
 
@@ -116,15 +121,28 @@ function Chat(props) {
 
             <div className="chat__footer"  >
                 <form onSubmit={sendMessage}>
+                 { !chat.is_active?(
+                   //(prevUsers && prevUsers.length === 2 && users.length === 1)? (
                     <input value={input}
-                        disabled = {chat.is_not_active}
-                        onChange={(e) => setInput(e.target.value)}
-                        // placeholder={!chat.is_not_active && "הקלד משהו נחמד..."}
-                        placeholder={`הקלד משהו נחמד... ${chat.is_not_active && "צ'אט סגור כפרה"}`}
-
-                        type="text"
-                        dir="rtl"
+                    disabled = {true}
+                    onChange={(e) => setInput(e.target.value)}
+                    placeholder ="למה הצאט חסום"  
+                    type="text"
+                    dir="rtl"
                     />
+
+                 ):(
+                    <input value={input}
+                    disabled = {false}
+                    onChange={(e) => setInput(e.target.value)}
+                    placeholder ="הקלד משהו נחמד"  
+                    type="text"
+                    dir="rtl"
+                />
+                 )}
+
+            
+
 
 
                 </form>

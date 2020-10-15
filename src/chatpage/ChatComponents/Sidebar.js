@@ -5,9 +5,11 @@ import {db} from "../../server/firebase"
 
 /* handle ContextAPI */
 import {ChatContext} from '../../server/ChatProvider'
+import { AuthContext } from "../../server/Auth";
 
 /* custom hook */
 import usePrevious from '../../utils/usePrevious'
+
 /* 
   LEFT side:
   ----------------------
@@ -23,23 +25,35 @@ import usePrevious from '../../utils/usePrevious'
 function Sidebar() {
   const [users,setUsers] = useState([])
   const [chat,setChat] = useContext(ChatContext)
-
+  const auth = useContext(AuthContext)
   const prevUsers = usePrevious(users)
 
   useEffect(() => {
-    
+    let user_in_current_users_list = users.find(user => user.user_uid===auth.currentUser.uid)
+
+    let user_in_previous_users_list = prevUsers && prevUsers.find(user => user.user_uid===auth.currentUser.uid)
     console.log("users changed!")
-    if(prevUsers && prevUsers.length > 1) {
-      console.log(prevUsers.length)
+    if((prevUsers && prevUsers.length === 2 && users.length === 1) || 
+  (!user_in_current_users_list&&user_in_previous_users_list)) {
+
+      // console.log(prevUsers.length)
+      // console.log(users.length)
       console.log("Close the chat!")
       setChat(prevChat => {
         return {
           ...prevChat,
-          is_not_active: true
+          is_active: false
         }
       })
     }
     else {
+      // setChat(() => {
+      //   return {
+      //     ...
+      //     is_not_active: false
+      //   }
+      // })
+
       console.log("WAIT")
     }
   },[users])

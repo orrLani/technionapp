@@ -7,7 +7,9 @@ export const ChatProvider = ({children}) => {
         id: null,
         is_loading: false,
         is_open: false,
-        DEBUG: true
+        DEBUG: true,
+        is_not_active: false
+    
     })
     return (
         <ChatContext.Provider value={[chat,setChat]}>
