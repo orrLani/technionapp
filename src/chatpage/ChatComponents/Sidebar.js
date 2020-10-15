@@ -6,6 +6,8 @@ import {db} from "../../server/firebase"
 /* handle ContextAPI */
 import {ChatContext} from '../../server/ChatProvider'
 
+/* custom hook */
+import usePrevious from '../../utils/usePrevious'
 /* 
   LEFT side:
   ----------------------
@@ -22,6 +24,25 @@ function Sidebar() {
   const [users,setUsers] = useState([])
   const [chat,setChat] = useContext(ChatContext)
 
+  const prevUsers = usePrevious(users)
+
+  useEffect(() => {
+    
+    console.log("users changed!")
+    if(prevUsers && prevUsers.length > 1) {
+      console.log(prevUsers.length)
+      console.log("Close the chat!")
+      setChat(prevChat => {
+        return {
+          ...prevChat,
+          is_not_active: true
+        }
+      })
+    }
+    else {
+      console.log("WAIT")
+    }
+  },[users])
   /* fired when user connects to the chat for the first time.
     added the user to the userslist in the sidebar */
   useEffect(() => {

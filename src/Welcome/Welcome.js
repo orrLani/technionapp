@@ -116,6 +116,8 @@ const Welcome = ({history}) =>  {
       }
     },[])
 
+
+
     return (
       <div className="background_style">
         {/* <EmailConfirmation emailVerified={auth.currentUser.emailVerified}/> */}

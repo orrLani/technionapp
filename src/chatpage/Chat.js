@@ -117,8 +117,11 @@ function Chat(props) {
             <div className="chat__footer"  >
                 <form onSubmit={sendMessage}>
                     <input value={input}
+                        disabled = {chat.is_not_active}
                         onChange={(e) => setInput(e.target.value)}
-                        placeholder="הקלד משהו נחמד..."
+                        // placeholder={!chat.is_not_active && "הקלד משהו נחמד..."}
+                        placeholder={`הקלד משהו נחמד... ${chat.is_not_active && "צ'אט סגור כפרה"}`}
+
                         type="text"
                         dir="rtl"
                     />
