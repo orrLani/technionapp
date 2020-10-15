@@ -61,7 +61,9 @@
     background-position: center;
     /* margin-top:25px;
     margin-bottom: 550px;  */
-  
+    
+    display:flex;
+    flex-direction: column-reverse;
     padding: 30px;
     overflow-y: scroll;
 }

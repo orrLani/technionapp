@@ -57,7 +57,7 @@ function Chat(props) {
                 .collection("rooms")
                 .doc(chat.id)
                 .collection("messages")
-                .orderBy('timestamp', 'asc')
+                .orderBy('timestamp', 'desc')
                 .onSnapshot(snapshot => (
                     // setMessages(snapshot.docs.map(doc => doc.data()))
                     setMessages(snapshot.docs)
