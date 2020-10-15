@@ -60,7 +60,7 @@ function Chat(props) {
     useEffect(() => {
         { chat.DEBUG && console.log("I'm Mounting Chat!")}
         { chat.DEBUG && console.log(chat)}
-        if (chat && chat.id &&chat.is_active) {
+        if (chat && chat.id) {
             db
                 .collection("rooms")
                 .doc(chat.id)
@@ -98,10 +98,11 @@ function Chat(props) {
     //firebase.firestore.FieldValue.serverTimestamp()
     return (
         <div className="chat">
+
             <div className="chat__body">
+            { chat.is_active?(
 
-
-                {messages.map(message => (
+                messages.map(message => (
                     //Left or right   //className={`chat__message ${message.name === user.displayName && "chat__reciever"}`}
                     <p key={message.id} 
                         className={`chat__message ${message.data().user_uid === auth.currentUser.uid && "chat__reciever"}`} >
@@ -115,8 +116,11 @@ function Chat(props) {
                     </p>
                     // {new Date(message.timestamp?.toDate()).toUTCString()}
                 ))
-                }
+                
+                  ):
 
+            <div>ואם ישאלו בבחינה </div>
+            }
             </div>
 
             <div className="chat__footer"  >
