@@ -1,6 +1,9 @@
 import './Chatpage.css'
 import React, {useState, useContext,useEffect} from 'react';
 import { Link } from 'react-router-dom';
+import CloseIcon from '@material-ui/icons/Close';
+import {IconButton } from "@material-ui/core"
+import { red } from '@material-ui/core/colors';
 
 import Sidebar from './ChatComponents/Sidebar'
 import Chat from './Chat'
@@ -18,11 +21,39 @@ import {joinChat} from '../server/ChatsManager'
 
 /* imports loading page */
 import Loading from '../Loading'
+import { Close } from '@material-ui/icons';
 
 function Chatpage({ChatIsOpenFunction}) {
   const [chat,setChat]  = useContext(ChatContext)
 
   const auth = useContext(AuthContext)
+
+
+  function ExitChat() {
+    setChat(chat => {
+      return {
+        ...chat,
+        is_open: false,
+        is_loading: true
+
+      }
+    })
+    const deleteFromChat = firebase.functions().httpsCallable('removeUserFromChat')
+    deleteFromChat({})
+      .then(() => {
+        setChat(chat => {
+          return {
+            ...chat,
+            is_loading: false,
+            
+          }
+        })
+      })
+    .catch(error => {
+      console.log(error)
+    })
+  }
+
 
   useEffect(() => {
     { chat.DEBUG && console.log("i'm mounting the chatpage!")}
@@ -53,6 +84,11 @@ function Chatpage({ChatIsOpenFunction}) {
 
     if(auth&&chat.is_open){
       return(
+        <div>
+          <IconButton>
+            {/* red[50] === white */}
+            <CloseIcon onClick = {ExitChat} style={{ color: red[50] }} />
+          </IconButton>
         <div className="chatpage">
             <div className="chatpage__body">
               <Sidebar />
@@ -61,6 +97,7 @@ function Chatpage({ChatIsOpenFunction}) {
                 <Chat/>
               </div>
             </div>
+        </div>
         </div>
       )
     }

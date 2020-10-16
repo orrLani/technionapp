@@ -21,25 +21,42 @@ function Header(props) {
     setChat(chat => {
       return {
         ...chat,
-        is_open: false,
+        is_open: true,
         is_loading: true
 
       }
     })
     const deleteFromChat = firebase.functions().httpsCallable('removeUserFromChat')
+    const addUserToChat = firebase.functions().httpsCallable('addUserToChat')
+
     deleteFromChat({})
       .then(() => {
-        setChat(chat => {
-          return {
-            ...chat,
-            is_loading: false,
-            
-          }
+        return addUserToChat({
+          user_nickname: auth.currentUserNickName
+        })
+      })
+      .then(newChatRef => {
+        setChat({
+          ...chat,
+          is_open: true,
+          id: newChatRef.data.chat_id,
+          is_loading: false,
+          is_active: true
         })
       })
     .catch(error => {
-      console.log(error)
+      alert("Error occured, please try again")
+
+      //seting state back to welcome page
+      setChat({
+        ...chat,
+        is_open: false,
+        is_loading: false,
+        id: undefined
+      })
     })
+
+    
   }
   useEffect(() => {
     { chat.DEBUG && console.log("I'm Mounting Header!")}
@@ -72,7 +89,7 @@ function Header(props) {
           to="/welcome"
           className="leave__room"
           dir="rtl">עזוב את החדר</Link> */}
-          עזוב את החדר
+          צ'אט חדש
       </IconButton>
 
 

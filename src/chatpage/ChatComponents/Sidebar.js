@@ -33,28 +33,40 @@ function Sidebar() {
 
     let user_in_previous_users_list = prevUsers && prevUsers.find(user => user.user_uid===auth.currentUser.uid)
     console.log("users changed!")
+    console.log({users,prevUsers})
     if((prevUsers && prevUsers.length === 2 && users.length === 1) || 
   (!user_in_current_users_list&&user_in_previous_users_list)) {
 
       // console.log(prevUsers.length)
       // console.log(users.length)
       console.log("Close the chat!")
+      
       setChat(prevChat => {
         return {
           ...prevChat,
-          is_active: false
+          active_status: "CLOSED_CHAT"
         }
       })
     }
-    else {
-      // setChat(() => {
-      //   return {
-      //     ...
-      //     is_not_active: false
-      //   }
-      // })
+    // needs to be on waiting list
+    // else if(users.length <= 1 ) {
+    //   setChat(chat => {
+    //     return {
+    //       ...chat,
+    //       active_status: "WAITING_CHAT"
+    //     }
+    //   })
+    //   console.log("WAIT")
+    // }
+    else if (users.length > 1 && chat.active_status !== "CLOSED_CHAT") {
+      setChat(chat => {
+        return {
+          ...chat,
+          active_status: "ACTIVE_CHAT"
+        }
+      })
 
-      console.log("WAIT")
+
     }
   },[users])
   /* fired when user connects to the chat for the first time.
@@ -79,7 +91,7 @@ function Sidebar() {
     return(() => {
       { chat.DEBUG && console.log("i'm unmounting the sidebar!")}
       isMounted = false
-      setUsers([])
+      //setUsers([])
     })
   }, [chat]  )
 

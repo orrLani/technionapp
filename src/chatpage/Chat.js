@@ -85,73 +85,99 @@ function Chat(props) {
     const sendMessage = (e) => {
         e.preventDefault()
         console.log('You typed >>> ', input)
-        db.collection('rooms').doc(chat.id)
-            .collection('messages').add({
-                user_name: auth.currentUser.email.split('@')[0],
-                nickname: auth.currentUserNickName,
-                text: input,
-                user_uid: auth.currentUser.uid,
-                timestamp: fb.firestore.FieldValue.serverTimestamp(),
-            })
+        if(input.length < 2 || input.length > 100) {
+            alert("הודעה חייבת להכיל בין 2 ל-100 תווים")
+        }
+        else{
+            db.collection('rooms').doc(chat.id)
+                .collection('messages').add({
+                    user_name: auth.currentUser.email.split('@')[0],
+                    nickname: auth.currentUserNickName,
+                    text: input,
+                    user_uid: auth.currentUser.uid,
+                    timestamp: fb.firestore.FieldValue.serverTimestamp(),
+                })
+        }
         setInput("")
     }
     //firebase.firestore.FieldValue.serverTimestamp()
     return (
         <div className="chat">
-
-            <div className="chat__body">
-            { chat.is_active?(
-
-                messages.map(message => (
-                    //Left or right   //className={`chat__message ${message.name === user.displayName && "chat__reciever"}`}
-                    <p key={message.id} 
-                        className={`chat__message ${message.data().user_uid === auth.currentUser.uid && "chat__reciever"}`} >
-                        <span className="chat__name">{message.data().nickname}</span>
-                        {message.data().text}
-                        <span className="chat__timestamp">
-                        {new Date(message.data().timestamp?.toDate()).getHours()} 
-                        :
-                            {new Date(message.data().timestamp?.toDate()).getMinutes()}
-                        </span>
-                    </p>
-                    // {new Date(message.timestamp?.toDate()).toUTCString()}
-                ))
+            { chat.active_status === "ACTIVE_CHAT" &&
+                <div className="chat__body">
                 
-                  ):
-
-            <div>ואם ישאלו בבחינה </div>
+                    {messages.map(message => (
+                        //Left or right   //className={`chat__message ${message.name === user.displayName && "chat__reciever"}`}
+                        <p key={message.id} 
+                            className={`chat__message ${message.data().user_uid === auth.currentUser.uid && "chat__reciever"}`} >
+                            <span className="chat__name">{message.data().nickname}</span>
+                            {message.data().text}
+                            <span className="chat__timestamp">
+                            {new Date(message.data().timestamp?.toDate()).getHours()} 
+                            :
+                                {new Date(message.data().timestamp?.toDate()).getMinutes()}
+                            </span>
+                        </p>
+                        // {new Date(message.timestamp?.toDate()).toUTCString()}
+                    ))}
+                </div>
+                }
+            {chat.active_status === "WAITING_CHAT" && 
+                <div className="chat__body">
+                    המתנה כפרה
+                    </div>
             }
-            </div>
+            {chat.active_status === "CLOSED_CHAT" && 
+                <div className="chat__body">
+                    למה אני לא רואה פעילות
+                    </div>
+            }
 
+
+            {chat.active_status === "ACTIVE_CHAT" && 
             <div className="chat__footer"  >
                 <form onSubmit={sendMessage}>
-                 { !chat.is_active?(
-                   //(prevUsers && prevUsers.length === 2 && users.length === 1)? (
-                    <input value={input}
+            <input value={input}
+                    disabled = {false}
+                    onChange={(e) => setInput(e.target.value)}
+                    placeholder ="הקלד משהו נחמד"  
+                    type="text"
+                    dir="rtl"/>
+                    </form>
+                    </div>
+            }
+
+            {chat.active_status === "CLOSED_CHAT" && 
+            <div className="chat__footer"  >
+                <form onSubmit={sendMessage}>
+            <input value={input}
                     disabled = {true}
                     onChange={(e) => setInput(e.target.value)}
                     placeholder ="למה הצאט חסום"  
                     type="text"
                     dir="rtl"
                     />
+                    </form>
+                    </div>
+            }
 
-                 ):(
-                    <input value={input}
-                    disabled = {false}
+            {chat.active_status === "WAITING_CHAT" && 
+            <div className="chat__footer">
+                 <form onSubmit={sendMessage}>
+                <input value={input}
+                    disabled = {true}
                     onChange={(e) => setInput(e.target.value)}
-                    placeholder ="הקלד משהו נחמד"  
+                    placeholder ="למה הצ'אט ממתין"
                     type="text"
                     dir="rtl"
-                />
-                 )}
+                    />
+                    </form>
+                    </div>
+            }
 
-            
-
-
-
-                </form>
+                
+                
             </div>
-        </div>
     )
 }
 

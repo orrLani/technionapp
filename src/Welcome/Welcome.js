@@ -95,8 +95,7 @@ const Welcome = ({history}) =>  {
           is_open: true,
           id: chatRef.data.chat_id,
           is_loading: false,
-          is_active: true
-          
+          active_status: "WAITING_CHAT"
         })
       })
       .catch(error =>{
