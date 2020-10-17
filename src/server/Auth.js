@@ -17,7 +17,9 @@ export const AuthProvider = ({ children }) => {
       //get the user's last nickname
       if (user) {
         db.collection('users').doc(user.uid).onSnapshot(snap => {
-          setCurrentUserNickName(snap.data().nickname)
+          if(snap.data()){
+            setCurrentUserNickName(snap.data().nickname)
+          }
         })
       }
 

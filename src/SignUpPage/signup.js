@@ -100,33 +100,35 @@ const SignUp = ({history})=> {
           
 
           return;
-                   }
+        }
 
        console.log(text_user)
        event.preventDefault();
        
       
        try {
-         await firebase.auth().createUserWithEmailAndPassword(text_user+"@campus.technion.ac.il",text_password) 
-         const user = auth.currentUser
-         db.collection("users").doc(user.uid).set({
-             text_user: text_user,
-             birthday: birthday,
-             gender: gender,
-             semester: semester,
-             faculty: faculty,
-             course: course,
-             maritalstatus : maritalstatus,
-             hobby: hobby,
-             nickname:"default"
-
-
-         }).then(function() {
-            console.log("Document successfully written!");
-        })
-        .catch(function(error) {
-           console.error("Error writing document: ", error);
-        });
+         await firebase.auth().createUserWithEmailAndPassword(text_user+"@campus.technion.ac.il",text_password)
+         const user = auth.currentUser;
+         await db.collection("users").doc(user.uid).set({
+           text_user: text_user,
+           birthday: birthday,
+           gender: gender,
+           semester: semester,
+           faculty: faculty,
+           course: course,
+           maritalstatus : maritalstatus,
+           hobby: hobby,
+           nickname:"default"
+           
+          })
+          console.log(auth.currentUser)
+          
+          //  }).then(function() {
+            //     console.log("Document successfully written!");
+        // })
+        // .catch(function(error) {
+        //    console.error("Error writing document: ", error);
+        // });
 
              
 
@@ -142,11 +144,13 @@ const SignUp = ({history})=> {
 
         history.push("/popupverify");
        } catch(error) {
+        console.log(error.stack);
+         console.log(error.message);
 
         event.preventDefault();
         setAlertState({
           open: true,
-          message: " המשתמש כבר קיים במערכת ",
+          message: error.message,
           sevirity_level: "error"
         })
        }
