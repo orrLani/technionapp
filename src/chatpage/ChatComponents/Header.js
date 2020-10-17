@@ -34,7 +34,8 @@ function Header(props) {
     deleteFromChat({})
       .then(() => {
         return addUserToChat({
-          user_nickname: auth.currentUserNickName
+          user_nickname: auth.currentUserNickName,
+          course_title: chat.title
         })
       })
       .then(newChatRef => {
@@ -85,7 +86,7 @@ function Header(props) {
     <div className="chat__header" >
       {/* <h2 className="room_name">{name[1].title}</h2>  */}
       <MoodIcon />
-      <h2> אינפי 1מ</h2>
+      <h2> {chat.title}</h2>
       {/* {value} */}
 
       <IconButton onClick={NewChat} >

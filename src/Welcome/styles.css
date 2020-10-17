@@ -106,7 +106,7 @@
   
   /*card2*/
   .card-image.card2 {
-    background: url("img2.jpg");
+    /* background: url("img2.jpg"); */
     background-size: cover;
   }
   .card-text.card2 .date {

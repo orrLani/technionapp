@@ -8,6 +8,7 @@ import Button from '@material-ui/core/Button';
 import {course_list, hobby_list} from '../AutoCmpleteLists';
 import AutoCompleteField from '../SignUpPage/AutocompleteComponents/AutoCompleteField'
 import NicknameField from './NicknameField'
+import InsertNicknameDialog from './InsertNicknameDialog'
 
 /* database and authentication */
 import firebase, { db } from '../server/firebase'
@@ -37,14 +38,22 @@ import EmailConfirmation from './EmailConfirmation'
 
 const Welcome = ({history}) =>  {
 
-  const [course, setCourses] = useState('') 
+  const [course, setCourse] = useState('') 
   const [hobby, setHobby] = useState('')
+
+  /* in order to know if the chat is חברתי or לימודי */
+  const [chatType,setChatType] = useState('')
 
   /*Contexts API */
   const auth = useContext(AuthContext)
   const [chat,setChat] = useContext(ChatContext)
   
+  /* handle nickname dialog */
+  const [insertNicknameDialogOpen,setInsertNicknameDialogOpen] = useState(false)
 
+  useEffect(() => {
+    console.log(course)
+  },[course])
   function CoursesSubmit(event) {
     // var email, user_name;
     // var user_email = firebase.auth().currentUser.email;
@@ -61,8 +70,6 @@ const Welcome = ({history}) =>  {
       .catch(error => {
         console.log(error)
       })
-
-
       console.log("I've been clicked!")
       setChat({
         ...chat,
@@ -73,8 +80,11 @@ const Welcome = ({history}) =>  {
       console.log(auth)
       if (auth.nickNameHasChanged) {
         const setUserNickName = firebase.functions().httpsCallable('setUserNickName')
+
+        {/* course will be {title: Friendly} if chat type is חברתי */}
         setUserNickName({
-          nickname: auth.currentUserNickName
+          nickname: auth.currentUserNickName,
+          
         })
         .then(() => {
           auth.setNickNameHasChanged(false)
@@ -84,8 +94,11 @@ const Welcome = ({history}) =>  {
         })
       }
       const addUserToChat = firebase.functions().httpsCallable('addUserToChat')
+
+      {/* course will be {title: "Friendly"} if chat type is חברתי */}
       addUserToChat({
-        user_nickname: auth.currentUserNickName
+        user_nickname: auth.currentUserNickName,
+        course_title: course.title
       }).then(chatRef => {
         {chat.DEBUG && console.log(chatRef)}
         {chat.DEBUG && console.log(chatRef.data.chat_id)}
@@ -95,7 +108,8 @@ const Welcome = ({history}) =>  {
           is_open: true,
           id: chatRef.data.chat_id,
           is_loading: false,
-          active_status: "WAITING_CHAT"
+          active_status: "WAITING_CHAT",
+          title: course.title
         })
       })
       .catch(error =>{
@@ -125,23 +139,21 @@ const Welcome = ({history}) =>  {
     },[])
 
 
+    
     //[TEST START]
-    function test_add_user() {
-      db.collection('rooms')
-    .where('users_count','<=',2)
-    .orderBy('users_count')
-    .orderBy('timestamp_start')
-    .limit(1)
-    .get().then(snapshot => {
-      //return room with 1 user, or undefined if not exist
-      snapshot.docs.forEach(doc => {
-        console.log(doc.data())
+  function test_add_user() {
+    db.collection('rooms')
+      .where('course_title' ,'==',"234106 אינפי 1 מ ")
+      .where('users_count' ,'<=', 2)
+      .orderBy('users_count')
+      .orderBy('timestamp_start')
+      .limit(1)
+      .get().then(snapshot => {
+        //return one room from the list, if no exist returns undefined
+        console.log(snapshot.docs[0].data())
       })
-
-    })
-    }
+  }
     //[TEST END]
-
 
     return (
       <div className="background_style">
@@ -153,12 +165,16 @@ const Welcome = ({history}) =>  {
               <Grid container justify="center" spacing={6} >
                 <Grid item xs={12} container justify="center">
                 <AutoCompleteField list={course_list} 
-                            label="קורסים" setFunction={setCourses}  />
+                            label="קורסים" setFunction={setCourse}  />
                    
                 </Grid>
-                
+                {/* <NicknameField id={1} /> */}
               <Grid item xs={12}>
-                <Button variant="contained" color="primary" onClick={CoursesSubmit} > 
+                <Button variant="contained" color="primary" 
+                onClick={() => {
+                  setChatType("Learning")
+                  setInsertNicknameDialogOpen(true)
+                }} > 
                  לחץ כאן 
                 </Button>
               </Grid>
@@ -175,11 +191,16 @@ const Welcome = ({history}) =>  {
                 <AutoCompleteField list={hobby_list} 
                             label="תחביבים" setFunction={setHobby} />
                    </Grid>
-                            <NicknameField />
+                            {/* <NicknameField id={2} /> */}
                    
               <Grid item xs={12}>
                 <Button variant="contained" color="primary" 
-                  onClick = {test_add_user} 
+                  onClick = {() => {
+                    setChatType("Friendly")
+                    setCourse({title: "צ'אט חברתי"})
+                    setInsertNicknameDialogOpen(true)
+                  }} 
+                  // onClick = {test_add_user}
                 > 
                  לחץ כאן 
                 </Button>
@@ -187,6 +208,9 @@ const Welcome = ({history}) =>  {
               </Grid>
               </div>
               </div>
+              {insertNicknameDialogOpen && <InsertNicknameDialog open ={insertNicknameDialogOpen}
+                setOpen = {setInsertNicknameDialogOpen}
+                submitFunction = {HobbySubmit} />}
         <Modal
           // aria-labelledby="transition-modal-title"
           // aria-describedby="transition-modal-description"

@@ -96,6 +96,7 @@ function Chat(props) {
                     text: input,
                     user_uid: auth.currentUser.uid,
                     timestamp: fb.firestore.FieldValue.serverTimestamp(),
+
                 })
         }
         setInput("")
@@ -108,14 +109,18 @@ function Chat(props) {
                 
                     {messages.map(message => (
                         //Left or right   //className={`chat__message ${message.name === user.displayName && "chat__reciever"}`}
-                        <p key={message.id} 
+                        <p key={message.id}
                             className={`chat__message ${message.data().user_uid === auth.currentUser.uid && "chat__reciever"}`} >
                             <span className="chat__name">{message.data().nickname}</span>
                             {message.data().text}
                             <span className="chat__timestamp">
-                            {new Date(message.data().timestamp?.toDate()).getHours()} 
+                            {/* Hour:Minute */}
+                            {new Date(message.data().timestamp?.toDate()).toString().split(' ')[4]?.split(':')[0]}
                             :
-                                {new Date(message.data().timestamp?.toDate()).getMinutes()}
+                            {new Date(message.data().timestamp?.toDate()).toString().split(' ')[4]?.split(':')[1]}
+                            {/* {new Date(message.data().timestamp?.toDate()).getHours()} 
+                            :
+                                {new Date(message.data().timestamp?.toDate()).getMinutes()} */}
                             </span>
                         </p>
                         // {new Date(message.timestamp?.toDate()).toUTCString()}

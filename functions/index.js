@@ -110,10 +110,11 @@ exports.removeUserFromChat = functions.https.onCall((data,context) => {
 
 /* adds user to chat.
     priorise room with 1 users that created before all.
-    @ param data = {user_nickname} */
+    @ param data = {user_nickname, course_title} */
 exports.addUserToChat = functions.https.onCall((data,context) => {
     functions.logger.log("I'm adding user to chat!")
     return admin.firestore().collection('rooms')
+    .where('course_title' ,'==',data.course_title)
     .where('users_count','<=',2)
     .orderBy('users_count')
     .orderBy('timestamp_start')
@@ -126,7 +127,8 @@ exports.addUserToChat = functions.https.onCall((data,context) => {
         // if not room found, create one
         if(room === undefined){
             return admin.firestore().collection('rooms').add({
-                timestamp_start: admin.firestore.FieldValue.serverTimestamp()
+                timestamp_start: admin.firestore.FieldValue.serverTimestamp(),
+                course_title: data.course_title
             })
         }
         else {
