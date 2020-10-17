@@ -13,6 +13,8 @@ import {AuthContext} from '../../server/Auth'
 import {ChatContext} from '../../server/ChatProvider'
 
 
+import MoodIcon from '@material-ui/icons/Mood';
+
 function Header(props) {
   const [chat,setChat] = useContext(ChatContext)
   const auth = useContext(AuthContext)
@@ -82,7 +84,8 @@ function Header(props) {
   return (
     <div className="chat__header" >
       {/* <h2 className="room_name">{name[1].title}</h2>  */}
-      <h2 className="room__name"> אינפי 1מ</h2>
+      <MoodIcon />
+      <h2> אינפי 1מ</h2>
       {/* {value} */}
 
       <IconButton onClick={NewChat} >

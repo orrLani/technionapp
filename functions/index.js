@@ -108,21 +108,26 @@ exports.removeUserFromChat = functions.https.onCall((data,context) => {
 })
 
 
-/* adds user to chat that has 1 user already,
-    if no chat like this, creates new chat and adds the user.
+/* adds user to chat.
+    priorise room with 1 users that created before all.
     @ param data = {user_nickname} */
 exports.addUserToChat = functions.https.onCall((data,context) => {
     functions.logger.log("I'm adding user to chat!")
     return admin.firestore().collection('rooms')
-    .where('users_count','==',1)
+    .where('users_count','<=',2)
+    .orderBy('users_count')
+    .orderBy('timestamp_start')
+    .limit(1)
     .get().then(snapshot => {
-      //return room with 1 user, or undefined if not exist
+      //return one room from the list, if no exist returns undefined
      return snapshot.docs[0]
     })
     .then(room => {
         // if not room found, create one
         if(room === undefined){
-            return admin.firestore().collection('rooms').add({})
+            return admin.firestore().collection('rooms').add({
+                timestamp_start: admin.firestore.FieldValue.serverTimestamp()
+            })
         }
         else {
             return room.ref

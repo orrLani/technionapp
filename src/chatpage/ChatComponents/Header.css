@@ -31,3 +31,7 @@
 	float: up;
 	
 }  
+
+.ignore {
+	display: none;
+}

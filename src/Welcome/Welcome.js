@@ -125,6 +125,23 @@ const Welcome = ({history}) =>  {
     },[])
 
 
+    //[TEST START]
+    function test_add_user() {
+      db.collection('rooms')
+    .where('users_count','<=',2)
+    .orderBy('users_count')
+    .orderBy('timestamp_start')
+    .limit(1)
+    .get().then(snapshot => {
+      //return room with 1 user, or undefined if not exist
+      snapshot.docs.forEach(doc => {
+        console.log(doc.data())
+      })
+
+    })
+    }
+    //[TEST END]
+
 
     return (
       <div className="background_style">
@@ -162,7 +179,7 @@ const Welcome = ({history}) =>  {
                    
               <Grid item xs={12}>
                 <Button variant="contained" color="primary" 
-                  onClick = {HobbySubmit} 
+                  onClick = {test_add_user} 
                 > 
                  לחץ כאן 
                 </Button>
