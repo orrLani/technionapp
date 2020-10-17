@@ -117,7 +117,8 @@ const SignUp = ({history})=> {
              faculty: faculty,
              course: course,
              maritalstatus : maritalstatus,
-             hobby: hobby
+             hobby: hobby,
+             nickname:"default"
 
 
          }).then(function() {

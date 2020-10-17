@@ -2,32 +2,31 @@
 	background-color: #4ECDC4;
 	/* font-family: 'Heebo', sans-serif; */
 	color: #F7FFF7;
-	border-top-left-radius: 5px;
-	border-top-right-radius: 5px;
-	padding: 15px;
+	
+	/* padding: 15px; */
 	display: flex;
-	align-items: center;
-	justify-content: space-between;
+	align-items: center; 
+	justify-content: last baseline ; 
 	border-bottom: 1px solid lightgray;
 }
-.chat__headerInfo {
-    flex: 1;
-    padding-left: 20px;
-    font-family: Heebo,sans-serif;
+.room__name{
+	
+	width: 800px;
+	align-self: center;
 }
 
-.chat__headerInfo > h3 {
+/* .chat__headerInfo > h2 {
     margin-bottom: 3px;
     font-weight: 500;
-}
+} */
 
-.chat__headerInfo > p {
+/* .chat__headerInfo > p {
     color: gray;
-} 
+}  */
  .leaving_room {
 
-	font-size: 18px;
-	float: right;
-	float: up;
+	flex: 1;
+	
+	
 	
 }  

@@ -82,9 +82,9 @@ function Header(props) {
   return (
     <div className="chat__header" >
       {/* <h2 className="room_name">{name[1].title}</h2>  */}
-      <h2 className="room__name"> אינפי 1מ</h2>
+      <h2 className="room__name" align="center" > אינפי 1מ</h2>
       {/* {value} */}
-
+      <div className="leaving_room"  >
       <IconButton onClick={NewChat} >
         {/* <Link variant="body2"
           to="/welcome"
@@ -92,6 +92,7 @@ function Header(props) {
           dir="rtl">עזוב את החדר</Link> */}
           צ'אט חדש
       </IconButton>
+      </div>
 
 
     </div>
