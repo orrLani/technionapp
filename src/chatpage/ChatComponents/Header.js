@@ -16,7 +16,7 @@ import {ChatContext} from '../../server/ChatProvider'
 function Header(props) {
   const [chat,setChat] = useContext(ChatContext)
   const auth = useContext(AuthContext)
-  function ExitChat() {
+  function NewChat() {
     
     setChat(chat => {
       return {
@@ -41,12 +41,13 @@ function Header(props) {
           is_open: true,
           id: newChatRef.data.chat_id,
           is_loading: false,
-          is_active: true
+          active_status: "WAITING_CHAT"
         })
       })
     .catch(error => {
-      alert("Error occured, please try again")
-
+      console.log("where is error")
+      console.log(error)
+      // alert("Error occured, please try again")
       //seting state back to welcome page
       setChat({
         ...chat,
@@ -84,7 +85,7 @@ function Header(props) {
       <h2 className="room__name"> אינפי 1מ</h2>
       {/* {value} */}
 
-      <IconButton onClick={ExitChat} >
+      <IconButton onClick={NewChat} >
         {/* <Link variant="body2"
           to="/welcome"
           className="leave__room"

@@ -93,7 +93,7 @@ function Sidebar() {
       isMounted = false
       //setUsers([])
     })
-  }, [chat]  )
+  }, []  )
 
   return (
 

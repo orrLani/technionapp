@@ -33,6 +33,7 @@ exports.removeUserFromChat = functions.https.onCall((data,context) => {
     .doc(context.auth.uid)
     .get()
     .then(snap => {
+        functions.logger.log(snap.data())
         return snap.data().chat_id
     })
     .then(chat_id => {
@@ -66,13 +67,13 @@ exports.removeUserFromChat = functions.https.onCall((data,context) => {
         return admin.firestore().collection('rooms').doc(data.chat_id).get()
       })
       .then(chatRef => {
-        return chatRef.data().users_count
+        return chatRef.data()&&chatRef.data().users_count
         // users_count = chatRef.data().users_count
         // return '';
       })
       .then(users_count => {
         // if user was the last on the chat, delete the chat.
-        if(users_count === 1) {
+        if(users_count && users_count <= 2) {
             //delete chat doc
             admin.firestore().collection("rooms").doc(data.chat_id).delete()
 
@@ -83,7 +84,7 @@ exports.removeUserFromChat = functions.https.onCall((data,context) => {
             .collection('messages').get()
         }
         // else, decrement users count
-        else{
+        else if(users_count){
             const decrement = admin.firestore.FieldValue.increment(-1);
             admin.firestore().collection('rooms').doc(data.chat_id).update({
               users_count: decrement
