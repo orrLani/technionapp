@@ -9,13 +9,13 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 
 import {AuthContext} from '../server/Auth'
 import {ChatContext} from '../server/ChatProvider'
-export default function InsertNicknameDialog({ open, setOpen, submitFunction }) {
-    const chatContext = useContext(ChatContext)
+export default function InsertNicknameDialog({ open, setOpen }) {
+    const {setChat, addNewChat} = useContext(ChatContext)
     const auth = useContext(AuthContext)
     const handleSubmit = async () => {
         setOpen(false);
         console.log("in handle submit")
-        chatContext.setChat(chat => {
+        setChat(chat => {
             return{
                 ...chat,
                 is_open: true,
@@ -23,7 +23,7 @@ export default function InsertNicknameDialog({ open, setOpen, submitFunction }) 
             }
         })
         // chat.addUserToChat()
-        chatContext.addNewChat(auth)
+        addNewChat(auth)
     };
 
     return (

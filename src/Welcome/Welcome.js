@@ -64,65 +64,6 @@ const Welcome = ({history}) =>  {
     // setChatIsOpen(false)
   }
 
-    function HobbySubmit(event){
-      const deleteFromChat = firebase.functions().httpsCallable('removeUserFromChat')
-      deleteFromChat({})
-      .catch(error => {
-        console.log(error)
-      })
-      console.log("I've been clicked!")
-      setChat({
-        ...chat,
-        is_open: true,
-        is_loading: true
-      })
-      // in case that user added new nickname, update in database
-      console.log(auth)
-      if (auth.nickNameHasChanged) {
-        const setUserNickName = firebase.functions().httpsCallable('setUserNickName')
-
-        {/* course will be {title: Friendly} if chat type is חברתי */}
-        setUserNickName({
-          nickname: auth.currentUserNickName,
-          
-        })
-        .then(() => {
-          auth.setNickNameHasChanged(false)
-        })
-        .catch(error => {
-          console.log(error)
-        })
-      }
-      const addUserToChat = firebase.functions().httpsCallable('addUserToChat')
-
-      {/* course will be {title: "Friendly"} if chat type is חברתי */}
-      addUserToChat({
-        user_nickname: auth.currentUserNickName,
-        course_title: course.title
-      }).then(chatRef => {
-        {chat.DEBUG && console.log(chatRef)}
-        {chat.DEBUG && console.log(chatRef.data.chat_id)}
-        
-        setChat({
-          ...chat,
-          is_open: true,
-          id: chatRef.data.chat_id,
-          is_loading: false,
-          active_status: "WAITING_CHAT",
-          title: course.title
-        })
-      })
-      .catch(error =>{
-        alert("Error occured, please try again")
-        setChat({
-          ...chat,
-          is_open: false,
-          is_loading: false,
-          id: undefined
-        })
-      })
-
-    }
 
     useEffect(() => {
       {chat.DEBUG && console.log("Welcome is mounting!")}
@@ -138,23 +79,31 @@ const Welcome = ({history}) =>  {
       }
     },[])
 
-
+    useEffect(() => {
+      console.log(auth)
+      if(!auth.currentUser) {
+        history.push('/signin')
+      }
+    },[auth])
     
-    //[TEST START]
-  function test_add_user() {
-    console.log("in test add user")
-    setChat({
-      ...chat,
-      is_open: true,
-      is_loading: true
-    })
-    chat.addUserToChat()
-  }
-    //[TEST END]
+
 
     return (
       <div className="background_style">
-        {/* <EmailConfirmation emailVerified={auth.currentUser.emailVerified}/> */}
+        <EmailConfirmation emailVerified={auth.currentUser.emailVerified}/>
+        <div>
+          <Button onClick={() => {
+            firebase.auth().signOut()
+            .then(()=>{
+              // history.push('/signin')
+            }).catch(error => {
+              console.log(error)
+            })
+          }}
+          variant="contained"
+           color="secondery">התנתקות</Button>
+        </div>
+        <div className="cards">
           <div className="card">
             <div className="card-image"></div>
             <div className="card-text">
@@ -232,9 +181,9 @@ const Welcome = ({history}) =>  {
               </Grid>
               </div>
               </div>
+              </div>
               {insertNicknameDialogOpen && <InsertNicknameDialog open ={insertNicknameDialogOpen}
-                setOpen = {setInsertNicknameDialogOpen}
-                submitFunction = {test_add_user} />}
+                setOpen = {setInsertNicknameDialogOpen} />}
         <Modal
           // aria-labelledby="transition-modal-title"
           // aria-describedby="transition-modal-description"

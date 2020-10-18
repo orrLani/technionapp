@@ -23,6 +23,13 @@
     margin-left: -8px;
     position: fixed;
 
+    flex-direction: column-reverse;
+
+  }
+  .cards {
+    display:flex;
+    justify-content: center;
+    flex-direction: row;
   }
   .card {
     display: grid;

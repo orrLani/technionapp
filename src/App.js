@@ -27,7 +27,7 @@ function App() {
    <div className="app__body">
     
       
-      <Route exact path="/" component={SignInSide} />
+      <Route exact path="/" component={Welcome} />
       <Route exact path="/signup" component={Signup} />
       <Route exact path="/popupverify" component={PopUpVerify} />
       <Route path="/signin" component ={SignInSide}  />
