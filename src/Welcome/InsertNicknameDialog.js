@@ -8,12 +8,22 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 
 import {AuthContext} from '../server/Auth'
+import {ChatContext} from '../server/ChatProvider'
 export default function InsertNicknameDialog({ open, setOpen, submitFunction }) {
-
+    const chatContext = useContext(ChatContext)
     const auth = useContext(AuthContext)
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         setOpen(false);
-        return submitFunction()
+        console.log("in handle submit")
+        chatContext.setChat(chat => {
+            return{
+                ...chat,
+                is_open: true,
+                is_loading: true
+            }
+        })
+        // chat.addUserToChat()
+        chatContext.addNewChat(auth)
     };
 
     return (

@@ -92,15 +92,34 @@ exports.removeUserFromChat = functions.https.onCall((data,context) => {
         }
         return undefined
       })
-      // in case of deleting the chat, needs to delete the messages collection aswell
+      // in case of deleting the chat, needs to delete the 'messages' collection aswell
       .then(messages_to_delete => {
             if(messages_to_delete === undefined) {
-                return ``
+                return undefined
             }
             messages_to_delete.forEach(message => {
                 message.ref.delete()
             })
-            return ``
+            return admin.firestore().
+            collection('rooms')
+            .doc(data.chat_id)
+            .collection('users_on_page').get()
+      })
+      //in case of deleting, need to delete the 'users_on_page' collection aswell
+      .then(users_to_delete => {
+          if(users_to_delete === undefined) {
+              return ''
+          }
+          users_to_delete.forEach(user => {
+              user.ref.delete()
+              admin.firestore()
+                  .collection('users')
+                  .doc(user.data().uid)
+                  .update({
+                      chat_id: admin.firestore.FieldValue.delete()
+                  })
+          })
+          return ''
       })
       .catch(error => {
           throw error
@@ -110,7 +129,7 @@ exports.removeUserFromChat = functions.https.onCall((data,context) => {
 
 /* adds user to chat.
     priorise room with 1 users that created before all.
-    @ param data = {user_nickname, course_title} */
+    @ param data = {user_nickname, course_title, hobby} */
 exports.addUserToChat = functions.https.onCall((data,context) => {
     functions.logger.log("I'm adding user to chat!")
     return admin.firestore().collection('rooms')
@@ -136,12 +155,24 @@ exports.addUserToChat = functions.https.onCall((data,context) => {
         }
     })
     .then(roomRef => {
-        roomRef.collection('users_on_page')
-        .add({
-            nickname: data.user_nickname,
-            user_name: context.auth.token.email.split('@')[0],
-            user_uid: context.auth.uid
-        })
+        if(data.course_title === "צ'אט חברתי"){
+            roomRef.collection('users_on_page')
+                .add({
+                    nickname: data.user_nickname,
+                    user_name: context.auth.token.email.split('@')[0],
+                    user_uid: context.auth.uid,
+                    user_hobby: data.hobby
+                })
+        }
+        //if chat is not חברתי we won't insert hobby
+        else{
+            roomRef.collection('users_on_page')
+                .add({
+                    nickname: data.user_nickname,
+                    user_name: context.auth.token.email.split('@')[0],
+                    user_uid: context.auth.uid,
+                })
+        }
         //add chat_id to user
         admin.firestore().collection('users').doc(context.auth.uid).update({
             chat_id: roomRef.id

@@ -3,6 +3,7 @@ import { Avatar, IconButton } from "@material-ui/core"
 import { AttachFile, MoreVert, SearchOutlined, Message, InsertEmoticon } from "@material-ui/icons"
 import MicIcon from '@material-ui/icons/Mic';
 import { useParams } from "react-router-dom"
+import Button from '@material-ui/core/Button';
 
 /* database */
 import firebase from "../server/firebase"
@@ -13,7 +14,7 @@ import fb from 'firebase'
 import { AuthContext } from '../server/Auth'
 import { ChatContext } from '../server/ChatProvider'
 
-
+import Loading from '../Loading'
 import GridList from '@material-ui/core/GridList';
 import "./Chat.css"
 
@@ -26,8 +27,8 @@ function Chat(props) {
     const [messages, setMessages] = useState([])
 
     const auth = useContext(AuthContext)
-    const [chat, setChat] = useContext(ChatContext)
-    const [users,setUsers] = useState([])
+    const {chat, setChat, addNewChat} = useContext(ChatContext)
+    const [users, setUsers] = useState([])
     const prevUsers = usePrevious(users)
 
     // const val =chat.is_not_active;
@@ -128,13 +129,34 @@ function Chat(props) {
                 </div>
                 }
             {chat.active_status === "WAITING_CHAT" && 
-                <div className="chat__body">
-                    המתנה כפרה
+                <div className="chat__body__wait">
+                    <p className="wait__message" >
+                          אנא המתינ/י לתחילת השיחה
+                    </p>
+                    <Loading />
                     </div>
             }
             {chat.active_status === "CLOSED_CHAT" && 
-                <div className="chat__body">
-                    למה אני לא רואה פעילות
+                <div className="chat__body__wait">
+                    <Button
+                     variant="contained"
+                      color="primary"
+                      onClick={() => {
+                        setChat(chat => {
+                            return {
+                              ...chat,
+                              is_open: true,
+                              is_loading: true
+                      
+                            }
+                          })
+                          addNewChat(auth)
+                      }}>
+                        לפתיחת צ'אט חדש
+                    </Button>
+                    <p className="close__message">
+                    הצ'אט נסגר בשל מיעוט משתתפים
+                    </p>
                     </div>
             }
 
@@ -145,7 +167,7 @@ function Chat(props) {
             <input value={input}
                     disabled = {false}
                     onChange={(e) => setInput(e.target.value)}
-                    placeholder ="הקלד משהו נחמד"  
+                    placeholder ="הקליד/י משהו נחמד"  
                     type="text"
                     dir="rtl"/>
                     </form>
@@ -158,7 +180,7 @@ function Chat(props) {
             <input value={input}
                     disabled = {true}
                     onChange={(e) => setInput(e.target.value)}
-                    placeholder ="למה הצאט חסום"  
+                    // placeholder ="למה הצאט חסום"  
                     type="text"
                     dir="rtl"
                     />
@@ -172,7 +194,7 @@ function Chat(props) {
                 <input value={input}
                     disabled = {true}
                     onChange={(e) => setInput(e.target.value)}
-                    placeholder ="למה הצ'אט ממתין"
+                    placeholder ="המתינ/י"
                     type="text"
                     dir="rtl"
                     />

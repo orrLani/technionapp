@@ -20,7 +20,7 @@ export default function CircularIndeterminate() {
         <div style={{
             display: 'grid',
             placeItems: 'center',
-            height: '100vh',
+            height: '50vh',
         }}>
             <div className={classes.root}>
                 <CircularProgress />

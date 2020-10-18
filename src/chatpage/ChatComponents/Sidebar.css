@@ -9,7 +9,12 @@
 	overflow-y: scroll;
 	/* font-family: Heebo,sans-serif; */
 }
-
+.users__list{
+	flex:1;
+}
+.hobbys_list {
+	flex: 1;
+}
 
 .chat-sidebar h3 {
 	margin-bottom: 15px;

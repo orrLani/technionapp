@@ -16,10 +16,11 @@ import {ChatContext} from '../../server/ChatProvider'
 import MoodIcon from '@material-ui/icons/Mood';
 
 function Header(props) {
-  const [chat,setChat] = useContext(ChatContext)
+  const {chat,setChat,addNewChat} = useContext(ChatContext)
   const auth = useContext(AuthContext)
+
+  /* for צ'אט חדש button */
   function NewChat() {
-    
     setChat(chat => {
       return {
         ...chat,
@@ -28,39 +29,7 @@ function Header(props) {
 
       }
     })
-    const deleteFromChat = firebase.functions().httpsCallable('removeUserFromChat')
-    const addUserToChat = firebase.functions().httpsCallable('addUserToChat')
-
-    deleteFromChat({})
-      .then(() => {
-        return addUserToChat({
-          user_nickname: auth.currentUserNickName,
-          course_title: chat.title
-        })
-      })
-      .then(newChatRef => {
-        setChat({
-          ...chat,
-          is_open: true,
-          id: newChatRef.data.chat_id,
-          is_loading: false,
-          active_status: "WAITING_CHAT"
-        })
-      })
-    .catch(error => {
-      console.log("where is error")
-      console.log(error)
-      // alert("Error occured, please try again")
-      //seting state back to welcome page
-      setChat({
-        ...chat,
-        is_open: false,
-        is_loading: false,
-        id: undefined
-      })
-    })
-
-    
+    addNewChat(auth)
   }
   useEffect(() => {
     { chat.DEBUG && console.log("I'm Mounting Header!")}

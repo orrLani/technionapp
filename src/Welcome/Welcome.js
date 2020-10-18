@@ -46,7 +46,7 @@ const Welcome = ({history}) =>  {
 
   /*Contexts API */
   const auth = useContext(AuthContext)
-  const [chat,setChat] = useContext(ChatContext)
+  const {chat,setChat} = useContext(ChatContext)
   
   /* handle nickname dialog */
   const [insertNicknameDialogOpen,setInsertNicknameDialogOpen] = useState(false)
@@ -142,16 +142,13 @@ const Welcome = ({history}) =>  {
     
     //[TEST START]
   function test_add_user() {
-    db.collection('rooms')
-      .where('course_title' ,'==',"234106 אינפי 1 מ ")
-      .where('users_count' ,'<=', 2)
-      .orderBy('users_count')
-      .orderBy('timestamp_start')
-      .limit(1)
-      .get().then(snapshot => {
-        //return one room from the list, if no exist returns undefined
-        console.log(snapshot.docs[0].data())
-      })
+    console.log("in test add user")
+    setChat({
+      ...chat,
+      is_open: true,
+      is_loading: true
+    })
+    chat.addUserToChat()
   }
     //[TEST END]
 
@@ -172,8 +169,20 @@ const Welcome = ({history}) =>  {
               <Grid item xs={12}>
                 <Button variant="contained" color="primary" 
                 onClick={() => {
-                  setChatType("Learning")
-                  setInsertNicknameDialogOpen(true)
+                  console.log(course)
+                  if (course.title === undefined) {
+                    alert("אנא בחר/י קורס")
+                  }
+                  else {
+                    setChatType("Learning")
+                    setChat(chat => {
+                      return {
+                        ...chat,
+                        title: course.title,
+                      }
+                    })
+                    setInsertNicknameDialogOpen(true)
+                  }
                 }} > 
                  לחץ כאן 
                 </Button>
@@ -197,7 +206,22 @@ const Welcome = ({history}) =>  {
                 <Button variant="contained" color="primary" 
                   onClick = {() => {
                     setChatType("Friendly")
-                    setCourse({title: "צ'אט חברתי"})
+                    setChat(chat => {
+                      //console.log(hobby)
+                      if (hobby) {
+                        return {
+                          ...chat,
+                          title: "צ'אט חברתי",
+                          user_hobby: hobby.title,
+                        }
+                      }
+                      else{
+                        return {
+                          ...chat,
+                          title: "צ'אט חברתי",
+                        }
+                      }
+                    })
                     setInsertNicknameDialogOpen(true)
                   }} 
                   // onClick = {test_add_user}
@@ -210,7 +234,7 @@ const Welcome = ({history}) =>  {
               </div>
               {insertNicknameDialogOpen && <InsertNicknameDialog open ={insertNicknameDialogOpen}
                 setOpen = {setInsertNicknameDialogOpen}
-                submitFunction = {HobbySubmit} />}
+                submitFunction = {test_add_user} />}
         <Modal
           // aria-labelledby="transition-modal-title"
           // aria-describedby="transition-modal-description"

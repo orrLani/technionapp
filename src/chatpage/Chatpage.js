@@ -24,7 +24,7 @@ import Loading from '../Loading'
 import { Close } from '@material-ui/icons';
 
 function Chatpage({ChatIsOpenFunction}) {
-  const [chat,setChat]  = useContext(ChatContext)
+  const {chat,setChat,removeUserFromChat}  = useContext(ChatContext)
 
   const auth = useContext(AuthContext)
 
@@ -35,23 +35,12 @@ function Chatpage({ChatIsOpenFunction}) {
         ...chat,
         is_open: false,
         is_loading: true
-
       }
     })
-    const deleteFromChat = firebase.functions().httpsCallable('removeUserFromChat')
-    deleteFromChat({})
-      .then(() => {
-        setChat(chat => {
-          return {
-            ...chat,
-            is_loading: false,
-            
-          }
-        })
-      })
-    .catch(error => {
-      console.log(error)
-    })
+    //if chat is closed, it has already been deleted, no need to update databade.
+    if( chat.active_status !== "CLOSED_CHAT" ){
+      removeUserFromChat()
+    }
   }
 
 

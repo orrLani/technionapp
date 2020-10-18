@@ -67,6 +67,26 @@
     padding: 30px;
     overflow-y: scroll;
 }
+.chat__body__wait{
+    flex: 1;
+    /* background-image: url("https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png"); */
+    /* background-repeat: repeat; */
+    background-color: #ededed;
+    background-position: center;
+    /* margin-top:25px;
+    margin-bottom: 550px;  */
+    
+    display:flex;
+    flex-direction: column-reverse;
+    justify-content: center;
+    align-items: center;
+    padding: 30px;
+    overflow-y: scroll;
+}
+
+.close__message {
+    font: 100;
+}
 
 .chat__footer {
     display: flex;
