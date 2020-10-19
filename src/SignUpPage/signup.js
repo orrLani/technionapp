@@ -108,7 +108,7 @@ const SignUp = ({history})=> {
       
        try {
          await firebase.auth().createUserWithEmailAndPassword(text_user+"@campus.technion.ac.il",text_password)
-         const user = auth.currentUser;
+         const user = firebase.auth().currentUser;
          await db.collection("users").doc(user.uid).set({
            text_user: text_user,
            birthday: birthday,
