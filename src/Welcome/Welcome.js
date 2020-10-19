@@ -91,7 +91,7 @@ const Welcome = ({history}) =>  {
 
     return (
       <div className="background_style">
-        <EmailConfirmation emailVerified={auth.currentUser && auth.currentUser.emailVerified}/>
+       {/* <EmailConfirmation emailVerified={auth.currentUser && auth.currentUser.emailVerified}/> */}
         <div>
           <Button onClick={() => {
             firebase.auth().signOut()
