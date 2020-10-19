@@ -10,6 +10,12 @@ import { AuthContext } from "../../server/Auth";
 /* custom hook */
 import usePrevious from '../../utils/usePrevious'
 
+
+/* for music */
+import startChat from "../../sounds/start_chat.wav";
+import endChat from "../../sounds/end_chat.wav";
+
+
 /* 
   LEFT side:
   ----------------------
@@ -27,6 +33,15 @@ function Sidebar() {
   const [hobbys,setHobbys] = useState([])
   const {chat,setChat} = useContext(ChatContext)
   const auth = useContext(AuthContext)
+
+  //for music
+  const startAudio = new Audio(startChat);
+  const endAudio = new Audio(endChat);
+  const playSound = audioFile => {
+    audioFile.play();
+  };
+
+
 
   // to track changes in users list
   const prevUsers = usePrevious(users)
@@ -47,6 +62,7 @@ function Sidebar() {
       // console.log(users.length)
       console.log("Close the chat!")
       setChat(prevChat => {
+        playSound(endAudio)
         return {
           ...prevChat,
           active_status: "CLOSED_CHAT"
@@ -57,6 +73,9 @@ function Sidebar() {
     // from waiting to active
     else if (users.length > 1 && chat.active_status !== "CLOSED_CHAT") {
       setChat(chat => {
+
+        //play the music
+        playSound(startAudio)
         return {
           ...chat,
           active_status: "ACTIVE_CHAT"
