@@ -82,6 +82,7 @@ const Welcome = ({history}) =>  {
     useEffect(() => {
       console.log(auth)
       if(!auth.currentUser) {
+        console.log("from welcome to signin")
         history.push('/signin')
       }
     },[auth])
@@ -90,7 +91,7 @@ const Welcome = ({history}) =>  {
 
     return (
       <div className="background_style">
-        <EmailConfirmation emailVerified={auth.currentUser.emailVerified}/>
+        <EmailConfirmation emailVerified={auth.currentUser && auth.currentUser.emailVerified}/>
         <div>
           <Button onClick={() => {
             firebase.auth().signOut()

@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React,{useState,useEffect} from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -23,7 +23,7 @@ import firebase from '../server/firebase'
 import { SystemUpdate } from '@material-ui/icons';
 
 // handle userState
-import UserState, { UserProvider } from '../StateProvider'
+import {AuthContext} from '../server/Auth'
 import {useContext} from 'react'
 
 
@@ -83,9 +83,10 @@ const SignInSide=({history})=> {
   const[email,setEmail] = useState('')
   const[password,setPassword] = useState('')
   
-
+  
   const [modal, setModal] = useState(false);
 
+  const auth = useContext(AuthContext)
   const [alertState, setAlertState] = React.useState({
     open: false
   });
@@ -101,35 +102,14 @@ const SignInSide=({history})=> {
     console.log(password)
     event.preventDefault();
 
-  //   firebase.auth().signInWithEmailAndPassword(email,password).catch(function(error) {
-  //     console.log("noooooo")
-  //     return
-  // });
-  // history.push("/welcome");
-
-  // }
-  //firebase.auth().signInWithEmailAndPassword(email, password)
-    // *     .catch(function(error) {
-        // let x =0
-        // firebase.auth().signInWithEmailAndPassword(email,password).then((user) =>{}
-        // ).catch((error)=>{
-        //   x = 1 
-        //   console.log("not good")
-        //   firebase.auth().signOut()
-        //   history.push("/signin");          
-        // });
-        // if (x===0){
-        // console.log("good")
-        // history.push("/welcome");
-
-        // }
   
       
       
       firebase.auth()
       .signInWithEmailAndPassword(email, password)
       .then(() => {
-       history.push("/welcome")
+      //   console.log("from sign in to welcome")
+      //  history.push("/welcome")
       })
       .then(() => resetModal())
       .catch(err =>
@@ -147,7 +127,11 @@ const SignInSide=({history})=> {
       );
 
   }
-
+  useEffect(() => {
+    if(auth.currentUser) {
+      history.push("/welcome")
+    }
+  }, [auth])
   const classes = useStyles();
   return (
     <Grid container component="main" className={classes.root}>
