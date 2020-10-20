@@ -21,7 +21,7 @@ admin.initializeApp()
 // })
 
   /* deletes user from chat,
-     deletes the chat if no other users
+     deletes the chat if users_count <= 2. 
      @param data = {chat_id} */
 exports.removeUserFromChat = functions.https.onCall((data,context) => {
     functions.logger.log(context.auth.uid)
@@ -60,7 +60,7 @@ exports.removeUserFromChat = functions.https.onCall((data,context) => {
         })
         return ``
     })
-      /* after delete, check if chat is empty and deletes if it does */
+      /* after delete, check if chat is empty or only left with 1 user and deletes if it does */
       .then(() => {
 
         //returs chat reference
@@ -77,7 +77,7 @@ exports.removeUserFromChat = functions.https.onCall((data,context) => {
             //delete chat doc
             admin.firestore().collection("rooms").doc(data.chat_id).delete()
 
-            //return messages to be deleted
+            //return messages collection that will be deleted in the next .then
             return admin.firestore().
             collection('rooms')
             .doc(data.chat_id)
@@ -128,7 +128,12 @@ exports.removeUserFromChat = functions.https.onCall((data,context) => {
 
 
 /* adds user to chat.
-    priorise room with 1 users that created before all.
+    the algorithm is:
+    1. search for opened chats with users amount that is lower or equal to 2.
+    2. sort them by timestamp, and then by users amount.
+    3. choose the first from the list above.
+    4. if it was undefined, opens new chat for the user.
+    our goal is to prioritze rooms with only 1 user that is waiting for chat to open.
     @ param data = {user_nickname, course_title, hobby} */
 exports.addUserToChat = functions.https.onCall((data,context) => {
     functions.logger.log("I'm adding user to chat!")
