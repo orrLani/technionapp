@@ -50,7 +50,9 @@ export const ChatProvider = ({children}) => {
       addUserToChat({
         user_nickname: auth.currentUserNickName,
         course_title: chat.title,
-        hobby: chat.user_hobby
+        hobby: chat.user_hobby,
+        //add color to the user
+        color: "#"+Math.floor(Math.random()*16777215).toString(16)
       }).then(chatRef => {
         {chat.DEBUG && console.log(chatRef)}
         {chat.DEBUG && console.log(chatRef.data.chat_id)}

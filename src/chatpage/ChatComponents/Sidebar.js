@@ -43,6 +43,8 @@ function Sidebar() {
 
 
 
+
+
   // to track changes in users list
   const prevUsers = usePrevious(users)
 
@@ -123,7 +125,14 @@ function Sidebar() {
       <div className="users__list">
       <h3 dir="rtl"> משתמשים:</h3>
         {users.map(user => (
-          <div key={user.user_uid} className="chat__username">{user.nickname}</div>
+          <div key={user.user_uid} 
+          style={
+            {padding: "20px",
+            color: user.user_color,
+            font: "large",
+            width:"500"
+          }    
+          }> {user.nickname}</div>
         ))
         
         }
@@ -132,7 +141,11 @@ function Sidebar() {
         <div className="hobbys_list">
           <h3 dir="rtl">תחביבים:</h3>
           {hobbys.map(hobby => (
-          <div key={hobby} className="chat__username">{hobby}</div>
+          <div key={hobby} 
+          
+
+
+          >{hobby}</div>
         ))
         }
         </div>

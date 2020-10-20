@@ -161,7 +161,9 @@ exports.addUserToChat = functions.https.onCall((data,context) => {
                     nickname: data.user_nickname,
                     user_name: context.auth.token.email.split('@')[0],
                     user_uid: context.auth.uid,
-                    user_hobby: data.hobby
+                    user_hobby: data.hobby,
+                    user_color: data.color
+
                 })
         }
         //if chat is not חברתי we won't insert hobby
@@ -171,6 +173,7 @@ exports.addUserToChat = functions.https.onCall((data,context) => {
                     nickname: data.user_nickname,
                     user_name: context.auth.token.email.split('@')[0],
                     user_uid: context.auth.uid,
+                    user_color: data.color
                 })
         }
         //add chat_id to user
