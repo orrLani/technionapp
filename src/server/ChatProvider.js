@@ -56,7 +56,7 @@ export const ChatProvider = ({children}) => {
         course_title: chat.title,
         hobby: chat.user_hobby,
         //add color to the user
-        color: auth.userChatColor
+        color: random_color
       }).then(chatRef => {
         {chat.DEBUG && console.log(chatRef)}
         {chat.DEBUG && console.log(chatRef.data.chat_id)}

@@ -25,6 +25,9 @@
 }
 
 .chat__username {
+	-webkit-text-stroke: 0.1px darkred; /*width and color */
+	/* border-bottom-style: dotted; */
+    /* border-bottom-width: 1px; */
 	padding: 8px;
 	font-size: large;
 	font-weight: 500;
