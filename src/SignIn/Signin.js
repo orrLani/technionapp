@@ -80,7 +80,7 @@ const useStyles = makeStyles((theme) => ({
 
 const SignInSide=({history})=> {
 
-  const[email,setEmail] = useState('')
+  const[user,setUser] = useState('')
   const[password,setPassword] = useState('')
   
   
@@ -93,24 +93,20 @@ const SignInSide=({history})=> {
 
   const resetModal = () => {
     setModal(false);
-    setEmail("");
+    setUser("");
     setPassword("");
   };
 
   function handleSignIn(event){
-    console.log(email)
-    console.log(password)
+    console.log({user})
+    // console.log(password)
     event.preventDefault();
 
   
       
       
       firebase.auth()
-      .signInWithEmailAndPassword(email, password)
-      .then(() => {
-      //   console.log("from sign in to welcome")
-      //  history.push("/welcome")
-      })
+      .signInWithEmailAndPassword(user+"@campus.technion.ac.il", password)
       .then(() => resetModal())
       .catch(err =>
       {
@@ -151,11 +147,10 @@ const SignInSide=({history})=> {
               margin="normal"
               required
               fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
-              onChange = {(event)=> {setEmail(event.target.value)}}
+              id="user"
+              label="יוזר טכניוני"
+              name="user"
+              onChange = {(event)=> {setUser(event.target.value)}}
               autoFocus
             />
             <TextField

@@ -102,6 +102,11 @@ function Chat(props) {
         }
         setInput("")
     }
+    useEffect(() => {
+        if(messages[0]) {
+            console.log(messages[0].id)
+        }
+    },[messages])
     //firebase.firestore.FieldValue.serverTimestamp()
     return (
         <div className="chat">
@@ -114,23 +119,24 @@ function Chat(props) {
                             className={`chat__message ${message.data().user_uid === auth.currentUser.uid && "chat__reciever"}`} >
                             <span style={{color: message.data().color}}
                             className="chat__name">{message.data().nickname}</span>
-                            {message.data().text}
+                            
+                            {/* display time in Hour:Minute format */}
                             <span className="chat__timestamp">
-                            {/* Hour:Minute */}
                             {new Date(message.data().timestamp?.toDate()).toString().split(' ')[4]?.split(':')[0]}
                             :
                             {new Date(message.data().timestamp?.toDate()).toString().split(' ')[4]?.split(':')[1]}
-                            {/* {new Date(message.data().timestamp?.toDate()).getHours()} 
-                            :
-                                {new Date(message.data().timestamp?.toDate()).getMinutes()} */}
                             </span>
+                            
+                            {/* Message */}
+                            <span dir="rtl">{message.data().text}</span>
+                            
                         </p>
                         // {new Date(message.timestamp?.toDate()).toUTCString()}
                     ))}
                 </div>
                 }
             {chat.active_status === "WAITING_CHAT" && 
-                <div className="chat__body__wait">
+                <div key={"waiting"} className="chat__body__wait">
                     <p className="wait__message" >
                           אנא המתינ/י לתחילת השיחה
                     </p>
@@ -138,7 +144,7 @@ function Chat(props) {
                     </div>
             }
             {chat.active_status === "CLOSED_CHAT" && 
-                <div className="chat__body__wait">
+                <div key={"closed"} className="chat__body__wait">
                     <Button
                      variant="contained"
                       color="primary"
