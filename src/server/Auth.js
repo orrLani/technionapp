@@ -8,6 +8,7 @@ export const AuthProvider = ({ children }) => {
   const [pending, setPending] = useState(true);
   const [currentUserNickName,setCurrentUserNickName] = useState("מצטיין נשיא 442")
   const [nickNameHasChanged,setNickNameHasChanged] = useState(false)
+  const [userChatColor,setUserChatColor] = useState('black')
 
   useEffect(() => {
     app.auth().onAuthStateChanged((user) => {
@@ -39,7 +40,9 @@ export const AuthProvider = ({ children }) => {
         currentUserNickName,
         setCurrentUserNickName,
         nickNameHasChanged,
-        setNickNameHasChanged
+        setNickNameHasChanged,
+        userChatColor,
+        setUserChatColor
       }}
     >
       {children}

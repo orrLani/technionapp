@@ -97,7 +97,7 @@ function Chat(props) {
                     text: input,
                     user_uid: auth.currentUser.uid,
                     timestamp: fb.firestore.FieldValue.serverTimestamp(),
-
+                    color: auth.userChatColor
                 })
         }
         setInput("")
@@ -112,7 +112,8 @@ function Chat(props) {
                         //Left or right   //className={`chat__message ${message.name === user.displayName && "chat__reciever"}`}
                         <p key={message.id}
                             className={`chat__message ${message.data().user_uid === auth.currentUser.uid && "chat__reciever"}`} >
-                            <span className="chat__name">{message.data().nickname}</span>
+                            <span style={{color: message.data().color}}
+                            className="chat__name">{message.data().nickname}</span>
                             {message.data().text}
                             <span className="chat__timestamp">
                             {/* Hour:Minute */}

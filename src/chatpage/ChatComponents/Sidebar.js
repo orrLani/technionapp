@@ -126,13 +126,9 @@ function Sidebar() {
       <h3 dir="rtl"> משתמשים:</h3>
         {users.map(user => (
           <div key={user.user_uid} 
-          style={
-            {padding: "20px",
-            color: user.user_color,
-            font: "large",
-            width:"500"
-          }    
-          }> {user.nickname}</div>
+          style={{ color: user.user_color }}
+          className="chat__username"
+          > {user.nickname}</div>
         ))
         
         }
