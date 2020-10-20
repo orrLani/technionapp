@@ -4,6 +4,13 @@ import { AttachFile, MoreVert, SearchOutlined, Message, InsertEmoticon } from "@
 import MicIcon from '@material-ui/icons/Mic';
 import { useParams } from "react-router-dom"
 import Button from '@material-ui/core/Button';
+import 'emoji-mart/css/emoji-mart.css'
+import { Picker,emojiIndex } from 'emoji-mart'
+
+
+
+//for emojies
+import InsertEmojis from './ChatComponents/InsertEmojis'
 
 /* database */
 import firebase from "../server/firebase"
@@ -25,6 +32,7 @@ function Chat(props) {
     const [input, setInput] = useState("")
     const [roomName, setRoomName] = useState("")
     const [messages, setMessages] = useState([])
+    const [emoji,setEmoji] = useState('')
 
     const auth = useContext(AuthContext)
     const {chat, setChat, addNewChat} = useContext(ChatContext)
@@ -129,6 +137,7 @@ function Chat(props) {
                             
                             {/* Message */}
                             <span dir="rtl">{message.data().text}</span>
+
                             
                         </p>
                         // {new Date(message.timestamp?.toDate()).toUTCString()}
@@ -170,6 +179,12 @@ function Chat(props) {
 
             {chat.active_status === "ACTIVE_CHAT" && 
             <div className="chat__footer"  >
+
+                <span>
+                    <InsertEmojis
+                    setInput = {setInput} />
+                </span>  
+
                 <form onSubmit={sendMessage}>
             <input value={input}
                     disabled = {false}
@@ -177,7 +192,12 @@ function Chat(props) {
                     placeholder ="הקליד/י משהו נחמד"  
                     type="text"
                     dir="rtl"/>
+      
+
                     </form>
+
+            
+
                     </div>
             }
 
