@@ -156,6 +156,12 @@ exports.addUserToChat = functions.https.onCall((data,context) => {
             })
         }
         else {
+            // room start to be active
+            if (room.data().users_count === 1){
+                room.ref.update({
+                    timestamp_start_active: admin.firestore.FieldValue.serverTimestamp()
+                })
+            }
             return room.ref
         }
     })

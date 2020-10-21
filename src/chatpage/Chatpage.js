@@ -49,6 +49,7 @@ function Chatpage({ChatIsOpenFunction}) {
     { chat.DEBUG && console.log(chat)}
 
     // in case of exiting the browser (or f5) - deletes the user from chat
+    // currently NOT WORKING
     window.addEventListener('beforeunload', (event) => {
       // alert("You are getting out of working chat!")
       { chat.DEBUG && console.log("user_uid", auth.currentUser.uid)}
@@ -100,75 +101,5 @@ function Chatpage({ChatIsOpenFunction}) {
       )
     }
 }
-/*
-function Chatpage(props) {
-  
-  console.log("chatpagggwww")
-  console.log(props.location.data)
-  let name = 0
-  let course = 0
-  if (props.location.data !== undefined) {
-    name = props.location.data[0]
-    course = props.location.data[1]
-    console.log("bla1")
-    console.log(props.location.data)
-    console.log("bla2")
 
-
-    db
-      .collection("rooms")
-      .doc('1')
-      .collection("users_on_page")
-      .add({
-        user_name: name
-      })
-  }
-
-
-
-    // const uid=
-
-  //   db
-  // .collection("rooms")
-  //  .doc('1')
-  //  .collection("users_on_page")
-  //  .get()
-
-    // console.log(uid)
-
-    function ReturnValue(){
-      if(props.location.data !==undefined){
-      return (
-
-        <div className="chatpage">
-            <div className="chatpage__body">
-              <Sidebar />
-              <div className="chatpage__body__right">
-                <Header data={props.location.data} />
-                <Chat data={name} />
-              </div>
-            </div>
-        </div>
-      )
-
-      }
-
-      return(
-        <Link 
-                to= "/signin"
-                
-                replace 
-               >אתה לא מחובר ,תתחבר בבקשה</Link>
-      )
-
-    }
-
-    return (
-          <div>
-            <ReturnValue/>
-          </div>
-    )
-        
-}
-*/
 export default Chatpage
