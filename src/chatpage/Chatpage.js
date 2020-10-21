@@ -9,8 +9,9 @@ import Sidebar from './ChatComponents/Sidebar'
 import Chat from './Chat'
 import Header from './ChatComponents/Header'
 import firebase from '../server/firebase'
-// import {db} from '../server/firebase'
+import {db} from '../server/firebase'
 // import Login from "./Login"
+import fb from 'firebase' /* DELETE! */
 
 /* use contextAPI to know the chat */
 import {ChatContext, ChatProvider} from '../server/ChatProvider'
@@ -71,7 +72,15 @@ function Chatpage({ChatIsOpenFunction}) {
     }
     )
   },[])
-
+  function test_exit() {
+    db.collection('rooms').doc(chat.id).get()
+    .then(chatRef => {
+      const time = fb.database.ServerValue.TIMESTAMP
+      console.log(time)
+      fb.firestore.FieldValue.serverTimestamp()
+      console.log(fb.firestore.FieldValue.serverTimestamp().seconds - chatRef.data().timestamp_start_active.seconds )
+    })
+  }
     if(auth&&chat.is_open){
       return(
         <div>

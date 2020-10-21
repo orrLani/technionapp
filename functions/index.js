@@ -24,22 +24,25 @@ admin.initializeApp()
      deletes the chat if users_count <= 2. 
      @param data = {chat_id} */
 exports.removeUserFromChat = functions.https.onCall((data,context) => {
-    functions.logger.log(context.auth.uid)
     data.chat_id = undefined
     // let users_count = 0;
+    let timestamp_start = 0
+    let messages_count = 0
     return admin.firestore()
     .collection('users')
     //get chat that was written on user doc
     .doc(context.auth.uid)
     .get()
     .then(snap => {
-        functions.logger.log(snap.data())
+        functions.logger.log(1)
         return snap.data().chat_id
     })
     .then(chat_id => {
         if (chat_id === undefined) {
+            functions.logger.log(2)
             throw new Error("User is not in chat!");
         }
+        functions.logger.log(2.1)
         data.chat_id = chat_id
         admin.firestore()
         .collection('users')
@@ -67,13 +70,23 @@ exports.removeUserFromChat = functions.https.onCall((data,context) => {
         return admin.firestore().collection('rooms').doc(data.chat_id).get()
       })
       .then(chatRef => {
-        return chatRef.data()&&chatRef.data().users_count
-        // users_count = chatRef.data().users_count
-        // return '';
+        functions.logger.log(3)
+          //get difference between chat starts to be active till now, (will be used if chat will be deleted)
+        if(chatRef.data()&&chatRef.data().timestamp_start_active){
+            functions.logger.log(3.1)
+            timestamp_start = chatRef.data().timestamp_start_active
+            return chatRef.data()&&chatRef.data().users_count
+        }
+        else{
+            functions.logger.log(3.2)
+            return chatRef.data()&&chatRef.data().users_count
+        }
       })
       .then(users_count => {
         // if user was the last on the chat, delete the chat.
+        functions.logger.log(4)
         if(users_count && users_count <= 2) {
+            functions.logger.log(4.1)
             //delete chat doc
             admin.firestore().collection("rooms").doc(data.chat_id).delete()
 
@@ -85,6 +98,7 @@ exports.removeUserFromChat = functions.https.onCall((data,context) => {
         }
         // else, decrement users count
         else if(users_count){
+            functions.logger.log(4.2)
             const decrement = admin.firestore.FieldValue.increment(-1);
             admin.firestore().collection('rooms').doc(data.chat_id).update({
               users_count: decrement
@@ -95,11 +109,22 @@ exports.removeUserFromChat = functions.https.onCall((data,context) => {
       // in case of deleting the chat, needs to delete the 'messages' collection aswell
       .then(messages_to_delete => {
             if(messages_to_delete === undefined) {
+                functions.logger.log(5)
                 return undefined
             }
+            functions.logger.log(messages_to_delete)
+            functions.logger.log(messages_to_delete.docs)
+            functions.logger.log(messages_to_delete.docs.length)
+            messages_count = messages_to_delete.docs.length
+            functions.logger.log("messages: "+messages_count)
+            
+            functions.logger.log(5.1)
+
+            //deletes the messages
             messages_to_delete.forEach(message => {
                 message.ref.delete()
             })
+
             return admin.firestore().
             collection('rooms')
             .doc(data.chat_id)
@@ -107,19 +132,44 @@ exports.removeUserFromChat = functions.https.onCall((data,context) => {
       })
       //in case of deleting, need to delete the 'users_on_page' collection aswell
       .then(users_to_delete => {
-          if(users_to_delete === undefined) {
-              return ''
+          functions.logger.log("users_on_page:")
+          functions.logger.log(users_to_delete)
+          if (users_to_delete === undefined) {
+              functions.logger.log(6)
+              return false
           }
+          
+          functions.logger.log(6.1)
           users_to_delete.forEach(user => {
-              user.ref.delete()
+            functions.logger.log(6.2)
+            const user_uid = user.data().user_uid
+            functions.logger.log(user_uid)
+              user.ref.delete();
               admin.firestore()
                   .collection('users')
-                  .doc(user.data().uid)
+                  .doc(user_uid)
                   .update({
                       chat_id: admin.firestore.FieldValue.delete()
                   })
           })
-          return ''
+          functions.logger.log(6.3)
+          return true //need to update stats
+      })
+        .then(updateStats => {
+            //updade stats if room deleted
+            if (updateStats) {
+                //update room statistics
+                functions.logger.log(7)
+                functions.logger.log("messages: " + messages_count)
+                functions.logger.log("timestamp_start " + timestamp_start)
+                admin.firestore().collection('rooms_statistics')
+                    .add({
+                        messages_count: messages_count,
+                        time_start_active: timestamp_start,
+                        time_end: admin.firestore.FieldValue.serverTimestamp()
+                    })
+            }
+            return undefined
       })
       .catch(error => {
           throw error
@@ -136,6 +186,9 @@ exports.removeUserFromChat = functions.https.onCall((data,context) => {
     our goal is to prioritze rooms with only 1 user that is waiting for chat to open.
     @ param data = {user_nickname, course_title, hobby} */
 exports.addUserToChat = functions.https.onCall((data,context) => {
+    if(context.auth === undefined) {
+        throw new Error("User not logged in!")
+    }
     functions.logger.log("I'm adding user to chat!")
     return admin.firestore().collection('rooms')
     .where('course_title' ,'==',data.course_title)

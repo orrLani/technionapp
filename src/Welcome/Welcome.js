@@ -10,6 +10,8 @@ import AutoCompleteField from '../SignUpPage/AutocompleteComponents/AutoComplete
 import NicknameField from './NicknameField'
 import InsertNicknameDialog from './InsertNicknameDialog'
 
+/* TESTING, CAN DELETE */
+import fb from 'firebase'
 /* database and authentication */
 import firebase, { db } from '../server/firebase'
 import { AuthContext } from '../server/Auth'
