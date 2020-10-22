@@ -110,11 +110,6 @@ function Chat(props) {
         }
         setInput("")
     }
-    useEffect(() => {
-        if(messages[0]) {
-            console.log(messages[0].id)
-        }
-    },[messages])
     //firebase.firestore.FieldValue.serverTimestamp()
     return (
         <div className="chat">
@@ -146,8 +141,8 @@ function Chat(props) {
                 }
             {chat.active_status === "WAITING_CHAT" && 
                 <div key={"waiting"} className="chat__body__wait">
-                    <p className="wait__message" >
-                          אנא המתינ/י לתחילת השיחה
+                    <p className="wait__message" dir="rtl" >
+                          מחכה למשתמשים שיכנסו לצ'אט...
                     </p>
                     <Loading />
                     </div>

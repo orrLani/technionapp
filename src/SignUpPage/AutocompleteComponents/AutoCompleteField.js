@@ -7,7 +7,7 @@ export default function AutoCompleteField(props) {
   return (
     <Autocomplete
       multiple = {props.is_multiple}
-      id="combo-box-demo"
+      // id="combo-box-demo"
       options={props.list}
       getOptionLabel={(option) => option.title}
       style={{ width: 400 }}

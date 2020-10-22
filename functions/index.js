@@ -275,3 +275,9 @@ exports.setUserNickName = functions.https.onCall((data,context) => {
         throw error
     })
 })
+
+exports.deleteChat = functions.firestore.document('rooms/{roomID}')
+    .onDelete((snap,context) => {
+        const deletedValue = snap.data()
+        functions.logger.log(deletedValue)
+    })

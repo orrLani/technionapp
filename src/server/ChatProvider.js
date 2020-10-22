@@ -11,8 +11,6 @@ export const ChatProvider = ({children}) => {
         is_loading: false,
         is_open: false,
         active_status: "ACTIVE_CHAT",
-        removeUserFromChat: () => removeUserFromChat,
-        addUserToChat: (auth) => addNewChat(auth),
         DEBUG: true,
     
     })

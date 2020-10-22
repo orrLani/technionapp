@@ -10,8 +10,6 @@ import AutoCompleteField from '../SignUpPage/AutocompleteComponents/AutoComplete
 import NicknameField from './NicknameField'
 import InsertNicknameDialog from './InsertNicknameDialog'
 
-/* TESTING, CAN DELETE */
-import fb from 'firebase'
 /* database and authentication */
 import firebase, { db } from '../server/firebase'
 import { AuthContext } from '../server/Auth'
@@ -79,7 +77,7 @@ const Welcome = ({ history }) => {
       { chat.DEBUG && console.log("Welcome is unmounting!") }
       { chat.DEBUG && console.log(chat) }
     }
-  }, [])
+  }, [chat])
 
   useEffect(() => {
     console.log(auth)
@@ -105,7 +103,8 @@ const Welcome = ({ history }) => {
             })
         }}
           variant="contained"
-          color="secondery">התנתקות</Button>
+          // color="secondary"
+          >התנתקות</Button>
 
       </div>
       <div className="cards">

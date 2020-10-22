@@ -120,8 +120,11 @@ function Sidebar() {
       isMounted = false
       //setUsers([])
     })
-  }, []  )
+  }, [chat]  )
 
+  useEffect(() => {
+    console.log(hobbys)
+  },[hobbys])
   return (
 
     <div className="chat-sidebar">
@@ -139,7 +142,7 @@ function Sidebar() {
         {chat.title ==="צ'אט חברתי" && 
         <div className="users__list">
           <h3 dir="rtl">תחביבים:</h3>
-          {hobbys.map(hobby => (
+          {hobbys.length != 0 && hobbys.map(hobby => (
           <div key={hobby} 
           className="chat__username"
 

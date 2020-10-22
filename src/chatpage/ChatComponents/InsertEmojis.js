@@ -34,9 +34,8 @@ const StyledMenu = withStyles({
 
 
 
-export default function InsertEmojis({setInput}) {
+export default function InsertEmojis({ setInput }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
-
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -45,6 +44,12 @@ export default function InsertEmojis({setInput}) {
     setAnchorEl(null);
   };
 
+  React.useEffect(() => {
+    console.log("InsertEmojis mounting!")
+    return (
+      console.log("InsertEmojis unmounting!")
+    )
+  },[])
   return (
     <div>
       <MoodIcon
@@ -62,11 +67,12 @@ export default function InsertEmojis({setInput}) {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <Picker onSelect = {(e) => {
-            let emoji = e.native
-            setInput(input => input+emoji)
-            }
-        } />
+        <Picker
+          onSelect={(e) => {
+            // let emoji = e.native
+            setInput((input) => input + e.native);
+          }}
+        />
       </StyledMenu>
     </div>
   );

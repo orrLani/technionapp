@@ -36,7 +36,7 @@ function Header(props) {
     return(() => {
       { chat.DEBUG && console.log("i'm unmounting the header!")}
     })
-  },[])
+  },[chat])
 
   //[Test start]
   function test_delete_messages() {
