@@ -175,10 +175,10 @@ function Chat(props) {
             {chat.active_status === "ACTIVE_CHAT" && 
             <div className="chat__footer"  >
 
-                <span>
-                    <InsertEmojis
+                
+                    <InsertEmojis key="emoji"
                     setInput = {setInput} />
-                </span>  
+                  
 
                 <form onSubmit={sendMessage}>
             <input value={input}

@@ -16,7 +16,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: url("blue-clouds-day-fluffy-53594.jpeg") no-repeat 0 0 fixed;
+    /* background: url("blue-clouds-day-fluffy-53594.jpeg") no-repeat 0 0 fixed; */
+    background: repeating-linear-gradient(45deg, black, transparent 100px);
     overflow: hidden;
     background-size: 100% 100%;
     margin-top: -8px;
@@ -51,7 +52,8 @@
   }
   .card-image {
     grid-area: image;
-    background: url("studing_friends.png");
+    background: url("https://www.rd.com/wp-content/uploads/2019/11/shutterstock_509582812-e1574100998595-scaled.jpg");
+    background-position-y: center;
     border-top-left-radius: 15px;
     border-top-right-radius: 15px;
     background-size: cover;
@@ -129,7 +131,8 @@
   }
   /*card3*/
   .card-image.card3 {
-    background: url("friends.png");
+    /* background: url("friends.png"); */
+    background: url("https://hercanberra.com.au/wp-content/uploads/2020/04/teamwork-team-hands_feature-720x460.jpg");
     background-size: cover;
   }
   .card-text.card3 .date {

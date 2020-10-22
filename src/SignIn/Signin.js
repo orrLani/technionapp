@@ -20,7 +20,7 @@ import CustomizedSnackbars from '../SignUpPage/message_alert'
 
 
 import firebase from '../server/firebase'
-import { SystemUpdate } from '@material-ui/icons';
+import { CenterFocusStrong, SystemUpdate } from '@material-ui/icons';
 
 // handle userState
 import {AuthContext} from '../server/Auth'
@@ -63,6 +63,7 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(8, 4),
     display: 'flex',
     flexDirection: 'column',
+    justifyContent: 'center',
     alignItems: 'center',
   },
   avatar: {
@@ -76,6 +77,9 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
+  tech_user: {
+    display: 'flex',
+  }
 }));
 
 const SignInSide=({history})=> {
@@ -142,17 +146,20 @@ const SignInSide=({history})=> {
             Sign in
           </Typography>
           <form className={classes.form} onSubmit = {handleSignIn} noValidate>
+            <div className={classes.tech_user}>
             <TextField
               variant="outlined"
               margin="normal"
               required
               fullWidth
               id="user"
-              label="יוזר טכניוני"
+              label="יוזר טכניוני(ללא @campus.technion.ac.il)"
               name="user"
               onChange = {(event)=> {setUser(event.target.value)}}
               autoFocus
-            />
+            /> 
+            <span>@campus.technion.ac.il</span>
+            </div>
             <TextField
               variant="outlined"
               margin="normal"
