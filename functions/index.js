@@ -26,6 +26,7 @@ admin.initializeApp()
 exports.removeUserFromChat = functions.https.onCall((data,context) => {
     data.chat_id = undefined
     // let users_count = 0;
+    let timestamp_start_active = 0
     let timestamp_start = 0
     let messages_count = 0
     return admin.firestore()
@@ -71,16 +72,16 @@ exports.removeUserFromChat = functions.https.onCall((data,context) => {
       })
       .then(chatRef => {
         functions.logger.log(3)
-          //get difference between chat starts to be active till now, (will be used if chat will be deleted)
+        // save data that may be stored in room_statistics if room will be deleted
         if(chatRef.data()&&chatRef.data().timestamp_start_active){
             functions.logger.log(3.1)
-            timestamp_start = chatRef.data().timestamp_start_active
-            return chatRef.data()&&chatRef.data().users_count
+            timestamp_start_active = chatRef.data().timestamp_start_active
         }
-        else{
+        if(chatRef.data()&&chatRef.data().timestamp_start){
             functions.logger.log(3.2)
-            return chatRef.data()&&chatRef.data().users_count
+            timestamp_start = chatRef.data().timestamp_start
         }
+        return chatRef.data()&&chatRef.data().users_count
       })
       .then(users_count => {
         // if user was the last on the chat, delete the chat.
@@ -161,11 +162,12 @@ exports.removeUserFromChat = functions.https.onCall((data,context) => {
                 //update room statistics
                 functions.logger.log(7)
                 functions.logger.log("messages: " + messages_count)
-                functions.logger.log("timestamp_start " + timestamp_start)
+                functions.logger.log("timestamp_start_active " + timestamp_start_active)
                 admin.firestore().collection('rooms_statistics')
                     .add({
                         messages_count: messages_count,
-                        time_start_active: timestamp_start,
+                        time_start_active: timestamp_start_active,
+                        timestamp_start: timestamp_start,
                         time_end: admin.firestore.FieldValue.serverTimestamp()
                     })
             }

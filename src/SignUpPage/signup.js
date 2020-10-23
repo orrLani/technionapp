@@ -16,12 +16,22 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import CustomizedSnackbars from './message_alert'
 
-import firebase from '../server/firebase'
-
-
 import {gender_list,semester_list,faculty_list,course_list,maritalstatus_list,hobby_list} from '../AutoCmpleteLists';
 import BirthDay from './AutocompleteComponents/BirthDay'
 import AutoCompleteField from './AutocompleteComponents/AutoCompleteField'
+
+//terms of use dialog
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import Slide from "@material-ui/core/Slide";
+import firebase from '../server/firebase'
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
+
 
 
 function Copyright() {
@@ -84,6 +94,9 @@ const SignUp = ({history})=> {
     const [maritalstatus,setMaritalStatus] = useState('')
     const [hobby, setHobby] = useState('')
 
+    //terms of use windows
+    const [termsOpen,setTermsOpen] = useState(false)
+    const [termsChecked, setTermsChecked] = useState(false)
     const [alertState, setAlertState] = React.useState({
       open: false
     });
@@ -99,74 +112,75 @@ const SignUp = ({history})=> {
 
 
     async function handleSignUp(event) {
-        
-        if(text_password!==text_password_again){
-          event.preventDefault();
-          setAlertState({
-            open: true,
-            message: " סיסמא לא תואמת ",
-            sevirity_level: "error"
-          })
-          
+      event.preventDefault();
 
-          return;
+      try {
+        if (!termsChecked) {
+          event.preventDefault();
+          // setAlertState({
+          //   open: true,
+          //   message: " למה הוא אישר את תנאי השימוש ",
+          //   sevirity_level: "error"
+          // })
+          throw new Error("צריך לאשר את תנאי השימוש");
         }
 
-       console.log(text_user)
-       event.preventDefault();
-       
-      
-       try {
-         await firebase.auth().createUserWithEmailAndPassword(text_user+"@campus.technion.ac.il",text_password)
-         const user = firebase.auth().currentUser;
-         await db.collection("users").doc(user.uid).set({
-           text_user: text_user,
-           birthday: birthday,
-           gender: gender,
-           semester: semester,
-           faculty: faculty,
-           course: course,
-           maritalstatus : maritalstatus,
-           hobby: hobby,
-           nickname:"default"
-           
-          })
-          console.log(auth.currentUser)
-          
-          //  }).then(function() {
-            //     console.log("Document successfully written!");
+        if (text_password !== text_password_again) {
+          event.preventDefault();
+          throw new Error("סיסמאות לא תואמות");
+        }
+
+        console.log(text_user);
+
+        await firebase
+          .auth()
+          .createUserWithEmailAndPassword(
+            text_user + "@campus.technion.ac.il",
+            text_password
+          );
+        const user = firebase.auth().currentUser;
+        await db.collection("users").doc(user.uid).set({
+          text_user: text_user,
+          birthday: birthday,
+          gender: gender,
+          semester: semester,
+          faculty: faculty,
+          course: course,
+          maritalstatus: maritalstatus,
+          hobby: hobby,
+          nickname: "default",
+        });
+        console.log(auth.currentUser);
+
+        //  }).then(function() {
+        //     console.log("Document successfully written!");
         // })
         // .catch(function(error) {
         //    console.error("Error writing document: ", error);
         // });
 
-             
+        console.log(birthday);
+        console.log(user.get);
 
-          
+        console.log(user.uid);
+        console.log(user.metadata);
 
-          console.log(birthday)
-          console.log(user.get)
-
-          console.log(user.uid)
-          console.log(user.metadata)
-          
-          await user.sendEmailVerification();
+        await user.sendEmailVerification();
 
         history.push("/popupverify");
-       } catch(error) {
+      } catch (error) {
         console.log(error.stack);
-         console.log(error.message);
+        console.log(error.message);
 
         event.preventDefault();
         setAlertState({
           open: true,
           message: error.message,
-          sevirity_level: "error"
-        })
-       }
-     
+          sevirity_level: "error",
+        });
+      }
     }
-    console.log("I'm in signup");
+    
     
     
    
@@ -182,94 +196,114 @@ const SignUp = ({history})=> {
         <Typography component="h1" variant="h5">
           הרשמה
         </Typography>
-        <form className={classes.form} noValidate onSubmit ={handleSignUp}>
+        <form className={classes.form} noValidate onSubmit={handleSignUp}>
           <Grid container spacing={2} dir="rtl">
             <Grid item xs={12}>
-            <div className={classes.tech_user}>
-            <div dir="ltr" className={classes.mailSuffix}>
-              @campus.technion.ac.il
-            </div>
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fontSize='large'
-              fullWidth
-              id="user"
-              label="משתמש טכניוני"
-              name="user"
-              onChange = {(event)=> {setUserName(event.target.value)}}
-              autoFocus
-            /> 
-            </div>
-            </Grid>
-            <Grid item xs={12}>
-
+              <div className={classes.tech_user}>
+                <div dir="ltr" className={classes.mailSuffix}>
+                  @campus.technion.ac.il
+                </div>
                 <TextField
-                    required
-                    type="password"
-                    id="password"
-                    name="password"
-                    label="סיסמא לאתר"
-                    fullWidth
-                    variant="outlined"
-                    onChange = {(event)=> {setPassword(event.target.value)}}
+                  variant="outlined"
+                  margin="normal"
+                  required
+                  fontSize="large"
+                  fullWidth
+                  id="user"
+                  label="משתמש טכניוני"
+                  name="user"
+                  onChange={(event) => {
+                    setUserName(event.target.value);
+                  }}
+                  autoFocus
                 />
-            </Grid>    
-
-            <Grid item xs={12}>
-                <TextField
-                    required
-                    type="password"
-                    id="password"
-                    label="Error"
-                    name="password"
-                    label="חזור על הסיסמא בבקשה "
-                    fullWidth
-                    variant="outlined"
-                     onChange = {(event)=> {
-                    setPasswordAgain(event.target.value)
-                     }}
-                  /> 
-            
+              </div>
             </Grid>
-
-
             <Grid item xs={12}>
-                         <AutoCompleteField list={gender_list} 
-                            label="מין" setFunction={setGender}  />
-            </Grid>
-
-
-            <Grid item xs={12}>
-                <AutoCompleteField list={semester_list} 
-                label="סמסטר" setFunction={setSemester}  />
-           </Grid>
-
-            <Grid item xs={12}>
-                <AutoCompleteField list={faculty_list} 
-                label="פקולטה" setFunction={setFactulty}  />
+              <TextField
+                required
+                type="password"
+                id="password"
+                name="password"
+                label="סיסמא לאתר"
+                fullWidth
+                variant="outlined"
+                onChange={(event) => {
+                  setPassword(event.target.value);
+                }}
+              />
             </Grid>
 
             <Grid item xs={12}>
-                <AutoCompleteField list={course_list} 
-                label="קורסים" setFunction={setCourses}
-                is_multiple = {true}  />
+              <TextField
+                required
+                type="password"
+                id="password"
+                label="Error"
+                name="password"
+                label="חזור על הסיסמא בבקשה "
+                fullWidth
+                variant="outlined"
+                onChange={(event) => {
+                  setPasswordAgain(event.target.value);
+                }}
+              />
             </Grid>
 
             <Grid item xs={12}>
-                <AutoCompleteField list={maritalstatus_list} 
-                label="מצב משפחתי" setFunction={setMaritalStatus}  />
+              <AutoCompleteField
+                list={gender_list}
+                label="מין"
+                setFunction={setGender}
+              />
             </Grid>
 
             <Grid item xs={12}>
-                <AutoCompleteField list={hobby_list} 
-                label="תחביבים" setFunction={setHobby }  
-                is_multiple ={true}/>
+              <AutoCompleteField
+                list={semester_list}
+                label="סמסטר"
+                setFunction={setSemester}
+              />
             </Grid>
 
-            <CustomizedSnackbars alertState={alertState}
-             setAlertState={setAlertState}/>
+            <Grid item xs={12}>
+              <AutoCompleteField
+                list={faculty_list}
+                label="פקולטה"
+                setFunction={setFactulty}
+              />
+            </Grid>
+
+            <Grid item xs={12}>
+              <AutoCompleteField
+                list={course_list}
+                label="קורסים"
+                setFunction={setCourses}
+                is_multiple={true}
+              />
+            </Grid>
+
+            <Grid item xs={12}>
+              <AutoCompleteField
+                list={maritalstatus_list}
+                label="מצב משפחתי"
+                setFunction={setMaritalStatus}
+              />
+            </Grid>
+
+            <Grid item xs={12}>
+              <AutoCompleteField
+                list={hobby_list}
+                label="תחביבים"
+                setFunction={setHobby}
+                is_multiple={true}
+              />
+            </Grid>
+
+            <CustomizedSnackbars
+              alertState={alertState}
+              setAlertState={setAlertState}
+            />
 
             {/* <Snackbar
               open={state.open}
@@ -280,17 +314,52 @@ const SignUp = ({history})=> {
               </Alert>
               </Snackbar> */}
 
-            
             {/* <Grid item xs={12}>
                 <BirthDay setBirthday={setBirthday}/>
             </Grid> */}
 
-
-
-
+            <Grid style={{ display: "flex" }} item xs={12}>
+              <div style={{ marginRight: "40%" }}>
+                <Link onClick={() => setTermsOpen(true)}>תנאי השימוש</Link>
+              </div>
+              <Dialog
+                dir="rtl"
+                open={termsOpen}
+                TransitionComponent={Transition}
+                keepMounted
+                onClose={() => setTermsOpen(false)}
+                aria-labelledby="alert-dialog-slide-title"
+                aria-describedby="alert-dialog-slide-description"
+              >
+                <DialogTitle id="alert-dialog-slide-title">
+                  {"תנאי השימוש באתר"}
+                </DialogTitle>
+                <DialogContent>
+                  <DialogContentText id="alert-dialog-slide-description">
+                    אני מאשר/ת שכל שימוש באתר על אחריותי בלבד ולא על מפתחיו. אני
+                    מאשר/ת שאסור לי להשתמש באתר למטרות זדוניות, ואסור לי לפגוע
+                    במשתמשים אחרים המשתמשים באתר. אני מאשר/ת שכל תוכן שאני מעלה
+                    לאתר הוא על אחריותי בלבד ולא תהיה לי עילה כנגד מפתחיו במקרה
+                    של פעולות זדוניות.
+                  </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={() => setTermsOpen(false)} color="primary">
+                    סגור
+                  </Button>
+                </DialogActions>
+              </Dialog>
+            </Grid>
             <Grid item xs={12}>
               <FormControlLabel
-                control={<Checkbox value="allowExtraEmails" color="primary" />}
+                control={<Checkbox checked = {termsChecked}
+                 id={'confirmed'} 
+                 required 
+                 value="allowExtraEmails"
+                  color="primary" />}
+                  onChange = {() => setTermsChecked(terms => {
+                    return !terms
+                  })}
                 label="אני מצהיר שקראתי את תנאי השימוש"
               />
             </Grid>
