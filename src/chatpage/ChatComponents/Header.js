@@ -58,7 +58,7 @@ function Header(props) {
       <h2> {chat.title}</h2>
       {/* {value} */}
 
-      <IconButton onClick={NewChat} >
+      <IconButton style= {{color: '#F7FFF7'}} onClick={NewChat} >
         {/* <Link variant="body2"
           to="/welcome"
           className="leave__room"

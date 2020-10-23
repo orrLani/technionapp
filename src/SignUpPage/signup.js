@@ -29,7 +29,7 @@ function Copyright() {
     <Typography variant="body2" color="textSecondary" align="center">
       {'Copyright © '}
       <Link color="inherit" href="https://material-ui.com/">
-        Your Website
+        TechChat
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -55,6 +55,16 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
+  tech_user: {
+    display: 'flex',
+    flex: 1,
+  },
+  mailSuffix: {
+    flex: 1,
+    fontSize: 'x-large',
+    alignSelf: 'center',
+    padding: '2px',
+  }
 }));
 
 const SignUp = ({history})=> {
@@ -175,18 +185,23 @@ const SignUp = ({history})=> {
         <form className={classes.form} noValidate onSubmit ={handleSignUp}>
           <Grid container spacing={2} dir="rtl">
             <Grid item xs={12}>
+            <div className={classes.tech_user}>
+            <div dir="ltr" className={classes.mailSuffix}>
+              @campus.technion.ac.il
+            </div>
             <TextField
-                    required
-                    textAlign="right"
-                    dir="rtl"
-                    id="technionUser"
-                    name="technionUser"
-                    label="יוזר טכניוני"
-                    fullWidth
-                    variant="outlined"
-                    autoComplete="given-name"
-                    onChange = {(event)=> {setUserName(event.target.value)}}
-                            /> 
+              variant="outlined"
+              margin="normal"
+              required
+              fontSize='large'
+              fullWidth
+              id="user"
+              label="משתמש טכניוני"
+              name="user"
+              onChange = {(event)=> {setUserName(event.target.value)}}
+              autoFocus
+            /> 
+            </div>
             </Grid>
             <Grid item xs={12}>
 
@@ -266,9 +281,9 @@ const SignUp = ({history})=> {
               </Snackbar> */}
 
             
-            <Grid item xs={12}>
+            {/* <Grid item xs={12}>
                 <BirthDay setBirthday={setBirthday}/>
-            </Grid>
+            </Grid> */}
 
 
 
@@ -287,12 +302,12 @@ const SignUp = ({history})=> {
             color="primary"
             className={classes.submit}
           >
-            Sign Up
+            הרשמה
           </Button>
           <Grid container justify="flex-end">
             <Grid item>
               <Link href="/signin" variant="body2">
-                Already have an account? Sign in
+                כבר יש חשבון? לחצ/י כאן להתחברות
               </Link>
             </Grid>
           </Grid>

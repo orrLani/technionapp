@@ -19,6 +19,7 @@ import Background3 from '../Images/3.jpg';
 import CustomizedSnackbars from '../SignUpPage/message_alert'
 
 
+import logo from '../logo.png'
 import firebase from '../server/firebase'
 import { CenterFocusStrong, SystemUpdate } from '@material-ui/icons';
 
@@ -79,6 +80,13 @@ const useStyles = makeStyles((theme) => ({
   },
   tech_user: {
     display: 'flex',
+    flex: 1,
+  },
+  mailSuffix: {
+    flex: 1,
+    fontSize: 'x-large',
+    alignSelf: 'center',
+    padding: '2px',
   }
 }));
 
@@ -138,27 +146,32 @@ const SignInSide=({history})=> {
       <CssBaseline />
       <Grid item xs={false} sm={4} md={7} className={classes.image} />
       <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
-        <div className={classes.paper}>
+        <div dir="rtl" className={classes.paper}>
+          
+          <img  width='350px'src={logo}></img>
           <Avatar className={classes.avatar}>
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign in
+            התחברות
           </Typography>
           <form className={classes.form} onSubmit = {handleSignIn} noValidate>
             <div className={classes.tech_user}>
+            <div dir="ltr" className={classes.mailSuffix}>
+              @campus.technion.ac.il
+            </div>
             <TextField
               variant="outlined"
               margin="normal"
               required
+              fontSize='large'
               fullWidth
               id="user"
-              label="יוזר טכניוני(ללא @campus.technion.ac.il)"
+              label="משתמש טכניוני"
               name="user"
               onChange = {(event)=> {setUser(event.target.value)}}
               autoFocus
             /> 
-            <span>@campus.technion.ac.il</span>
             </div>
             <TextField
               variant="outlined"
@@ -166,7 +179,7 @@ const SignInSide=({history})=> {
               required
               fullWidth
               name="password"
-              label="Password"
+              label="סיסמה"
               type="password"
               id="password"
               onChange = {(event)=> {setPassword(event.target.value)}}
@@ -174,7 +187,7 @@ const SignInSide=({history})=> {
             />
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
+              label="זכור אותי"
             />
             <Button
               type="submit"
@@ -183,17 +196,17 @@ const SignInSide=({history})=> {
               color="primary"
               className={classes.submit}
             >
-              Sign In
+              התחברות
             </Button>
             <Grid container>
               <Grid item xs>
-                <Link href="#" variant="body2">
+                {/* <Link href="#" variant="body2">
                   Forgot password?
-                </Link>
+                </Link> */}
               </Grid>
               <Grid item>
                 <Link href="/signup" variant="body2">
-                  {"Don't have an account? Sign Up"}
+                  {"עדין אין חשבון? לחץ כאן!"}
                 </Link>
               </Grid>
               <CustomizedSnackbars alertState={alertState}

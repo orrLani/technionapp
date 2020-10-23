@@ -9,7 +9,7 @@ import { course_list, hobby_list } from '../AutoCmpleteLists';
 import AutoCompleteField from '../SignUpPage/AutocompleteComponents/AutoCompleteField'
 import NicknameField from './NicknameField'
 import InsertNicknameDialog from './InsertNicknameDialog'
-
+import logo from '../logo.png'
 /* database and authentication */
 import firebase, { db } from '../server/firebase'
 import { AuthContext } from '../server/Auth'
@@ -91,6 +91,7 @@ const Welcome = ({ history }) => {
 
   return (
     <div className="background_style">
+      
       {/* <EmailConfirmation emailVerified={auth.currentUser && auth.currentUser.emailVerified}/> */}
       <div>
         {/* SignOut Button */}

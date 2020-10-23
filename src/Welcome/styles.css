@@ -9,7 +9,6 @@
     background-size: 100% 100%;
   } */
 
-
   .background_style {
     width: 100vw;
     height: 100vh;
@@ -17,7 +16,7 @@
     align-items: center;
     justify-content: center;
     /* background: url("blue-clouds-day-fluffy-53594.jpeg") no-repeat 0 0 fixed; */
-    background: repeating-linear-gradient(45deg, black, transparent 100px);
+    background: repeating-linear-gradient(45deg, black, transparent 70px);
     overflow: hidden;
     background-size: 100% 100%;
     margin-top: -8px;
