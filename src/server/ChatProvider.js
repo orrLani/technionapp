@@ -1,11 +1,9 @@
-import React, { createContext, useContext, useState } from 'react'
+import React, { createContext, useState } from 'react'
 import firebase from './firebase'
-import {AuthContext} from './Auth' 
 
 export const ChatContext = createContext();
 
 export const ChatProvider = ({children}) => {
-    const auth = useContext(AuthContext)
     const [chat,setChat] = useState({
         id: null,
         is_loading: false,
@@ -43,7 +41,7 @@ export const ChatProvider = ({children}) => {
       }
       const addUserToChat = firebase.functions().httpsCallable('addUserToChat')
 
-      {/* course will be {title: "Friendly"} if chat type is חברתי */}
+      // course will be {title: "Friendly"} if chat type is חברתי
       console.log(chat.user_hobby)
 
       //give user random color
@@ -56,8 +54,8 @@ export const ChatProvider = ({children}) => {
         //add color to the user
         color: random_color
       }).then(chatRef => {
-        {chat.DEBUG && console.log(chatRef)}
-        {chat.DEBUG && console.log(chatRef.data.chat_id)}
+        // {chat.DEBUG && console.log(chatRef)}
+        // {chat.DEBUG && console.log(chatRef.data.chat_id)}
         
         setChat({
           ...chat,

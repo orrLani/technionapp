@@ -4,20 +4,16 @@ import Welcome from './Welcome/Welcome'
 import Signup from './SignUpPage/signup'
 import PopUpVerify from './SignUpPage/PopUpVerify'
 import {AuthProvider} from './server/Auth'
-import PrivateRoute from "./PrivateRoute";
 import {BrowserRouter as Router, Route} from "react-router-dom"
-import { RouterOutlined } from "@material-ui/icons";
 import SignInSide from "./SignIn/Signin"
-import { Prompt } from 'react-router'
+
 import Chatpage from "./chatpage/Chatpage"
-import NewSignUp from "./SignUpPage/signup"
 import Closed from './Closed'
 import {ChatProvider} from './server/ChatProvider'
 
 
 function App() {
 
-  const uid =  localStorage.getItem('uid')!==undefined?localStorage.getItem('uid'):null;
  
   return (
     <ChatProvider>

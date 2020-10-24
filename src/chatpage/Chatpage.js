@@ -1,5 +1,5 @@
 import './Chatpage.css'
-import React, {useState, useContext,useEffect} from 'react';
+import React, {useContext,useEffect} from 'react';
 import { Link } from 'react-router-dom';
 import CloseIcon from '@material-ui/icons/Close';
 import {IconButton } from "@material-ui/core"
@@ -13,15 +13,9 @@ import firebase from '../server/firebase'
 
 
 /* use contextAPI to know the chat */
-import {ChatContext, ChatProvider} from '../server/ChatProvider'
+import {ChatContext} from '../server/ChatProvider'
 import {AuthContext} from '../server/Auth'
 
-/* imports functions that manage chats */
-import {joinChat} from '../server/ChatsManager'
-
-/* imports loading page */
-import Loading from '../Loading'
-import { Close } from '@material-ui/icons';
 
 function Chatpage({ChatIsOpenFunction}) {
   const {chat,setChat,removeUserFromChat}  = useContext(ChatContext)
@@ -45,15 +39,15 @@ function Chatpage({ChatIsOpenFunction}) {
 
 
   useEffect(() => {
-    { chat.DEBUG && console.log("i'm mounting the chatpage!")}
-    { chat.DEBUG && console.log(chat)}
+    // { chat.DEBUG && console.log("i'm mounting the chatpage!")}
+    // { chat.DEBUG && console.log(chat)}
 
     // in case of exiting the browser (or f5) - deletes the user from chat
     // currently NOT WORKING
     window.addEventListener('beforeunload', (event) => {
       // alert("You are getting out of working chat!")
-      { chat.DEBUG && console.log("user_uid", auth.currentUser.uid)}
-      { chat.DEBUG && console.log("chat_id", chat.id)}
+      // { chat.DEBUG && console.log("user_uid", auth.currentUser.uid)}
+      // { chat.DEBUG && console.log("chat_id", chat.id)}
 
       // Cancel the event as stated by the standard.
       event.preventDefault();
@@ -67,7 +61,7 @@ function Chatpage({ChatIsOpenFunction}) {
       })
     })
     return(() => {
-      { chat.DEBUG && console.log("i'm unmounting the chat page!") }
+      // { chat.DEBUG && console.log("i'm unmounting the chat page!") }
     }
     )
   },[chat])

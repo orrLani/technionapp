@@ -37,13 +37,8 @@ export const faculty_list = [
 ];
 
 export const course_list = [
-    { title: '234106 אינפי 1 מ '},
-    { title: 'אלגברה א 102252'},
-    { title: '234136 אינפי 2 מ'},
-    { title: 'מבוא למדעי המחשב 121312'},
-    { title: 'אלגורתמים 132432'},
-    { title: 'מערכות הפעלה 312321'},
-    { title: 'מבוא לבינה מלאכותית 999999'},
+    { title: '104031 אינפי 1 מ '},
+    { title: '104032 אינפי 2 מ'},
   ];
 
 export const maritalstatus_list = [

@@ -1,17 +1,14 @@
 import './styles.css'
 import React, { useEffect, useState } from 'react';
 //import Courses from '../SignUpPage/AutocompleteComponents/Courses'
-import CheckBoxCourses from './CheckBoxCourses'
-import CheckBoxHobbies from './CheckBoxHobbies'
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import { course_list, hobby_list } from '../AutoCmpleteLists';
 import AutoCompleteField from '../SignUpPage/AutocompleteComponents/AutoCompleteField'
-import NicknameField from './NicknameField'
 import InsertNicknameDialog from './InsertNicknameDialog'
-import logo from '../logo.png'
+
 /* database and authentication */
-import firebase, { db } from '../server/firebase'
+import firebase from '../server/firebase'
 import { AuthContext } from '../server/Auth'
 import { useContext } from 'react'
 
@@ -20,9 +17,6 @@ import Modal from '@material-ui/core/Modal';
 import Chatpage from '../chatpage/Chatpage'
 import Fade from '@material-ui/core/Fade';
 import Backdrop from '@material-ui/core/Backdrop';
-
-/* joins chat */
-import { getChatIDForUser } from '../server/ChatsManager'
 
 /* chat ContextAPI */
 import { ChatContext } from '../server/ChatProvider'
@@ -41,8 +35,6 @@ const Welcome = ({ history }) => {
   const [course, setCourse] = useState('')
   const [hobby, setHobby] = useState('')
 
-  /* in order to know if the chat is חברתי or לימודי */
-  const [chatType, setChatType] = useState('')
 
   /*Contexts API */
   const auth = useContext(AuthContext)
@@ -54,38 +46,30 @@ const Welcome = ({ history }) => {
   useEffect(() => {
     console.log(course)
   }, [course])
-  function CoursesSubmit(event) {
-    // var email, user_name;
-    // var user_email = firebase.auth().currentUser.email;
-    let user_name = auth.currentUser.email.split('@')[0]
-    console.log(user_name)
-  }
-  function handleCloseChat() {
-    // setChatIsOpen(false)
-  }
+  
+  
 
 
   useEffect(() => {
-    { chat.DEBUG && console.log("Welcome is mounting!") }
-    { chat.DEBUG && console.log(chat) }
+    // { chat.DEBUG && console.log("Welcome is mounting!") }
+    // { chat.DEBUG && console.log(chat) }
     // const deleteFromChat = firebase.functions().httpsCallable('removeUserFromChat')
     // deleteFromChat({})
     // .catch(error => {
     //   console.log(error)
     // })
     return function cleanup() {
-      { chat.DEBUG && console.log("Welcome is unmounting!") }
-      { chat.DEBUG && console.log(chat) }
+      // { chat.DEBUG && console.log("Welcome is unmounting!") }
+      // { chat.DEBUG && console.log(chat) }
     }
   }, [chat])
 
   useEffect(() => {
     console.log(auth)
     if (!auth.currentUser) {
-      console.log("from welcome to signin")
       history.push('/signin')
     }
-  }, [auth])
+  }, [auth,history])
 
 
 
@@ -128,7 +112,6 @@ const Welcome = ({ history }) => {
                       alert("אנא בחר/י קורס")
                     }
                     else {
-                      setChatType("Learning")
                       setChat(chat => {
                         return {
                           ...chat,
@@ -157,7 +140,6 @@ const Welcome = ({ history }) => {
               <Grid item xs={12}>
                 <Button variant="contained" color="primary"
                   onClick={() => {
-                    setChatType("Friendly")
                     setChat(chat => {
                       //console.log(hobby)
                       if (hobby) {
@@ -192,7 +174,7 @@ const Welcome = ({ history }) => {
       {/* Modal of the chatpage */}
       <Modal
         open={chat.is_open}
-        onClose={handleCloseChat}
+        // onClose={handleCloseChat}
         closeAfterTransition
         BackdropComponent={Backdrop}
         BackdropProps={{

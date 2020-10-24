@@ -1,6 +1,5 @@
 import React,{useState,useEffect,useContext} from "react";
 import "./Sidebar.css";
-import firebase from "../../server/firebase"
 import {db} from "../../server/firebase" 
 
 /* handle ContextAPI */
@@ -72,7 +71,6 @@ function Sidebar() {
         }
       })
     }
-
     // from waiting to active
     // chat cannot go from closed to active
     else if (users.length > 1 && chat.active_status === "WAITING_CHAT") {
@@ -89,11 +87,11 @@ function Sidebar() {
     }
 
 
-  }, [users,chat])
+  }, [users,chat,auth.currentUser.uid,endAudio,prevUsers,setChat,startAudio])
   /* fired when user connects to the chat for the first time.
     added the user to the userslist in the sidebar */
   useEffect(() => {
-    { chat.DEBUG && console.log("I'm Mounting Sidebar") }
+    // { chat.DEBUG && console.log("I'm Mounting Sidebar") }
     /*due to error message : "Can't perform a React state update on an unmounted component"
       added the current variable and used it in function setUsers */
     let isMounted = true
@@ -116,7 +114,7 @@ function Sidebar() {
         })
     }
     return(() => {
-      { chat.DEBUG && console.log("i'm unmounting the sidebar!")}
+      // { chat.DEBUG && console.log("i'm unmounting the sidebar!")}
       isMounted = false
       //setUsers([])
     })
@@ -142,7 +140,7 @@ function Sidebar() {
         {chat.title ==="צ'אט חברתי" && 
         <div className="users__list">
           <h3 dir="rtl">תחביבים:</h3>
-          {hobbys.length != 0 && hobbys.map(hobby => (
+          {hobbys.length !== 0 && hobbys.map(hobby => (
           <div key={hobby} 
           className="chat__username"
 

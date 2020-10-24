@@ -1,19 +1,12 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { Avatar, IconButton } from "@material-ui/core"
-import { AttachFile, MoreVert, SearchOutlined, Message, InsertEmoticon } from "@material-ui/icons"
-import MicIcon from '@material-ui/icons/Mic';
-import { useParams } from "react-router-dom"
-import Button from '@material-ui/core/Button';
 import 'emoji-mart/css/emoji-mart.css'
-import { Picker,emojiIndex } from 'emoji-mart'
-
+import Button from '@material-ui/core/Button';
 
 
 //for emojies
 import InsertEmojis from './ChatComponents/InsertEmojis'
 
 /* database */
-import firebase from "../server/firebase"
 import { db } from '../server/firebase'
 import fb from 'firebase'
 
@@ -22,53 +15,23 @@ import { AuthContext } from '../server/Auth'
 import { ChatContext } from '../server/ChatProvider'
 
 import Loading from '../Loading'
-import GridList from '@material-ui/core/GridList';
 import "./Chat.css"
 
-import usePrevious from './../utils/usePrevious'
 
 
 function Chat(props) {
     const [input, setInput] = useState("")
-    const [roomName, setRoomName] = useState("")
     const [messages, setMessages] = useState([])
-    const [emoji,setEmoji] = useState('')
+    
 
     const auth = useContext(AuthContext)
     const {chat, setChat, addNewChat} = useContext(ChatContext)
-    const [users, setUsers] = useState([])
-    const prevUsers = usePrevious(users)
-
-    // const val =chat.is_not_active;
-    // if(val){
-    // chat.is_not_active = false;
-    // }
-
-
-    //console.log(Date.now().timestamp)
-
-    // const [{user},dispatch] = useStateValue()
-    // useEffect(() => {
-    //     if (roomId) {
-    //         db.collection('rooms').doc(roomId).onSnapshot(snapshot => (
-    //             setRoomName(snapshot.data().name))
-    //         )
-    //         db
-    //         .collection("rooms")
-    //         .doc(roomId)
-    //         .collection("messages")
-    //         .orderBy('timestamp','asc')
-    //         .onSnapshot(snapshot => (
-    //             setMessages(snapshot.docs.map(doc => doc.data()))
-    //         ))
-    //     }
-    // },[roomId])
 
 
     /* collect room messages */
     useEffect(() => {
-        { chat.DEBUG && console.log("I'm Mounting Chat!")}
-        { chat.DEBUG && console.log(chat)}
+        // { chat.DEBUG && console.log("I'm Mounting Chat!")}
+        // { chat.DEBUG && console.log(chat)}
         if (chat && chat.id) {
             db
                 .collection("rooms")
@@ -81,7 +44,7 @@ function Chat(props) {
                 ))
         }
         return(() => {
-            { chat.DEBUG && console.log("i'm unmounting the chat!")}
+            // { chat.DEBUG && console.log("i'm unmounting the chat!")}
             setMessages([])
         })
     },
@@ -110,7 +73,6 @@ function Chat(props) {
         }
         setInput("")
     }
-    //firebase.firestore.FieldValue.serverTimestamp()
     return (
         <div className="chat">
             { chat.active_status === "ACTIVE_CHAT" &&
@@ -135,7 +97,6 @@ function Chat(props) {
 
                             
                         </p>
-                        // {new Date(message.timestamp?.toDate()).toUTCString()}
                     ))}
                 </div>
                 }
