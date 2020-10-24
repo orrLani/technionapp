@@ -11,7 +11,7 @@ import SignInSide from "./SignIn/Signin"
 import { Prompt } from 'react-router'
 import Chatpage from "./chatpage/Chatpage"
 import NewSignUp from "./SignUpPage/signup"
-
+import Closed from './Closed'
 import {ChatProvider} from './server/ChatProvider'
 
 
@@ -27,7 +27,8 @@ function App() {
    <div className="app__body">
     
       
-      <Route exact path="/" component={Welcome} />
+      <Route exact path="/" component={Closed} />
+      {/* <Route exact path="/" component={Welcome} /> */}
       <Route exact path="/signup" component={Signup} />
       <Route exact path="/popupverify" component={PopUpVerify} />
       <Route path="/signin" component ={SignInSide}  />

@@ -167,7 +167,7 @@ exports.removeUserFromChat = functions.https.onCall((data,context) => {
                     .add({
                         messages_count: messages_count,
                         time_start_active: timestamp_start_active,
-                        timestamp_start: timestamp_start,
+                        time_start: timestamp_start,
                         time_end: admin.firestore.FieldValue.serverTimestamp()
                     })
             }
@@ -280,6 +280,13 @@ exports.setUserNickName = functions.https.onCall((data,context) => {
 
 exports.deleteChat = functions.firestore.document('rooms/{roomID}')
     .onDelete((snap,context) => {
+        functions.logger.log(context)
         const deletedValue = snap.data()
         functions.logger.log(deletedValue)
+        functions.logger.log(roomID)
+    })
+
+exports.forwardMessage = functions.firestore.document('rooms/{roomID}/messages/{messageID}')
+    .onDelete((snap,context) => {
+        admin.firestore().collection('roomsDeleted').onSnapshot
     })
