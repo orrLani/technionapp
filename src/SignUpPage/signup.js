@@ -17,7 +17,6 @@ import Container from '@material-ui/core/Container';
 import CustomizedSnackbars from './message_alert'
 
 import {gender_list,semester_list,faculty_list,course_list,maritalstatus_list,hobby_list} from '../AutoCmpleteLists';
-import BirthDay from './AutocompleteComponents/BirthDay'
 import AutoCompleteField from './AutocompleteComponents/AutoCompleteField'
 
 //terms of use dialog
@@ -86,7 +85,6 @@ const SignUp = ({history})=> {
     const[text_user, setUserName] = useState('')
     const[text_password, setPassword] = useState('')
     const[text_password_again, setPasswordAgain]=useState('')
-    const [birthday, setBirthday] = useState('')
     const [gender, setGender ] = useState('')
     const [semester, setSemester ] = useState('')
     const [faculty, setFactulty] = useState('')
@@ -104,11 +102,7 @@ const SignUp = ({history})=> {
     // Auth Context
     const auth = React.useContext(AuthContext)
 
-    const handleClick = () => {
-      // setState({
-      //   open: true
-      // });
-    };
+
 
 
     async function handleSignUp(event) {
@@ -141,7 +135,6 @@ const SignUp = ({history})=> {
         const user = firebase.auth().currentUser;
         await db.collection("users").doc(user.uid).set({
           text_user: text_user,
-          birthday: birthday,
           gender: gender,
           semester: semester,
           faculty: faculty,
@@ -159,7 +152,6 @@ const SignUp = ({history})=> {
         //    console.error("Error writing document: ", error);
         // });
 
-        console.log(birthday);
         console.log(user.get);
 
         console.log(user.uid);
@@ -238,9 +230,8 @@ const SignUp = ({history})=> {
               <TextField
                 required
                 type="password"
-                id="password"
-                label="Error"
-                name="password"
+                id="passwordAgain"
+                name="passwordAgain"
                 label="חזור על הסיסמא בבקשה "
                 fullWidth
                 variant="outlined"

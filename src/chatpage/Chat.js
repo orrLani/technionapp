@@ -32,7 +32,7 @@ function Chat(props) {
     useEffect(() => {
         // { chat.DEBUG && console.log("I'm Mounting Chat!")}
         // { chat.DEBUG && console.log(chat)}
-        if (chat && chat.id) {
+        if (chat && chat.id && chat.active_status === "ACTIVE_CHAT") {
             db
                 .collection("rooms")
                 .doc(chat.id)

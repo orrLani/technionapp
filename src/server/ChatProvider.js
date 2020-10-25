@@ -22,7 +22,7 @@ export const ChatProvider = ({children}) => {
       const deleteFromChat = firebase.functions().httpsCallable('removeUserFromChat')
       await deleteFromChat({})
       .catch(error => {
-        console.log(error)
+        console.log("not in chat")
       })
       /* if user entered new nickname, update it in databse */
       if (auth.nickNameHasChanged) {

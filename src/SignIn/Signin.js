@@ -21,7 +21,6 @@ import CustomizedSnackbars from '../SignUpPage/message_alert'
 
 import logo from '../logo.png'
 import firebase from '../server/firebase'
-import { CenterFocusStrong, SystemUpdate } from '@material-ui/icons';
 
 // handle userState
 import {AuthContext} from '../server/Auth'
@@ -96,7 +95,7 @@ const SignInSide=({history})=> {
   const[password,setPassword] = useState('')
   
   
-  const [modal, setModal] = useState(false);
+  
 
   const auth = useContext(AuthContext)
   const [alertState, setAlertState] = React.useState({
@@ -104,7 +103,6 @@ const SignInSide=({history})=> {
   });
 
   const resetModal = () => {
-    setModal(false);
     setUser("");
     setPassword("");
   };
@@ -139,7 +137,7 @@ const SignInSide=({history})=> {
     if(auth.currentUser) {
       history.push("/welcome")
     }
-  }, [auth])
+  }, [auth,history])
   const classes = useStyles();
   return (
     <Grid container component="main" className={classes.root}>
@@ -148,7 +146,7 @@ const SignInSide=({history})=> {
       <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
         <div dir="rtl" className={classes.paper}>
           
-          <img  width='350px'src={logo}></img>
+          <img alt="logo" width='350px'src={logo}></img>
           <Avatar className={classes.avatar}>
             <LockOutlinedIcon />
           </Avatar>
