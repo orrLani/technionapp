@@ -29,7 +29,8 @@ import endChat from "../../sounds/end_chat.wav";
 */
 function Sidebar() {
   const [users,setUsers] = useState([])
-  const [hobbys,setHobbys] = useState([])
+  const [hobbies,setHobbies] = useState([])
+  const [hobbiesWithoutDuplicates,setHobbiesWithoutDuplicate] = useState([])
   const {chat,setChat} = useContext(ChatContext)
   const auth = useContext(AuthContext)
 
@@ -88,8 +89,8 @@ function Sidebar() {
 
 
   }, [users,chat,auth.currentUser.uid,endAudio,prevUsers,setChat,startAudio])
-  /* fired when user connects to the chat for the first time.
-    added the user to the userslist in the sidebar */
+  /* fired when user connects to the chat for the first time and when he needs update.
+    added the user to the userslist in the sidebar and the hobbies list */
   useEffect(() => {
     // { chat.DEBUG && console.log("I'm Mounting Sidebar") }
     /*due to error message : "Can't perform a React state update on an unmounted component"
@@ -104,7 +105,8 @@ function Sidebar() {
         .onSnapshot(snapshot => {
           if(isMounted){
             setUsers(snapshot.docs.map(doc => doc.data()))
-            setHobbys(snapshot.docs.map(doc => doc.data().user_hobby))
+            setHobbies(snapshot.docs.map(doc => doc.data().user_hobby))
+            setHobbiesWithoutDuplicate(Array.from(new Set(snapshot.docs.map(doc => doc.data().user_hobby))))
             //in case both hobbies are the same, reduce to 1 (primitive and probally need scaling)
             /*if(hobbys[0] && hobbys[1] && hobbys[0] === hobbys[1]) {
               setHobbys(hobbys[0])
@@ -121,8 +123,9 @@ function Sidebar() {
   }, [chat]  )
 
   useEffect(() => {
-    console.log(hobbys)
-  },[hobbys])
+    console.log(hobbies.length)
+    console.log(hobbiesWithoutDuplicates.length)
+  },[hobbies,hobbiesWithoutDuplicates])
   return (
 
     <div className="chat-sidebar">
@@ -140,11 +143,11 @@ function Sidebar() {
         {chat.title ==="צ'אט חברתי" && 
         <div className="users__list">
           <h3 dir="rtl">תחביבים:</h3>
-          {hobbys.length !== 0 && hobbys.map(hobby => (
+          {hobbiesWithoutDuplicates.length !== 0 && 
+          hobbiesWithoutDuplicates.map(hobby => (
+
           <div key={hobby} 
           className="chat__username"
-
-
           >{hobby}</div>
         ))
         }

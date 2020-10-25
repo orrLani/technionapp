@@ -57,8 +57,8 @@ function Chat(props) {
     const sendMessage = (e) => {
         e.preventDefault()
         console.log('You typed >>> ', input)
-        if(input.length < 2 || input.length > 100) {
-            alert("הודעה חייבת להכיל בין 2 ל-100 תווים")
+        if(input.length < 1 || input.length > 100) {
+            alert("הודעה חייבת להכיל בין 1 ל-100 תווים")
         }
         else{
             db.collection('rooms').doc(chat.id)
@@ -70,8 +70,9 @@ function Chat(props) {
                     timestamp: fb.firestore.FieldValue.serverTimestamp(),
                     color: auth.userChatColor
                 })
+            setInput("")
         }
-        setInput("")
+        
     }
     return (
         <div className="chat">
