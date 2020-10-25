@@ -6,64 +6,56 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import { AuthContext } from '../server/Auth';
-import firebase from 'firebase'
 
-export default function EmailConfirmation({ emailVerified }) {
-  console.log(emailVerified)
-  const [message,setMessage] = useState("")
+
+export default function WelcomeMessageDialog({history}) {
   const auth = useContext(AuthContext)
-  //   const handleClickOpen = () => {
-  //     setOpen(true);
-  //   };
+  const [open,setOpen] = useState(true)
 
-  //   const handleClose = () => {
-  //     setOpen(false);
-  //   };
+    const handleClose = () => {
+      setOpen(false);
+    };
 
   return (
     <div>
       <Dialog
-        open={!emailVerified}
-        // onClose={handleClose}
+        open={open}
+        onClose={handleClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">
-          {"לצורך שימוש בצאטים הינך צריך/ה לאשר את המשתמש"}
+        <DialogTitle dir="rtl" id="alert-dialog-title">
+          {"ברוכים הבאים ל-TechChat!"}
         </DialogTitle>
         <DialogContent>
           <DialogContentText dir="rtl" id="alert-dialog-description">
-            אם אינך מוצא/ת, נסה/י לחפש בדואר הזבל
+            אתר צ'אטים אנונימי רק לסטודנטים בטכניון!
           </DialogContentText>
-          <DialogContentText dir="rtl">
-          {message}
-          </DialogContentText>
+            <DialogContentText dir="rtl" id="alert-dialog-description">
+            כי גם בסמסטר קורונה ניתן להכיר ולדבר עם אנשים חדשים :)
+            </DialogContentText>
+            <DialogContentText dir="rtl" id="alert-dialog-description">
+            בכניסה הראשונית יש להירשם לאתר.
+            </DialogContentText>
         </DialogContent>
         <DialogActions>
-          
-
-          
           <Button 
           onClick={() => {
-            firebase.auth().signOut()
+            setOpen(false)
           }} 
           color="primary"
-          
           >
-            להחלפת משתמש
+            סגור
           </Button>
-          
-          
+
           <Button 
           onClick={() => {
-            setMessage("נשלח וידוא בשנית, אנא בדק/י את תיבת הדואר ונסה/י שוב")
-            auth.currentUser.sendEmailVerification()
-            console.log(auth.currentUser)
+            setOpen(false)
+            history.push("/signup")
           }} 
           color="primary"
-          disabled = {message !== ""}
           >
-            שלח שוב
+            להרשמה
           </Button>
           
         </DialogActions>

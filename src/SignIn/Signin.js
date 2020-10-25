@@ -19,6 +19,9 @@ import Background3 from '../Images/3.jpg';
 import CustomizedSnackbars from '../SignUpPage/message_alert'
 
 
+// Dialog
+import WelcomeMessageDialog from './WelcomeMessageDialog'
+
 import logo from '../logo.png'
 import firebase from '../server/firebase'
 
@@ -83,7 +86,7 @@ const useStyles = makeStyles((theme) => ({
   },
   mailSuffix: {
     flex: 1,
-    fontSize: 'x-large',
+    fontSize: 'large',
     alignSelf: 'center',
     padding: '2px',
   }
@@ -141,6 +144,9 @@ const SignInSide=({history})=> {
   const classes = useStyles();
   return (
     <Grid container component="main" className={classes.root}>
+      {/* when first open */}
+      <WelcomeMessageDialog history={history} />
+
       <CssBaseline />
       <Grid item xs={false} sm={4} md={7} className={classes.image} />
       <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
@@ -150,9 +156,11 @@ const SignInSide=({history})=> {
           <Avatar className={classes.avatar}>
             <LockOutlinedIcon />
           </Avatar>
-          <Typography component="h1" variant="h5">
+          <Typography color="red" component="h1" variant="h5">
             התחברות
           </Typography>
+          
+          
           <form className={classes.form} onSubmit = {handleSignIn} noValidate>
             <div className={classes.tech_user}>
             <div dir="ltr" className={classes.mailSuffix}>

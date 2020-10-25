@@ -33,6 +33,20 @@
     width: fit-content;
     margin-bottom: 30px;
 }
+
+.chat__botMessage {
+    position: relative;
+    font-size: 16px;
+    padding: 10px;
+    border-radius: 10px;
+    width: -moz-fit-content;
+    width: fit-content;
+    min-width: 15%;
+    background-color: gold;
+    align-self: center;
+    margin-bottom: 30px;
+}
+
 .chat__timestamp {
     margin-right: 10px;
     padding: 5px;

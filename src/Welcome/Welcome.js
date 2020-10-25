@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 //import Courses from '../SignUpPage/AutocompleteComponents/Courses'
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
-import { course_list, hobby_list } from '../AutoCmpleteLists';
+import { course_list, hobby_list, faculty_list } from '../AutoCmpleteLists';
 import AutoCompleteField from '../SignUpPage/AutocompleteComponents/AutoCompleteField'
 import InsertNicknameDialog from './InsertNicknameDialog'
 
@@ -76,7 +76,7 @@ const Welcome = ({ history }) => {
   return (
     <div className="background_style">
       
-      {/* <EmailConfirmation emailVerified={auth.currentUser && auth.currentUser.emailVerified}/> */}
+      <EmailConfirmation emailVerified={auth.currentUser && auth.currentUser.emailVerified}/>
       <div>
         {/* SignOut Button */}
         <Button onClick={() => {
@@ -96,11 +96,11 @@ const Welcome = ({ history }) => {
         <div className="card">
           <div className="card-image"></div>
           <div className="card-text">
-            <h2>צ'אט לימודי</h2>
+            <h2>צ'אט פקולטי</h2>
             <Grid container justify="center" spacing={6} >
               <Grid item xs={12} container justify="center">
-                <AutoCompleteField list={course_list}
-                  label="קורסים" setFunction={setCourse} />
+                <AutoCompleteField list={faculty_list}
+                  label="בחר/י פקולטה" setFunction={setCourse} />
 
               </Grid>
               {/* <NicknameField id={1} /> */}
@@ -109,7 +109,7 @@ const Welcome = ({ history }) => {
                   onClick={() => {
                     console.log(course)
                     if (course.title === undefined) {
-                      alert("אנא בחר/י קורס")
+                      alert("אנא בחר/י פקולטה")
                     }
                     else {
                       setChat(chat => {
@@ -131,7 +131,7 @@ const Welcome = ({ history }) => {
         <div className="card">
           <div className="card-image card3"></div>
           <div className="card-text card3">
-            <h2>צ'אט חברתי </h2>
+            <h2>צ'אט כלל טכניוני </h2>
             <Grid container justify="center" spacing={6} dir="rtl">
               <Grid item xs={12} container justify="center">
                 <AutoCompleteField list={hobby_list}

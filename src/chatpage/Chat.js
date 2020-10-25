@@ -26,8 +26,14 @@ function Chat(props) {
 
     const auth = useContext(AuthContext)
     const {chat, setChat, addNewChat} = useContext(ChatContext)
+    // const [prevChat,setPrevChat] = usePrevious(chat)
 
-
+    // /* when room went to active from waiting, display first hello message */
+    // useEffect(() => {
+    //     if(chat&&chat.active_status === "ACTIVE_CHAT" && prevChat && chat.active_status === "WAITING_CHAT" ) {
+    //         setMessages()
+    //     }
+    // },[chat,prevChat])
     /* collect room messages */
     useEffect(() => {
         // { chat.DEBUG && console.log("I'm Mounting Chat!")}
@@ -78,7 +84,7 @@ function Chat(props) {
         <div className="chat">
             { chat.active_status === "ACTIVE_CHAT" &&
                 <div className="chat__body">
-                
+                   
                     {messages.map(message => (
                         //Left or right   //className={`chat__message ${message.name === user.displayName && "chat__reciever"}`}
                         <p key={message.id}
@@ -98,7 +104,11 @@ function Chat(props) {
 
                             
                         </p>
+                        
                     ))}
+                     <p  dir="rtl"
+                     className="chat__botMessage">
+                         ברוכים הבאים! תהיו נחמדים :) מוזמנים להתחיל ב "היי"</p>
                 </div>
                 }
             {chat.active_status === "WAITING_CHAT" && 

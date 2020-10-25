@@ -3,11 +3,13 @@ import "./Header.css";
 //import Link from '@material-ui/core/Link';
 
 import {IconButton } from "@material-ui/core"
+import Button from '@material-ui/core/Button';
 
 /* Context Providers */
 import {AuthContext} from '../../server/Auth'
 import {ChatContext} from '../../server/ChatProvider'
 
+import logo from './logo.jpeg'
 
 import MoodIcon from '@material-ui/icons/Mood';
 
@@ -38,14 +40,18 @@ function Header(props) {
 
   return (
     <div className="chat__header" >
+      <img src={logo} width="30px"/>
       
-      <MoodIcon />
       <h2> {chat.title}</h2>
       
 
-      <IconButton style= {{color: '#F7FFF7'}} onClick={NewChat} >
-          צ'אט חדש
-      </IconButton>
+      <Button 
+      size="large"
+       variant="contained"
+        color="primary"
+        onClick={NewChat}>
+        לפתיחת צ'אט חדש
+        </Button>
     </div>
 
   );

@@ -70,7 +70,7 @@ const useStyles = makeStyles((theme) => ({
   },
   mailSuffix: {
     flex: 1,
-    fontSize: 'x-large',
+    fontSize: 'large',
     alignSelf: 'center',
     padding: '2px',
   }
@@ -110,21 +110,13 @@ const SignUp = ({history})=> {
 
       try {
         if (!termsChecked) {
-          event.preventDefault();
-          // setAlertState({
-          //   open: true,
-          //   message: " למה הוא אישר את תנאי השימוש ",
-          //   sevirity_level: "error"
-          // })
           throw new Error("צריך לאשר את תנאי השימוש");
         }
 
         if (text_password !== text_password_again) {
-          event.preventDefault();
           throw new Error("סיסמאות לא תואמות");
         }
 
-        console.log(text_user);
 
         await firebase
           .auth()
@@ -133,6 +125,8 @@ const SignUp = ({history})=> {
             text_password
           );
         const user = firebase.auth().currentUser;
+        const anonimous = "אנונימי"
+        const random_nickname = anonimous + " "+Math.floor(Math.random ()*11)
         await db.collection("users").doc(user.uid).set({
           text_user: text_user,
           gender: gender,
@@ -141,21 +135,11 @@ const SignUp = ({history})=> {
           course: course,
           maritalstatus: maritalstatus,
           hobby: hobby,
-          nickname: "default",
+          nickname: random_nickname,
         });
-        console.log(auth.currentUser);
+  
 
-        //  }).then(function() {
-        //     console.log("Document successfully written!");
-        // })
-        // .catch(function(error) {
-        //    console.error("Error writing document: ", error);
-        // });
-
-        console.log(user.get);
-
-        console.log(user.uid);
-        console.log(user.metadata);
+  
 
         await user.sendEmailVerification();
 
@@ -241,13 +225,13 @@ const SignUp = ({history})=> {
               />
             </Grid>
 
-            <Grid item xs={12}>
+            {/* <Grid item xs={12}>
               <AutoCompleteField
                 list={gender_list}
                 label="מין"
                 setFunction={setGender}
               />
-            </Grid>
+            </Grid> */}
 
             <Grid item xs={12}>
               <AutoCompleteField
@@ -257,39 +241,39 @@ const SignUp = ({history})=> {
               />
             </Grid>
 
-            <Grid item xs={12}>
+            {/* <Grid item xs={12}>
               <AutoCompleteField
                 list={faculty_list}
                 label="פקולטה"
                 setFunction={setFactulty}
               />
-            </Grid>
+            </Grid> */}
 
-            <Grid item xs={12}>
+            {/* <Grid item xs={12}>
               <AutoCompleteField
                 list={course_list}
                 label="קורסים"
                 setFunction={setCourses}
                 is_multiple={true}
               />
-            </Grid>
+            </Grid> */}
 
-            <Grid item xs={12}>
+            {/* <Grid item xs={12}>
               <AutoCompleteField
                 list={maritalstatus_list}
                 label="מצב משפחתי"
                 setFunction={setMaritalStatus}
               />
-            </Grid>
+            </Grid> */}
 
-            <Grid item xs={12}>
+            {/* <Grid item xs={12}>
               <AutoCompleteField
                 list={hobby_list}
                 label="תחביבים"
                 setFunction={setHobby}
                 is_multiple={true}
               />
-            </Grid>
+            </Grid> */}
 
             <CustomizedSnackbars
               alertState={alertState}

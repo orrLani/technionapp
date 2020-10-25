@@ -12,17 +12,24 @@ export default function InsertNicknameDialog({ open, setOpen }) {
     const {setChat, addNewChat} = useContext(ChatContext)
     const auth = useContext(AuthContext)
     const handleSubmit = async () => {
-        setOpen(false);
-        console.log("in handle submit")
-        setChat(chat => {
-            return{
-                ...chat,
-                is_open: true,
-                is_loading: true
-            }
-        })
-        // chat.addUserToChat()
-        addNewChat(auth)
+        if (
+          auth.currentUserNickName.length < 2 ||
+          auth.currentUserNickName.length > 10
+        ) {
+          alert("כינוי חייב להכיל בין 2 ל-10 תווים");
+        } else {
+          setOpen(false);
+          console.log("in handle submit");
+          setChat((chat) => {
+            return {
+              ...chat,
+              is_open: true,
+              is_loading: true,
+            };
+          });
+          // chat.addUserToChat()
+          addNewChat(auth);
+        }
     };
 
     return (
@@ -34,6 +41,7 @@ export default function InsertNicknameDialog({ open, setOpen }) {
             >
                 <DialogContent dir="rtl">
                     <DialogContentText dir="rtl">בחר/י כינוי:</DialogContentText>
+                    <DialogContentText dir="rtl">אין חובה להזדהות בשמך.</DialogContentText>
                     <TextField id="nickname"
                         value={auth.currentUserNickName}
                         variant="outlined"
@@ -42,6 +50,13 @@ export default function InsertNicknameDialog({ open, setOpen }) {
                             return auth.setCurrentUserNickName(e.target.value)
                         }}>
                     </TextField>
+                    <h3> </h3>
+                    <DialogContentText classes={{
+                        root: {
+                            fontSize: '4px',
+                            color: 'blue',
+                        },
+                    }} dir="rtl">זכר/י כי כל פעילות הגורמת עוול למשתמשים אחרים תגרור חסימה לאלתר.</DialogContentText>
                 </DialogContent>
                 <DialogActions align="center" dir="rtl">
                     <Button onClick={() => {setOpen(false)}} color="primary">
