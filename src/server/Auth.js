@@ -12,11 +12,13 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     app.auth().onAuthStateChanged((user) => {
+      
       console.log("auth changed!")
       setCurrentUser(user)
 
       //get the user's last nickname
       if (user) {
+        user.reload()
         db.collection('users').doc(user.uid).onSnapshot(snap => {
           if(snap.data()){
             setCurrentUserNickName(snap.data().nickname)

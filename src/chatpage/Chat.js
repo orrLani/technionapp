@@ -69,7 +69,6 @@ function Chat(props) {
         else{
             db.collection('rooms').doc(chat.id)
                 .collection('messages').add({
-                    user_name: auth.currentUser.email.split('@')[0],
                     nickname: auth.currentUserNickName,
                     text: input,
                     user_uid: auth.currentUser.uid,

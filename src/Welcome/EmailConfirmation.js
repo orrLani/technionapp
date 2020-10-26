@@ -9,7 +9,6 @@ import { AuthContext } from '../server/Auth';
 import firebase from 'firebase'
 
 export default function EmailConfirmation({ emailVerified }) {
-  console.log(emailVerified)
   const [message,setMessage] = useState("")
   const auth = useContext(AuthContext)
   //   const handleClickOpen = () => {
@@ -29,7 +28,7 @@ export default function EmailConfirmation({ emailVerified }) {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          {"לצורך שימוש בצאטים הינך צריך/ה לאשר את המשתמש"}
+          {"לצורך שימוש בצ'אטים הינך צריך/ה לאשר את המשתמש"}
         </DialogTitle>
         <DialogContent>
           <DialogContentText dir="rtl" id="alert-dialog-description">
@@ -56,9 +55,14 @@ export default function EmailConfirmation({ emailVerified }) {
           
           <Button 
           onClick={() => {
-            setMessage("נשלח וידוא בשנית, אנא בדק/י את תיבת הדואר ונסה/י שוב")
-            auth.currentUser.sendEmailVerification()
-            console.log(auth.currentUser)
+            try{
+              setMessage("נשלח וידוא בשנית, אנא בדק/י את תיבת הדואר ונסה/י שוב")
+              auth.currentUser.sendEmailVerification()
+              console.log(auth.currentUser)
+            }
+            catch{
+              setMessage("קרתה שגיאה, נסה/י שוב")
+            }
           }} 
           color="primary"
           disabled = {message !== ""}

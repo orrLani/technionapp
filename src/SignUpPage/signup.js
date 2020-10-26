@@ -124,24 +124,19 @@ const SignUp = ({history})=> {
             text_user + "@campus.technion.ac.il",
             text_password
           );
-        const user = firebase.auth().currentUser;
+          const user = await firebase.auth().currentUser;
+          await user.sendEmailVerification();
         const anonimous = "אנונימי"
-        const random_nickname = anonimous + " "+Math.floor(Math.random ()*11)
+        const random_nickname = anonimous + " " +Math.floor(Math.random ()*11)
         await db.collection("users").doc(user.uid).set({
           text_user: text_user,
-          gender: gender,
           semester: semester,
-          faculty: faculty,
-          course: course,
-          maritalstatus: maritalstatus,
-          hobby: hobby,
           nickname: random_nickname,
         });
   
 
   
 
-        await user.sendEmailVerification();
 
         history.push("/popupverify");
       } catch (error) {

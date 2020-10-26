@@ -24,6 +24,19 @@ admin.initializeApp()
      deletes the chat if users_count <= 2. 
      @param data = {chat_id} */
 exports.removeUserFromChat = functions.https.onCall((data,context) => {
+    
+    if(!context.auth) {
+        throw new Error("request without user context")
+    }
+    illegalEmailSuffix = context.auth.token.email.split('@')[1] !== "campus.technion.ac.il"
+    if(illegalEmailSuffix) {
+        throw new Error("illegal mail")
+    }
+    functions.logger.log(context.auth.token.email_verified)
+    functions.logger.log(context.auth.token)
+    if(!context.auth.token.email_verified) {
+        throw new Error("email not verified")
+    }
     data.chat_id = undefined
     // let users_count = 0;
     let timestamp_start_active = 0
@@ -188,8 +201,15 @@ exports.removeUserFromChat = functions.https.onCall((data,context) => {
     our goal is to prioritze rooms with only 1 user that is waiting for chat to open.
     @ param data = {user_nickname, course_title, hobby} */
 exports.addUserToChat = functions.https.onCall((data,context) => {
-    if(context.auth === undefined) {
-        throw new Error("User not logged in!")
+    if(!context.auth) {
+        throw new Error("request without user context")
+    }
+    illegalEmailSuffix = context.auth.token.email.split('@')[1] !== "campus.technion.ac.il"
+    if(illegalEmailSuffix) {
+        throw new Error("illegal mail")
+    }
+    if(!context.auth.token.email_verified) {
+        throw new Error("email not verified")
     }
     functions.logger.log("I'm adding user to chat!")
     return admin.firestore().collection('rooms')
@@ -267,6 +287,16 @@ exports.addUserToChat = functions.https.onCall((data,context) => {
  */
 
 exports.setUserNickName = functions.https.onCall((data,context) => {
+    if(!context.auth) {
+        throw new Error("request without user context")
+    }
+    illegalEmailSuffix = context.auth.token.email.split('@')[1] !== "campus.technion.ac.il"
+    if(illegalEmailSuffix) {
+        throw new Error("illegal mail")
+    }
+    if(!context.auth.token.email_verified) {
+        throw new Error("email not verified")
+    }
     return admin.firestore()
     .collection('users')
     .doc(context.auth.uid)
@@ -277,16 +307,3 @@ exports.setUserNickName = functions.https.onCall((data,context) => {
         throw error
     })
 })
-
-exports.deleteChat = functions.firestore.document('rooms/{roomID}')
-    .onDelete((snap,context) => {
-        functions.logger.log(context)
-        const deletedValue = snap.data()
-        functions.logger.log(deletedValue)
-        functions.logger.log(roomID)
-    })
-
-exports.forwardMessage = functions.firestore.document('rooms/{roomID}/messages/{messageID}')
-    .onDelete((snap,context) => {
-        admin.firestore().collection('roomsDeleted').onSnapshot
-    })
