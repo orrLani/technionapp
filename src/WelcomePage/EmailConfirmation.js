@@ -8,22 +8,15 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import { AuthContext } from '../server/Auth';
 import firebase from 'firebase'
 
+/* Modal in welcomepage that opens if user didn't verified in email */
 export default function EmailConfirmation({ emailVerified }) {
   const [message,setMessage] = useState("")
   const auth = useContext(AuthContext)
-  //   const handleClickOpen = () => {
-  //     setOpen(true);
-  //   };
-
-  //   const handleClose = () => {
-  //     setOpen(false);
-  //   };
 
   return (
     <div>
       <Dialog
         open={!emailVerified}
-        // onClose={handleClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >

@@ -1,4 +1,4 @@
-import './styles.css'
+import './Welcome.css'
 import React, { useEffect, useState } from 'react';
 //import Courses from '../SignUpPage/AutocompleteComponents/Courses'
 import Grid from '@material-ui/core/Grid';
@@ -103,7 +103,7 @@ const Welcome = ({ history }) => {
                   label="בחר/י פקולטה" setFunction={setCourse} />
 
               </Grid>
-              {/* <NicknameField id={1} /> */}
+              
               <Grid item xs={12}>
                 <Button variant="contained" color="primary"
                   onClick={() => {

@@ -7,7 +7,7 @@ import {ChatContext} from '../../server/ChatProvider'
 import { AuthContext } from "../../server/Auth";
 
 /* custom hook */
-import usePrevious from '../../utils/usePrevious'
+import usePrevious from '../../CustomHooks/usePrevious'
 
 
 /* for music */

@@ -1,14 +1,12 @@
 import React from "react";
-import "./App.css";
-import Welcome from './Welcome/Welcome'
+import Welcome from './WelcomePage/Welcome'
 import Signup from './SignUpPage/signup'
 import PopUpVerify from './SignUpPage/PopUpVerify'
 import {AuthProvider} from './server/Auth'
 import {BrowserRouter as Router, Route} from "react-router-dom"
-import SignInSide from "./SignIn/Signin"
+import SignInSide from "./SignInPage/Signin"
 
 import Chatpage from "./chatpage/Chatpage"
-import Closed from './Closed'
 import {ChatProvider} from './server/ChatProvider'
 
 
