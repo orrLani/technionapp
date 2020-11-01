@@ -26,6 +26,7 @@ import TechnionChatCard from './Components/Cards/TechnionChatCard'
 import InsertNicknameDialog from './Components/Dialogs/InsertNicknameDialog'
 import LoginDialog from './Components/Dialogs/LoginDialog'
 
+import useMobileDetect from 'use-mobile-detect-hook';
 
 const Welcome = ({ history }) => {
 
@@ -39,6 +40,15 @@ const Welcome = ({ history }) => {
   /* handle login dialog */
   const [openLoginDialog, setOpenLoginDialog] = useState(true)
   
+  useEffect(() => {
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+    if(isMobile){
+      console.log("mobile!")
+    }
+    else{
+      console.log("not mobile!")
+    }
+  },[navigator.userAgent])
 
 
   useEffect(() => {
@@ -64,10 +74,7 @@ const Welcome = ({ history }) => {
     <div className="background_style">
       {/* in case user not logged in */}
       <LoginDialog />
-      {/* SignOut Button */}
-      <Button id="signOut" onClick={signOut} variant="contained">
-        התנתקות
-      </Button>
+      
 
       <div className="cards">
         <FaculticChatCard
@@ -102,6 +109,11 @@ const Welcome = ({ history }) => {
           {chat.is_loading ? <Loading /> : <Chatpage />}
         </Fade>
       </Modal>
+
+      {/* SignOut Button */}
+      <Button id="signOut" onClick={signOut} variant="contained">
+        התנתקות
+      </Button>
     </div>
       <div className="techchat__logo">
         <div>TechChat</div>
