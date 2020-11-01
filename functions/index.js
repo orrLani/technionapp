@@ -208,9 +208,6 @@ exports.addUserToChat = functions.https.onCall((data,context) => {
     if(illegalEmailSuffix) {
         throw new Error("illegal mail")
     }
-    if(!context.auth.token.email_verified) {
-        throw new Error("email not verified")
-    }
     functions.logger.log("I'm adding user to chat!")
     return admin.firestore().collection('rooms')
     .where('course_title' ,'==',data.course_title)
@@ -245,7 +242,6 @@ exports.addUserToChat = functions.https.onCall((data,context) => {
             roomRef.collection('users_on_page')
                 .add({
                     nickname: data.user_nickname,
-                    user_name: context.auth.token.email.split('@')[0],
                     user_uid: context.auth.uid,
                     user_hobby: data.hobby,
                     user_color: data.color
@@ -257,7 +253,6 @@ exports.addUserToChat = functions.https.onCall((data,context) => {
             roomRef.collection('users_on_page')
                 .add({
                     nickname: data.user_nickname,
-                    user_name: context.auth.token.email.split('@')[0],
                     user_uid: context.auth.uid,
                     user_color: data.color
                 })
@@ -294,9 +289,6 @@ exports.setUserNickName = functions.https.onCall((data,context) => {
     if(illegalEmailSuffix) {
         throw new Error("illegal mail")
     }
-    if(!context.auth.token.email_verified) {
-        throw new Error("email not verified")
-    }
     return admin.firestore()
     .collection('users')
     .doc(context.auth.uid)
@@ -307,3 +299,12 @@ exports.setUserNickName = functions.https.onCall((data,context) => {
         throw error
     })
 })
+
+exports.addUserToDb = functions.auth.user().onCreate((user) => {
+    const anonimous = "אנונימי"
+    const random_nickname = anonimous + " " +Math.floor(Math.random ()*11)
+    functions.logger.log(user)
+    return admin.firestore().collection("users").doc(user.uid).set({
+        nickname: random_nickname,
+    });
+});

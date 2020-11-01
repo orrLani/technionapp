@@ -1,12 +1,6 @@
 import './Welcome.css'
 import React, { useEffect, useState } from 'react';
-//import Courses from '../SignUpPage/AutocompleteComponents/Courses'
-import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
-import { course_list, hobby_list, faculty_list } from '../AutoCmpleteLists';
-import AutoCompleteField from '../SignUpPage/AutocompleteComponents/AutoCompleteField'
-import InsertNicknameDialog from './InsertNicknameDialog'
-
 /* database and authentication */
 import firebase from '../server/firebase'
 import { AuthContext } from '../server/Auth'
@@ -24,170 +18,96 @@ import { ChatContext } from '../server/ChatProvider'
 /* Loading page */
 import Loading from '../Loading'
 
+/* Chat cards */
+import FaculticChatCard from './Components/Cards/FaculticChatCard'
+import TechnionChatCard from './Components/Cards/TechnionChatCard'
 
+/* Dialogs */
+import InsertNicknameDialog from './Components/Dialogs/InsertNicknameDialog'
+import LoginDialog from './Components/Dialogs/LoginDialog'
 
-/* EmailConfirmation*/
-
-import EmailConfirmation from './EmailConfirmation'
 
 const Welcome = ({ history }) => {
-
-  const [course, setCourse] = useState('')
-  const [hobby, setHobby] = useState('')
-
 
   /*Contexts API */
   const auth = useContext(AuthContext)
   const { chat, setChat } = useContext(ChatContext)
 
   /* handle nickname dialog */
-  const [insertNicknameDialogOpen, setInsertNicknameDialogOpen] = useState(false)
+  const [openInsertNicknameDialog, setOpenInsertNicknameDialog] = useState(false)
 
-  useEffect(() => {
-    console.log(course)
-  }, [course])
-  
+  /* handle login dialog */
+  const [openLoginDialog, setOpenLoginDialog] = useState(true)
   
 
-
-  useEffect(() => {
-    // { chat.DEBUG && console.log("Welcome is mounting!") }
-    // { chat.DEBUG && console.log(chat) }
-    // const deleteFromChat = firebase.functions().httpsCallable('removeUserFromChat')
-    // deleteFromChat({})
-    // .catch(error => {
-    //   console.log(error)
-    // })
-    return function cleanup() {
-      // { chat.DEBUG && console.log("Welcome is unmounting!") }
-      // { chat.DEBUG && console.log(chat) }
-    }
-  }, [chat])
 
   useEffect(() => {
     console.log(auth)
-    if (!auth.currentUser) {
-      history.push('/signin')
-    }
-  }, [auth,history])
+    const userLoggedIn = auth.currentUser
+    setOpenLoginDialog(!userLoggedIn)
+  }, [auth])
 
-
+  function signOut() {
+    firebase
+      .auth()
+      .signOut()
+      .then(() => {
+        // history.push('/signin')
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
 
   return (
+    <div>
     <div className="background_style">
-      
-      <div>
-        {/* SignOut Button */}
-        <Button onClick={() => {
-          firebase.auth().signOut()
-            .then(() => {
-              // history.push('/signin')
-            }).catch(error => {
-              console.log(error)
-            })
-        }}
-          variant="contained"
-          // color="secondary"
-          >התנתקות</Button>
+      {/* in case user not logged in */}
+      <LoginDialog />
+      {/* SignOut Button */}
+      <Button id="signOut" onClick={signOut} variant="contained">
+        התנתקות
+      </Button>
 
-      </div>
       <div className="cards">
-        <div className="card">
-          <div className="card-image"></div>
-          <div className="card-text">
-            <h2>צ'אט פקולטי</h2>
-            <Grid container justify="center" spacing={6} >
-              <Grid item xs={12} container justify="center">
-                <AutoCompleteField list={faculty_list}
-                  label="בחר/י פקולטה" setFunction={setCourse} />
+        <FaculticChatCard
+          setChat={setChat}
+          setOpenInsertNicknameDialog={setOpenInsertNicknameDialog}
+        />
 
-              </Grid>
-              
-              <Grid item xs={12}>
-                <Button variant="contained" color="primary"
-                  onClick={() => {
-                    console.log(course)
-                    if (course.title === undefined) {
-                      alert("אנא בחר/י פקולטה")
-                    }
-                    else {
-                      setChat(chat => {
-                        return {
-                          ...chat,
-                          title: course.title,
-                        }
-                      })
-                      setInsertNicknameDialogOpen(true)
-                    }
-                  }} >
-                  לחץ כאן
-                </Button>
-              </Grid>
-            </Grid>
-          </div>
-        </div>
-
-        <div className="card">
-          <div className="card-image card3"></div>
-          <div className="card-text card3">
-            <h2>צ'אט כלל טכניוני </h2>
-            <Grid container justify="center" spacing={6} dir="rtl">
-              <Grid item xs={12} container justify="center">
-                <AutoCompleteField list={hobby_list}
-                  label="תחביבים" setFunction={setHobby} />
-              </Grid>
-              <Grid item xs={12}>
-                <Button variant="contained" color="primary"
-                  onClick={() => {
-                    setChat(chat => {
-                      //console.log(hobby)
-                      if (hobby) {
-                        return {
-                          ...chat,
-                          title: "צ'אט חברתי",
-                          user_hobby: hobby.title,
-                        }
-                      }
-                      else {
-                        return {
-                          ...chat,
-                          title: "צ'אט חברתי",
-                        }
-                      }
-                    })
-                    setInsertNicknameDialogOpen(true)
-                  }}
-                >
-                  לחץ כאן
-                </Button>
-              </Grid>
-            </Grid>
-          </div>
-        </div>
+        <TechnionChatCard
+          setChat={setChat}
+          setOpenInsertNicknameDialog={setOpenInsertNicknameDialog}
+        />
       </div>
 
       {/* fired when user clicks on add chat */}
-      {insertNicknameDialogOpen && <InsertNicknameDialog open={insertNicknameDialogOpen}
-        setOpen={setInsertNicknameDialogOpen} />}
+      {openInsertNicknameDialog && (
+        <InsertNicknameDialog
+          open={openInsertNicknameDialog}
+          setOpen={setOpenInsertNicknameDialog}
+        />
+      )}
 
       {/* Modal of the chatpage */}
       <Modal
         open={chat.is_open}
-        // onClose={handleCloseChat}
         closeAfterTransition
         BackdropComponent={Backdrop}
         BackdropProps={{
           timeout: 500,
-        }}>
+        }}
+      >
         <Fade in={chat.is_open}>
-          {chat.is_loading
-            ? <Loading />
-            : <Chatpage />}
-
+          {chat.is_loading ? <Loading /> : <Chatpage />}
         </Fade>
       </Modal>
-
     </div>
+      <div className="techchat__logo">
+        <div>TechChat</div>
+        <div className="beta">Beta</div>
+      </div>
+      </div>
   );
 }
 

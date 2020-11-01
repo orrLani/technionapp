@@ -6,17 +6,17 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 
-import {AuthContext} from '../server/Auth'
-import {ChatContext} from '../server/ChatProvider'
+import {AuthContext} from '../../../server/Auth'
+import {ChatContext} from '../../../server/ChatProvider'
 export default function InsertNicknameDialog({ open, setOpen }) {
     const {setChat, addNewChat} = useContext(ChatContext)
     const auth = useContext(AuthContext)
     const handleSubmit = async () => {
         if (
           auth.currentUserNickName.length < 2 ||
-          auth.currentUserNickName.length > 10
+          auth.currentUserNickName.length > 20
         ) {
-          alert("כינוי חייב להכיל בין 2 ל-10 תווים");
+          alert("כינוי חייב להכיל בין 2 ל-20 תווים");
         } else {
           setOpen(false);
           console.log("in handle submit");
@@ -40,8 +40,8 @@ export default function InsertNicknameDialog({ open, setOpen }) {
                 aria-labelledby="form-dialog-title"
             >
                 <DialogContent dir="rtl">
-                    <DialogContentText dir="rtl">בחר/י כינוי:</DialogContentText>
-                    <DialogContentText dir="rtl">אין חובה להזדהות בשמך.</DialogContentText>
+                    <DialogContentText variant="h6"  dir="rtl">בחר/י כינוי:</DialogContentText>
+                    <DialogContentText variant="h6"  dir="rtl">אין חובה להזדהות בשמך.</DialogContentText>
                     <TextField id="nickname"
                         value={auth.currentUserNickName}
                         variant="outlined"

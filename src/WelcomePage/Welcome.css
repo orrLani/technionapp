@@ -16,7 +16,7 @@
     align-items: center;
     justify-content: center;
     /* background: url("blue-clouds-day-fluffy-53594.jpeg") no-repeat 0 0 fixed; */
-    background: repeating-linear-gradient(45deg, black, transparent 70px);
+    background: linear-gradient(45deg, #008b8a, transparent);
     overflow: hidden;
     background-size: 100% 100%;
     margin-top: -8px;
@@ -26,6 +26,20 @@
 
     flex-direction: column-reverse;
 
+  }
+
+  .techchat__logo {
+    display: flex;
+    font-size: 2.2rem;
+    font-family: cursive;
+    color: darkblue;
+    justify-content: center;
+    flex-direction: revert;
+    margin-inline-start: 87%;
+  }
+
+  .techchat__logo > .beta {
+    font-size:1.2rem
   }
   .cards {
     display:flex;

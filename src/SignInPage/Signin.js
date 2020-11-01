@@ -180,67 +180,7 @@ const SignInSide=({history})=> {
           </Typography>
           
           
-          <form className={classes.form} onSubmit = {handleSignIn} noValidate>
-            <div className={classes.tech_user}>
-            <div dir="ltr" className={classes.mailSuffix}>
-              @campus.technion.ac.il
-            </div>
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fontSize='large'
-              fullWidth
-              id="user"
-              label="משתמש טכניוני"
-              name="user"
-              onChange = {(event)=> {setUser(event.target.value)}}
-              autoFocus
-            /> 
-            </div>
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="סיסמה"
-              type="password"
-              id="password"
-              onChange = {(event)=> {setPassword(event.target.value)}}
-              autoComplete="current-password"
-            />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="זכור אותי"
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="primary"
-              className={classes.submit}
-            >
-              התחברות
-            </Button>
-            <Grid container>
-              <Grid item xs>
-                {/* <Link href="#" variant="body2">
-                  Forgot password?
-                </Link> */}
-              </Grid>
-              <Grid item>
-                <Link href="/signup" variant="body2">
-                  {"עדין אין חשבון? לחץ כאן!"}
-                </Link>
-              </Grid>
-              <CustomizedSnackbars alertState={alertState}
-             setAlertState={setAlertState}/>
-            </Grid>
-            <Box mt={5}>
-              <Copyright />
-            </Box>
-          </form>
+          
         </div>
       </Grid>
     </Grid>

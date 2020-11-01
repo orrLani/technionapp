@@ -106,12 +106,7 @@ function Sidebar() {
           if(isMounted){
             setUsers(snapshot.docs.map(doc => doc.data()))
             setHobbies(snapshot.docs.map(doc => doc.data().user_hobby))
-            setHobbiesWithoutDuplicate(Array.from(new Set(snapshot.docs.map(doc => doc.data().user_hobby))))
-            //in case both hobbies are the same, reduce to 1 (primitive and probally need scaling)
-            /*if(hobbys[0] && hobbys[1] && hobbys[0] === hobbys[1]) {
-              setHobbys(hobbys[0])
-            }
-            */
+            setHobbiesWithoutDuplicate(Array.from(new Set(snapshot.docs.map(doc => doc.data().user_hobby))))            
           }
         })
     }
