@@ -76,7 +76,6 @@ const Welcome = ({ history }) => {
   return (
     <div className="background_style">
       
-      <EmailConfirmation emailVerified={auth.currentUser && auth.currentUser.emailVerified}/>
       <div>
         {/* SignOut Button */}
         <Button onClick={() => {

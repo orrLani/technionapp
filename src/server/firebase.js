@@ -14,6 +14,19 @@ const firebaseApp = firebase.initializeApp({
     measurementId: "G-6W6E2HBSFJ"
 });
 
+const provider = new firebase.auth.OAuthProvider('microsoft.com')
+
+provider.setCustomParameters({
+    // Optional "tenant" parameter in case you are using an Azure AD tenant.
+    // eg. '8eaef023-2b34-4da1-9baa-8bc8c9d6a490' or 'contoso.onmicrosoft.com'
+    // or "common" for tenant-independent tokens.
+    // The default value is "common".
+    tenant: 'f1502c4c-ee2e-411c-9715-c855f6753b84'
+  });
+  
+
+export {provider} 
+
 const db = firebaseApp.firestore()
 export {db}
 export default firebaseApp;

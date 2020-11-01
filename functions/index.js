@@ -34,9 +34,9 @@ exports.removeUserFromChat = functions.https.onCall((data,context) => {
     }
     functions.logger.log(context.auth.token.email_verified)
     functions.logger.log(context.auth.token)
-    if(!context.auth.token.email_verified) {
-        throw new Error("email not verified")
-    }
+    // if(!context.auth.token.email_verified) {
+    //     throw new Error("email not verified")
+    // }
     data.chat_id = undefined
     // let users_count = 0;
     let timestamp_start_active = 0

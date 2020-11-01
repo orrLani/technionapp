@@ -24,7 +24,7 @@ import WelcomeMessageDialog from './WelcomeMessageDialog'
 
 import logo from '../logo.png'
 import firebase from '../server/firebase'
-
+import {provider} from '../server/firebase'
 // handle userState
 import {AuthContext} from '../server/Auth'
 import {useContext} from 'react'
@@ -141,9 +141,27 @@ const SignInSide=({history})=> {
       history.push("/welcome")
     }
   }, [auth,history])
+
+  function test_login() {
+    firebase
+      .auth()
+      .signInWithPopup(provider)
+      .then(function (result) {
+        // User is signed in.
+        // IdP data available in result.additionalUserInfo.profile.
+        // OAuth access token can also be retrieved:
+        // result.credential.accessToken
+        // OAuth ID token can also be retrieved:
+        // result.credential.idToken
+      })
+      .catch(function (error) {
+        // Handle error.
+      });
+  }
   const classes = useStyles();
   return (
     <Grid container component="main" className={classes.root}>
+     
       {/* when first open */}
       <WelcomeMessageDialog history={history} />
 
@@ -156,6 +174,7 @@ const SignInSide=({history})=> {
           <Avatar className={classes.avatar}>
             <LockOutlinedIcon />
           </Avatar>
+           <Button onClick={test_login}>כפתור</Button>
           <Typography color="red" component="h1" variant="h5">
             התחברות
           </Typography>

@@ -47,10 +47,10 @@ export default function EmailConfirmation({ emailVerified }) {
           
           
           <Button 
-          onClick={() => {
+          onClick={async () => {
             try{
               setMessage("נשלח וידוא בשנית, אנא בדק/י את תיבת הדואר ונסה/י שוב")
-              auth.currentUser.sendEmailVerification()
+              await auth.currentUser.sendEmailVerification()
               console.log(auth.currentUser)
             }
             catch{
