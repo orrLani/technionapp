@@ -2,24 +2,19 @@ const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 var assert = require('assert')
 admin.initializeApp()
-// // Create and Deploy Your First Cloud Functions
-// // https://firebase.google.com/docs/functions/write-firebase-functions
-//
-// exports.helloWorld = functions.https.onRequest((request, response) => {
-//   functions.logger.info("Hello logs!", {structuredData: true});
-//   response.send("Hello from Firebase!");
-// });
 
-// exports.printRoom = functions.https.onCall((data,context) => {
-//     return `${data.user_uid}`
-// })
-
-// exports.getAmountOfRooms = functions.https.onCall((data,context) => {
-//     return admin.firestore().collection('rooms').onSnapshot(snap => {
-//         return snap.docs.length()
-//     })
-// })
-
+function isUserBlocked(context) {
+    return admin.firestore().collection('banned_uids').doc(context.auth.uid)
+    .get()
+    .then(snap => {
+        if (snap.exists) {
+            return true
+        }
+        else {
+            return false
+        }
+    })
+}
   /* deletes user from chat,
      deletes the chat if users_count <= 2. 
      @param data = {chat_id} */
@@ -32,6 +27,16 @@ exports.removeUserFromChat = functions.https.onCall((data,context) => {
     if(illegalEmailSuffix) {
         throw new Error("illegal mail")
     }
+    isUserBlocked(context)
+    .then(isBlocked => {
+        if(isBlocked){
+            throw new Error('Blocked!')
+        }
+        return null
+    })
+    .catch(error => {
+        throw error
+    })
     functions.logger.log(context.auth.token.email_verified)
     functions.logger.log(context.auth.token)
     // if(!context.auth.token.email_verified) {
@@ -208,6 +213,16 @@ exports.addUserToChat = functions.https.onCall((data,context) => {
     if(illegalEmailSuffix) {
         throw new Error("illegal mail")
     }
+    isUserBlocked(context)
+    .then(isBlocked => {
+        if(isBlocked){
+            throw new Error('Blocked!')
+        }
+        return null
+    })
+    .catch(error => {
+        throw error
+    })
     functions.logger.log("I'm adding user to chat!")
     return admin.firestore().collection('rooms')
     .where('course_title' ,'==',data.course_title)
@@ -289,6 +304,16 @@ exports.setUserNickName = functions.https.onCall((data,context) => {
     if(illegalEmailSuffix) {
         throw new Error("illegal mail")
     }
+    isUserBlocked(context)
+    .then(isBlocked => {
+        if(isBlocked){
+            throw new Error('Blocked!')
+        }
+        return null
+    })
+    .catch(error => {
+        throw error
+    })
     return admin.firestore()
     .collection('users')
     .doc(context.auth.uid)
@@ -306,5 +331,54 @@ exports.addUserToDb = functions.auth.user().onCreate((user) => {
     functions.logger.log(user)
     return admin.firestore().collection("users").doc(user.uid).set({
         nickname: random_nickname,
+        messages_daily_count: 0,
     });
 });
+
+// keeping track of users sent messages, in order to prevent spam users
+exports.updateMessagesCount = functions.firestore
+    .document('rooms/{roomID}/messages/{messageID}')
+    .onCreate((snap, context) => {
+      const MESSAGES_PER_DAY_THRESHHOLD = 500
+
+      return admin.firestore().collection('users').doc(snap.data().user_uid).get()
+      .then(user => {
+        if(user.data().messages_daily_count > MESSAGES_PER_DAY_THRESHHOLD) {
+              // disable_user
+              functions.logger.log("disabling user: "+snap.data().user_uid)
+              admin.firestore().collection('banned_uids').doc(snap.data().user_uid)
+              .set({
+                  is_blocked: true
+              })
+              return admin.auth().updateUser(snap.data().user_uid, {
+                disabled: true
+              })
+
+        }
+
+        //incerement daily messages send by user
+        const increment = admin.firestore.FieldValue.increment(1)
+        user.ref.update({
+            messages_daily_count: increment
+        })
+        return null
+      })
+    });
+
+
+    // reset messages counts from users every 24 hours
+    exports.resetMessagesCount = functions.pubsub.schedule('every 24 hours').onRun((context) => {
+        functions.logger.log("hello!")
+        return admin.firestore()
+        .collection('users')
+        .where('messages_daily_count','>',0)
+        .get()
+        .then(snapshot => {
+            snapshot.docs.forEach(doc => {
+                doc.ref.update({
+                    messages_daily_count: 0,
+                })
+            })
+            return null
+        })
+    });
