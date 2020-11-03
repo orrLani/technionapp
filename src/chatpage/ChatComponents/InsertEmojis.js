@@ -4,6 +4,7 @@ import Menu from "@material-ui/core/Menu";
 import "emoji-mart/css/emoji-mart.css";
 import { Picker} from "emoji-mart";
 import MoodIcon from "@material-ui/icons/Mood";
+import { IconButton } from '@material-ui/core';
 
 const StyledMenu = withStyles({
   paper: {
@@ -27,7 +28,7 @@ const StyledMenu = withStyles({
 
 
 
-export default function InsertEmojis({ setInput }) {
+export default function InsertEmojis({ setInput, inputRef,PickerRef }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -45,6 +46,7 @@ export default function InsertEmojis({ setInput }) {
   },[])
   return (
     <div>
+      <IconButton>
       <MoodIcon
         aria-controls="customized-menu"
         aria-haspopup="true"
@@ -52,6 +54,7 @@ export default function InsertEmojis({ setInput }) {
         color="primary"
         onClick={handleClick}
       />
+      </IconButton>
 
       <StyledMenu
         id="customized-menu"
@@ -61,9 +64,11 @@ export default function InsertEmojis({ setInput }) {
         onClose={handleClose}
       >
         <Picker
+          ref={PickerRef}
           onSelect={(e) => {
             // let emoji = e.native
             setInput((input) => input + e.native);
+            inputRef.current.focus()
           }}
         />
       </StyledMenu>

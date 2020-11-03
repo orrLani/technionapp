@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect, useContext, useRef } from 'react'
 import 'emoji-mart/css/emoji-mart.css'
 import Button from '@material-ui/core/Button';
 
@@ -23,7 +23,8 @@ function Chat(props) {
     const [input, setInput] = useState("")
     const [messages, setMessages] = useState([])
     
-
+    const inputRef = useRef()
+    const PickerRef = useRef()
     const auth = useContext(AuthContext)
     const {chat, setChat, addNewChat} = useContext(ChatContext)
     // const [prevChat,setPrevChat] = usePrevious(chat)
@@ -148,11 +149,15 @@ function Chat(props) {
 
                 
                     <InsertEmojis key="emoji"
-                    setInput = {setInput} />
+                    setInput = {setInput} 
+                    inputRef={inputRef}
+                    PickerRef={PickerRef}
+                    />
                   
 
                 <form onSubmit={sendMessage}>
-            <input value={input}
+            <input ref={inputRef}
+                    value={input}
                     disabled = {false}
                     onChange={(e) => setInput(e.target.value)}
                     placeholder ="הקליד/י משהו נחמד"  
