@@ -63,7 +63,7 @@ function Chat(props) {
         adds the message to the database */
     const sendMessage = (e) => {
         e.preventDefault()
-        console.log('You typed >>> ', input)
+        // console.log('You typed >>> ', input)
         if(input.length < 1 || input.length > 100) {
             alert("הודעה חייבת להכיל בין 1 ל-100 תווים")
         }

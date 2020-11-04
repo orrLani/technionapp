@@ -13,7 +13,7 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     app.auth().onAuthStateChanged((user) => {
       
-      console.log("auth changed!")
+      // console.log("auth changed!")
       setCurrentUser(user)
 
       //get the user's last nickname

@@ -9,7 +9,7 @@ import AutoCompleteField from '../../../SignUpPage/AutocompleteComponents/AutoCo
 function FaculticChatCard({setChat,setOpenInsertNicknameDialog}) {
     const [faculty,setFaculty] = useState('')
     function handleSubmit() {
-        console.log(faculty)
+        // console.log(faculty)
         if (faculty.title === undefined) {
           alert("אנא בחר/י פקולטה")
         }

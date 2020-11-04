@@ -14,15 +14,15 @@ export const ChatProvider = ({children}) => {
     })
     async function addNewChat(auth) {
         // in case that user added new nickname, update in database
-        console.log("adding new user!")
-        console.log(chat)
-      console.log(auth)
+        // console.log("adding new user!")
+        // console.log(chat)
+      // console.log(auth)
 
       /* fire 'deleteFromChat' cloud function if user still in chat */
       const deleteFromChat = firebase.functions().httpsCallable('removeUserFromChat')
       await deleteFromChat({})
       .catch(error => {
-        console.log("not in chat")
+        // console.log("not in chat")
       })
       /* if user entered new nickname, update it in databse */
       if (auth.nickNameHasChanged) {
@@ -42,7 +42,7 @@ export const ChatProvider = ({children}) => {
       const addUserToChat = firebase.functions().httpsCallable('addUserToChat')
 
       // course will be {title: "Friendly"} if chat type is חברתי
-      console.log(chat.user_hobby)
+      // console.log(chat.user_hobby)
 
       //give user random color
       const random_color = "#"+Math.floor(Math.random()*16777215).toString(16)
@@ -97,7 +97,7 @@ export const ChatProvider = ({children}) => {
               })
             })
           .catch(error => {
-            console.log(error)
+            // console.log(error)
           })
     }
     return (

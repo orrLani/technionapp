@@ -52,8 +52,8 @@ function Sidebar() {
     let user_in_current_users_list = users.find(user => user.user_uid === auth.currentUser.uid)
 
     let user_in_previous_users_list = prevUsers && prevUsers.find(user => user.user_uid === auth.currentUser.uid)
-    console.log("users changed!")
-    console.log({ users, prevUsers })
+    // console.log("users changed!")
+    // console.log({ users, prevUsers })
     /* needs to close the chat in one of these cases:
       1. user is the last person in the chat
       2. user is already deleted from the chat (possibly because of opening chat in other browser) */
@@ -62,7 +62,7 @@ function Sidebar() {
 
       // console.log(prevUsers.length)
       // console.log(users.length)
-      console.log("Close the chat!")
+      // console.log("Close the chat!")
       playSound(endAudio)
       setChat(prevChat => {
         
@@ -76,8 +76,8 @@ function Sidebar() {
     // chat cannot go from closed to active
     else if (users.length > 1 && chat.active_status === "WAITING_CHAT") {
       //play the music
-      console.log("start the chat!")
-      console.log("playing start audio!")
+      // console.log("start the chat!")
+      // console.log("playing start audio!")
       playSound(startAudio)
       setChat(chat => {  
         return {
@@ -118,8 +118,8 @@ function Sidebar() {
   }, [chat]  )
 
   useEffect(() => {
-    console.log(hobbies.length)
-    console.log(hobbiesWithoutDuplicates.length)
+    // console.log(hobbies.length)
+    // console.log(hobbiesWithoutDuplicates.length)
   },[hobbies,hobbiesWithoutDuplicates])
   return (
 

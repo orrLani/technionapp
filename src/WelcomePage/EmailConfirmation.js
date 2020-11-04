@@ -51,7 +51,7 @@ export default function EmailConfirmation({ emailVerified }) {
             try{
               setMessage("נשלח וידוא בשנית, אנא בדק/י את תיבת הדואר ונסה/י שוב")
               await auth.currentUser.sendEmailVerification()
-              console.log(auth.currentUser)
+              // console.log(auth.currentUser)
             }
             catch{
               setMessage("קרתה שגיאה, נסה/י שוב")

@@ -26,7 +26,6 @@ import TechnionChatCard from './Components/Cards/TechnionChatCard'
 import InsertNicknameDialog from './Components/Dialogs/InsertNicknameDialog'
 import LoginDialog from './Components/Dialogs/LoginDialog'
 
-import useMobileDetect from 'use-mobile-detect-hook';
 
 const Welcome = ({ history }) => {
 
@@ -43,16 +42,16 @@ const Welcome = ({ history }) => {
   useEffect(() => {
     const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
     if(isMobile){
-      console.log("mobile!")
+      // console.log("mobile!")
     }
     else{
-      console.log("not mobile!")
+      // console.log("not mobile!")
     }
   },[navigator.userAgent])
 
 
   useEffect(() => {
-    console.log(auth)
+    // console.log(auth)
     const userLoggedIn = auth.currentUser
     setOpenLoginDialog(!userLoggedIn)
   }, [auth])

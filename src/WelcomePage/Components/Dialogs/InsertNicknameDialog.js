@@ -19,7 +19,7 @@ export default function InsertNicknameDialog({ open, setOpen }) {
           alert("כינוי חייב להכיל בין 2 ל-20 תווים");
         } else {
           setOpen(false);
-          console.log("in handle submit");
+        //   console.log("in handle submit");
           setChat((chat) => {
             return {
               ...chat,

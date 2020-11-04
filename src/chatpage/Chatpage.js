@@ -57,7 +57,7 @@ function Chatpage({ChatIsOpenFunction}) {
       deleteFromChat({
         chat_id: chat.id
       }).then(() => {
-        console.log("I've deleted!")
+        // console.log("I've deleted!")
       })
     })
     return(() => {

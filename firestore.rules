@@ -1,8 +1,37 @@
-rules_version = '2';
+rules_version = '2'
 service cloud.firestore {
   match /databases/{database}/documents {
-    match /{document=**} {
-      allow read, write: if true;
+
+
+		match /rooms/{roomID}/messages/{messageID} {
+    	allow read: if userInChat(roomID) && userLogedIn() && !userBlocked()
+			allow create: if userInChat(roomID) && userLogedIn()
+      	&& sameUserID() && !userBlocked()
     }
-  }
+    
+    match /rooms/{roomID}/users_on_page/{userDoc} {
+    	allow read: if userLogedIn() && !userBlocked()
+    }
+    
+    match /users/{userID} {
+    	allow read,write: if request.auth.uid == userID && !userBlocked()
+    }
+    function userLogedIn() {
+    	return request.auth.uid !=null
+    }
+    function userInChat(roomID) {
+    	return roomID == get(/databases/$(database)/documents
+      /users/$(request.auth.uid)).data.chat_id
+    }
+    function emailVerified() {
+      return request.auth.token.email_verified;
+    }
+    function sameUserID(){
+      //return request.auth.uid == "hzE5avawJEaMY7KqfO59KAAaGZm1"
+      return request.resource.data.user_uid == request.auth.uid
+    }
+    function userBlocked() {
+    	return exists(/databases/$(database)/documents/banned_uids/$(request.auth.uid))
+    }
+	}
 }
